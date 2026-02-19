@@ -1,0 +1,1911 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Schedule Demo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:          #f0f2f5;
+  --surface:     #ffffff;
+  --surface2:    #f8f9fa;
+  --border:      #e2e5ea;
+  --border-mid:  #d0d5dd;
+  --border-bright: #bec5d0;
+  /* RED brand primary */
+  --red:         #C0152A;
+  --red-dark:    #8B0000;
+  --red-light:   #e8192e;
+  --red-bg:      #fff5f5;
+  --red-border:  rgba(192,21,42,0.2);
+  /* Accents */
+  --teal:        #1a9688;
+  --teal-bg:     #f0faf9;
+  --amber:       #d97706;
+  --amber-bg:    #fffbeb;
+  --green:       #16a34a;
+  --green-bg:    #f0fdf4;
+  --blue:        #2563eb;
+  /* Skill colors — keep readable on white */
+  --skill1:      #2563eb;
+  --skill2:      #7c3aed;
+  --skill3:      #d97706;
+  --skill4:      #C0152A;
+  /* Text */
+  --text:        #111827;
+  --text-dim:    #374151;
+  --text-muted:  #6b7280;
+  --text-light:  #9ca3af;
+  /* Fonts */
+  --font:        'Montserrat', sans-serif;
+  --display:     'Montserrat', sans-serif;
+  --mono:        'Montserrat', sans-serif;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  background: var(--bg); color: var(--text);
+  font-family: var(--font); font-size: 13px;
+  min-height: 100vh; overflow-x: hidden;
+}
+/* Clean light background — no dark grid */
+body::before { display: none; }
+.wrapper { position: relative; z-index: 1; max-width: 1400px; margin: 0 auto; padding: 0; }
+
+/* ── TOP NAV BAR ── */
+.top-nav {
+  background: var(--red-dark); color: #fff;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 2rem; height: 52px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.25);
+}
+.top-nav-brand {
+  font-size: 18px; font-weight: 900; letter-spacing: 0.04em; color: #fff;
+  display: flex; align-items: center; gap: 10px;
+}
+.top-nav-brand .rhino-icon {
+  width: 32px; height: 32px; background: rgba(255,255,255,0.15);
+  border-radius: 50%; display: flex; align-items: center; justify-content: center;
+  font-size: 16px;
+}
+.top-nav-links { display: flex; gap: 2rem; }
+.top-nav-links a {
+  color: rgba(255,255,255,0.75); font-size: 13px; font-weight: 600;
+  text-decoration: none; letter-spacing: 0.03em;
+  padding-bottom: 2px; border-bottom: 2px solid transparent;
+  transition: all 0.15s;
+}
+.top-nav-links a.active { color: #fff; border-bottom-color: #fff; }
+.top-nav-links a:hover { color: #fff; }
+
+/* ── PAGE CONTENT ── */
+.page-content { padding: 1.75rem 2rem; }
+
+/* ── HEADER ── */
+.header {
+  display: flex; align-items: flex-start; justify-content: space-between;
+  margin-bottom: 1.5rem;
+}
+.badge {
+  display: inline-flex; align-items: center; gap: 0.4rem;
+  background: var(--red-bg); border: 1px solid var(--red-border);
+  color: var(--red); font-size: 10px; font-weight: 700; letter-spacing: 0.08em;
+  padding: 4px 12px; border-radius: 20px; margin-bottom: 0.6rem; text-transform: uppercase;
+}
+.badge::before {
+  content: ''; width: 6px; height: 6px; background: var(--red);
+  border-radius: 50%; animation: pulse 2s infinite;
+}
+@keyframes pulse { 0%,100%{opacity:1;transform:scale(1);}50%{opacity:0.5;transform:scale(0.8);} }
+h1 { font-family: var(--display); font-size: clamp(1.6rem,4vw,2.6rem); font-weight: 900; line-height: 1.1; color: var(--text); }
+h1 span { color: var(--red); }
+.subtitle { margin-top: 0.4rem; color: var(--text-muted); font-size: 12px; font-weight: 500; }
+.status-bar { display: flex; flex-direction: column; align-items: flex-end; gap: 0.4rem; }
+.stat-pill {
+  display: flex; align-items: center; gap: 0.5rem;
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 20px; padding: 5px 14px; font-size: 11px; color: var(--text-muted);
+  font-weight: 500; box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+}
+.stat-pill strong { color: var(--red); font-weight: 700; }
+
+/* ── OVERVIEW ── */
+.overview { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem; margin-bottom: 1.5rem; }
+.overview-card {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 10px; padding: 1.25rem; position: relative; overflow: hidden;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+}
+.overview-card::before { content:''; position:absolute; top:0; left:0; right:0; height:3px; }
+.overview-card:nth-child(1)::before { background: var(--red); }
+.overview-card:nth-child(2)::before { background: var(--teal); }
+.overview-card:nth-child(3)::before { background: var(--amber); }
+.overview-card h3 { font-size:10px; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:var(--text-muted); margin-bottom:0.5rem; }
+.overview-card p { font-size:12px; color:var(--text-dim); line-height:1.6; font-weight:500; }
+
+/* ── CONTROLS ── */
+.controls { display:flex; align-items:center; gap:0.6rem; margin-bottom:1.1rem; flex-wrap:wrap; }
+.section-title { font-size:17px; font-weight:800; flex:1; color:var(--text); letter-spacing:-0.01em; }
+.btn {
+  display:inline-flex; align-items:center; gap:0.5rem;
+  padding:9px 18px; border:none; border-radius:20px;
+  font-family:var(--font); font-size:12px; font-weight:700; cursor:pointer;
+  transition:all 0.15s ease; letter-spacing:0.03em; white-space:nowrap;
+}
+.btn-primary { background:var(--red); color:#fff; box-shadow: 0 2px 8px rgba(192,21,42,0.3); }
+.btn-primary:hover:not(:disabled) { background:var(--red-light); transform:translateY(-1px); box-shadow:0 4px 16px rgba(192,21,42,0.35); }
+.btn-primary:disabled { background:var(--border); color:var(--text-muted); cursor:not-allowed; box-shadow:none; }
+.btn-pause { background:transparent; color:var(--amber); border:2px solid var(--amber); display:none; border-radius:20px; }
+.btn-pause:hover { background:var(--amber-bg); }
+.btn-pause.visible { display:inline-flex; }
+.btn-pause.paused { color:var(--green); border-color:var(--green); }
+.btn-pause.paused:hover { background:var(--green-bg); }
+.btn-secondary { background:var(--surface); color:var(--text-dim); border:1.5px solid var(--border-mid); }
+.btn-secondary:hover { background:var(--surface2); color:var(--text); border-color:var(--border-bright); }
+.btn-add { background:var(--surface); color:var(--teal); border:1.5px solid var(--teal); }
+.btn-add:hover { background:var(--teal-bg); }
+.btn-call { background:var(--red-bg); color:var(--red); border:1.5px solid var(--red-border); }
+.btn-call:hover { background:rgba(192,21,42,0.1); }
+
+/* ── PROGRESS ── */
+.progress-bar-wrap { display:none; align-items:center; gap:0.75rem; margin-bottom:1rem; }
+.progress-bar-wrap.visible { display:flex; }
+.progress-track { flex:1; height:4px; background:var(--border); border-radius:2px; overflow:hidden; }
+.progress-fill { height:100%; background:var(--red); border-radius:2px; width:0%; transition:width 0.3s ease; }
+.progress-label { font-size:11px; color:var(--text-muted); min-width:140px; text-align:right; font-weight:600; }
+
+/* ── LEGEND ── */
+.legend { display:flex; gap:1.25rem; margin-bottom:1rem; flex-wrap:wrap; align-items:center; }
+.legend-item { display:flex; align-items:center; gap:6px; font-size:11px; color:var(--text-muted); font-weight:500; }
+.legend-dot { width:9px; height:9px; border-radius:50%; }
+
+/* ── INCOMING CALLS QUEUE (now above calendar) ── */
+.calls-section { margin-bottom: 1.25rem; }
+.calls-header {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 0.6rem;
+}
+.calls-label {
+  font-size: 11px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;
+  color: var(--text-muted); display: flex; align-items: center; gap: 0.6rem;
+}
+.calls-label .phone-icon {
+  width: 26px; height: 26px; background: var(--red-bg); border: 1.5px solid var(--red-border);
+  border-radius: 50%; display: flex; align-items: center; justify-content: center;
+  font-size: 13px; flex-shrink: 0;
+}
+.calls-label .phone-icon.ringing {
+  animation: ring 0.6s ease infinite;
+  background: rgba(192,21,42,0.12); border-color: var(--red);
+}
+@keyframes ring {
+  0%,100%{transform:rotate(0);}
+  15%{transform:rotate(12deg);}
+  30%{transform:rotate(-10deg);}
+  45%{transform:rotate(8deg);}
+  60%{transform:rotate(-6deg);}
+  75%{transform:rotate(4deg);}
+}
+.calls-queue-wrap {
+  background: var(--surface); border: 1px solid var(--border); border-radius: 10px;
+  overflow: hidden; box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+}
+.queue-ticker {
+  height: 36px; padding: 0 1rem;
+  display: flex; align-items: center; gap: 0.75rem;
+  background: var(--red-bg); border-bottom: 1px solid rgba(192,21,42,0.1);
+  font-size: 11px; color: var(--text-muted); font-weight: 500;
+  overflow: hidden; position: relative;
+}
+.ticker-dot { width:7px;height:7px;border-radius:50%;background:var(--red);flex-shrink:0; animation: pulse 2s infinite; }
+.ticker-text { color: var(--text-dim); font-weight: 500; }
+.ticker-text .highlight { color: var(--red); font-weight: 700; }
+.incoming-animation {
+  display: flex; align-items: stretch; gap: 0;
+  border-bottom: 1px solid var(--border); min-height: 70px;
+}
+.incoming-col {
+  flex: 1; display: flex; flex-direction: column; gap: 5px; padding: 10px 16px;
+}
+.incoming-col:first-child { border-right: 1px solid var(--border); }
+.incoming-divider { display: none; }
+.incoming-label { font-size: 9px; color: var(--red); font-weight: 800; letter-spacing: 0.14em; text-transform: uppercase; }
+.incoming-col:last-child .incoming-label { color: var(--text-muted); }
+.incoming-slot { flex: 1; display: flex; gap: 8px; align-items: center; overflow: hidden; }
+/* Now-handling chip */
+.incoming-chip {
+  display: inline-flex; flex-direction: column; gap: 2px;
+  padding: 7px 14px; border-radius: 20px;
+  background: var(--red-bg); border: 1.5px solid rgba(192,21,42,0.25);
+  font-size: 11px; line-height: 1.4; position: relative;
+  animation: incomingPop 0.4s cubic-bezier(0.22,1,0.36,1) both;
+  box-shadow: 0 2px 8px rgba(192,21,42,0.1);
+}
+/* Up-next chip */
+.next-chip {
+  background: var(--surface2); border: 1.5px solid var(--border);
+  box-shadow: none; animation: none;
+}
+.incoming-empty {
+  background: transparent; border: 1.5px dashed var(--border-mid);
+  box-shadow: none; animation: none;
+}
+@keyframes incomingPop { from{opacity:0;transform:scale(0.7) translateY(8px);}to{opacity:1;transform:scale(1) translateY(0);} }
+.incoming-chip .chip-name { color: var(--red); font-weight: 700; font-size: 12px; }
+.next-chip .chip-name { color: var(--text-dim); font-size: 11px; font-weight: 600; }
+.incoming-chip .chip-meta { color: var(--text-muted); font-size: 10px; font-weight: 500; }
+.incoming-chip::after {
+  content: 'ACTIVE'; position: absolute; top: -7px; right: 10px;
+  font-size: 8px; color: var(--red); font-weight: 800; letter-spacing: 0.12em;
+  background: var(--surface); padding: 0 4px;
+}
+.next-chip::after { display: none; }
+.incoming-empty::after { display: none; }
+#jobs {
+  display: flex; flex-wrap: wrap; gap: 6px; align-content: flex-start;
+  height: 120px; overflow-y: auto; padding: 10px 14px;
+}
+#jobs.drop-target { background: var(--red-bg); outline: 2px dashed rgba(192,21,42,0.3); outline-offset: -3px; }
+#jobs::-webkit-scrollbar { width: 4px; }
+#jobs::-webkit-scrollbar-track { background: var(--surface2); }
+#jobs::-webkit-scrollbar-thumb { background: var(--border-mid); border-radius: 4px; }
+.job-chip {
+  display: inline-flex; flex-direction: column; gap: 1px;
+  padding: 5px 12px; border-radius: 20px;
+  background: var(--surface); border: 1.5px solid var(--border-mid);
+  font-size: 11px; line-height: 1.4; cursor: grab; user-select: none;
+  animation: chipAppear 0.3s ease both;
+  transition: transform 0.1s, box-shadow 0.1s, opacity 0.4s ease, width 0.4s ease,
+              min-width 0.4s ease, padding 0.4s ease, border-width 0.4s ease, margin 0.4s ease;
+  width: auto; min-width: 0; overflow: hidden; white-space: nowrap;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.07);
+}
+.job-chip.scheduled-out {
+  opacity: 0; width: 0 !important; min-width: 0 !important;
+  padding-left: 0 !important; padding-right: 0 !important;
+  border-width: 0 !important; margin: 0 !important;
+  pointer-events: none; flex-shrink: 1;
+}
+.job-chip:hover { transform:translateY(-1px); box-shadow:0 3px 10px rgba(0,0,0,0.1); }
+.job-chip:active { cursor:grabbing; }
+.job-chip.dragging { opacity:0.35; }
+@keyframes chipAppear { from{opacity:0;transform:scale(0.85) translateY(4px);}to{opacity:1;transform:scale(1) translateY(0);} }
+.chip-name { font-weight:700; color:var(--text); font-size:11px; }
+.chip-meta { color:var(--text-muted); font-size:9px; font-weight:500; }
+.chip-skill { display:inline-block; width:8px; height:8px; border-radius:50%; margin-right:4px; }
+.skill-1{background:var(--skill1);}.skill-2{background:var(--skill2);}
+.skill-3{background:var(--skill3);}.skill-4{background:var(--skill4);}
+
+/* ── CALENDAR ── */
+.calendar-wrap { overflow-x:auto; margin-bottom:1.5rem; }
+.calendar { width:100%; border-collapse:collapse; border:1px solid var(--border); border-radius:10px; overflow:hidden; box-shadow:0 1px 4px rgba(0,0,0,0.06); }
+.cal-header-cell {
+  background: var(--surface2); padding:10px 12px;
+  text-align:center; font-size:11px; font-weight:700; letter-spacing:0.06em; text-transform:uppercase;
+  color: var(--text-muted); border-bottom: 2px solid var(--border); border-right: 1px solid var(--border);
+}
+.cal-header-cell:first-child { text-align:left; width:80px; color: var(--text-muted); }
+.tech-header { padding-top:2px; }
+.tech-badge { display:inline-block; width:9px; height:9px; border-radius:50%; margin-bottom:3px; }
+.tech-name { display:block; font-size:13px; font-weight:800; color: var(--red); letter-spacing:0.01em; }
+.tech-skill-label { font-size:9px; color: var(--text-muted); font-weight:600; letter-spacing:0.05em; text-transform:uppercase; }
+
+/* Per-tech daily utilization bar in header */
+.tech-day-bars { display: flex; flex-direction: column; gap: 3px; margin-top: 7px; }
+.tech-day-row { display: flex; align-items: center; gap: 5px; font-size: 8px; color: var(--text-muted); font-weight: 600; }
+.tech-day-track { flex:1; height:4px; background: var(--border); border-radius:2px; overflow:hidden; min-width:60px; }
+.tech-day-fill { height:100%; border-radius:2px; transition:width 0.4s ease; background: var(--teal); }
+.tech-day-fill.warn { background: var(--amber); }
+.tech-day-fill.full { background: var(--red); }
+.tech-day-pct { min-width:26px; text-align:right; font-size:8px; color: var(--text-muted); }
+
+.cal-row { border-bottom:1px solid var(--border); }
+.cal-row:last-child { border-bottom:none; }
+.day-cell {
+  background: var(--surface2); padding: 10px 12px;
+  font-size: 11px; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase;
+  color: var(--text-muted); border-right: 1px solid var(--border); vertical-align: top; min-width: 70px;
+}
+.cal-cell {
+  padding:5px; border-right:1px solid var(--border);
+  vertical-align:top; min-width:160px; min-height:72px;
+  transition:background 0.15s; position:relative; background: var(--surface);
+}
+.cal-cell.just-placed-cell { animation: cellFlash 1.4s ease forwards; }
+@keyframes cellFlash {
+  0%   { background: rgba(192,21,42,0.15); }
+  100% { background: var(--surface); }
+}
+.cal-cell:last-child { border-right:none; }
+/* ── BLOCKED / REDUCED AVAILABILITY CELLS ── */
+.cal-cell.blocked {
+  background: repeating-linear-gradient(
+    45deg,
+    #f5f5f5,
+    #f5f5f5 6px,
+    #ebebeb 6px,
+    #ebebeb 12px
+  ) !important;
+  pointer-events: none;
+}
+.blocked-banner {
+  display: flex; align-items: center; justify-content: center; gap: 5px;
+  height: 100%; min-height: 60px;
+  font-size: 10px; font-weight: 700; color: #aaa; letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.blocked-banner::before { content: '⛔'; font-size: 14px; }
+/* Clickable day row in header */
+.tech-day-row { cursor: default; border-radius: 4px; padding: 1px 2px; }
+
+/* ── COMBINED TECH + AVAILABILITY PANEL ── */
+.tech-avail-row {
+  display: flex; align-items: center; gap: 12px;
+  padding: 12px 16px; border-bottom: 1px solid var(--border); flex-wrap: wrap;
+}
+.tech-avail-row:last-child { border-bottom: none; }
+.tech-avail-info {
+  display: flex; align-items: center; gap: 10px; min-width: 180px; flex-shrink: 0;
+}
+.tech-avail-name { font-size: 12px; font-weight: 700; color: var(--text); line-height: 1.3; }
+.tech-avail-skill { font-size: 10px; font-weight: 600; color: var(--text-muted); display: flex; align-items: center; gap: 4px; margin-top: 2px; }
+.lvl-pip { width: 14px; height: 4px; border-radius: 2px; background: var(--border); }
+.lvl-pip.filled { background: var(--red); }
+.tech-avail-days { display: flex; gap: 6px; flex: 1; flex-wrap: wrap; }
+.avail-day-btn {
+  display: flex; flex-direction: column; align-items: center; gap: 3px;
+  padding: 6px 10px; border-radius: 8px; border: 1.5px solid var(--border);
+  cursor: pointer; background: var(--surface2); transition: all 0.15s;
+  min-width: 50px; font-family: var(--font); outline: none;
+}
+.avail-day-btn:hover { background: var(--surface); border-color: var(--border-mid); }
+.avail-day-btn.is-blocked { background: var(--red-bg); border-color: var(--red-border); }
+.avail-day-btn .day-label { font-size: 9px; font-weight: 800; letter-spacing: 0.07em; text-transform: uppercase; color: var(--text-muted); }
+.avail-day-btn.is-blocked .day-label { color: var(--red); }
+.avail-day-btn .day-status { font-size: 15px; line-height: 1; }
+.tech-delete { background: none; border: none; color: var(--text-muted); cursor: pointer; font-size: 18px; padding: 2px 6px; border-radius: 4px; transition: all 0.1s; line-height: 1; margin-left: auto; flex-shrink: 0; }
+.tech-delete:hover { color: var(--red); background: var(--red-bg); }
+.cal-cell.drag-best {
+  background: rgba(192,21,42,0.06) !important;
+  outline: 2.5px solid var(--red) !important;
+  outline-offset: -2px;
+  animation: bestPulse 1.1s ease infinite;
+}
+@keyframes bestPulse {
+  0%,100% { outline-color: var(--red); }
+  50%      { outline-color: rgba(192,21,42,0.3); }
+}
+.best-spot-badge {
+  position: absolute; top: 4px; left: 50%; transform: translateX(-50%);
+  background: var(--red); color: #fff;
+  font-size: 8px; font-weight: 800; letter-spacing: 0.1em;
+  padding: 2px 8px; border-radius: 10px;
+  pointer-events: none; z-index: 2; white-space: nowrap;
+  font-family: var(--font);
+  animation: badgePop 0.3s cubic-bezier(0.22,1,0.36,1) both;
+}
+@keyframes badgePop { from{opacity:0;transform:translateX(-50%) scale(0.7);}to{opacity:1;transform:translateX(-50%) scale(1);} }
+/* When hovering over the best cell, change to teal "drop here" state */
+.cal-cell.drag-best.drag-over { background: rgba(26,150,136,0.09) !important; outline-color: var(--teal) !important; animation: none; }
+.cal-cell.drag-best.drag-over .best-spot-badge { background: var(--teal); }
+.cal-cell.drag-over { background:rgba(26,150,136,0.07); outline:2px dashed rgba(26,150,136,0.4); outline-offset:-2px; }
+.cal-cell.drag-overbook { background:rgba(217,119,6,0.07); outline:2px dashed rgba(217,119,6,0.4); outline-offset:-2px; }
+.cal-cell.drag-skillwarn { background:rgba(192,21,42,0.06); outline:2px dashed rgba(192,21,42,0.35); outline-offset:-2px; }
+.cal-cell.drop-reject { background:rgba(239,68,68,0.07); outline:2px dashed rgba(239,68,68,0.3); outline-offset:-2px; }
+.cell-footer { margin-top:4px; height:3px; border-radius:2px; background:var(--border); overflow:hidden; }
+.cell-usage { height:100%; border-radius:2px; background:var(--teal); transition:width 0.3s ease; }
+.cell-usage.warn { background:var(--amber); }
+.cell-usage.full { background:var(--red); }
+
+/* highlight for suggestion */
+.cal-cell.suggested {
+  outline: 2px solid var(--teal); outline-offset: -2px;
+  background: var(--teal-bg);
+  animation: suggPulse 1.5s ease infinite;
+}
+@keyframes suggPulse { 0%,100%{outline-color:var(--teal);}50%{outline-color:rgba(26,150,136,0.25);} }
+.sugg-badge {
+  position:absolute; top:4px; right:4px;
+  background:var(--teal); color:#fff; font-size:8px;
+  padding:2px 6px; border-radius:10px; letter-spacing:0.06em; font-weight:700;
+}
+
+/* ── CAL JOB CARDS ── */
+.cal-job {
+  display:flex; align-items:flex-start; gap:6px;
+  padding:7px 9px; border-radius:6px; margin-bottom:3px;
+  font-size:10px; line-height:1.4; cursor:grab;
+  position:relative; overflow:hidden;
+  border-left:3px solid transparent; background:var(--surface);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.07);
+  transition:transform 0.1s,box-shadow 0.1s;
+}
+.cal-job::before { content:''; position:absolute; inset:0; opacity:0.05; transition:opacity 0.1s; }
+.cal-job.s1 { border-left-color:var(--skill1); }.cal-job.s1::before { background:var(--skill1); }
+.cal-job.s2 { border-left-color:var(--skill2); }.cal-job.s2::before { background:var(--skill2); }
+.cal-job.s3 { border-left-color:var(--skill3); }.cal-job.s3::before { background:var(--skill3); }
+.cal-job.s4 { border-left-color:var(--skill4); }.cal-job.s4::before { background:var(--skill4); }
+
+/* Last placed — red flash matching brand */
+.cal-job.just-placed {
+  animation: jobIn 0.35s cubic-bezier(0.22,1,0.36,1) both, placedFlash 2.2s ease forwards;
+}
+@keyframes placedFlash {
+  0%   { background: rgba(192,21,42,0.22); border-left-color: var(--red); box-shadow: 0 0 18px rgba(192,21,42,0.3), 0 1px 3px rgba(0,0,0,0.07); }
+  20%  { background: rgba(192,21,42,0.15); border-left-color: var(--red); box-shadow: 0 0 12px rgba(192,21,42,0.2); }
+  100% { background: var(--surface);       border-left-color: inherit;   box-shadow: 0 1px 3px rgba(0,0,0,0.07); }
+}
+.cal-job.just-placed::before { opacity: 0.12 !important; }
+.cal-job:not(.just-placed) { animation: jobIn 0.35s cubic-bezier(0.22,1,0.36,1) both; }
+
+.cal-job.overbooked::after {
+  content:'OVR'; position:absolute; top:3px; right:4px;
+  font-size:8px; color:var(--amber); letter-spacing:0.06em; font-weight:800;
+}
+.cal-job.skill-override::after {
+  content:'SKL'; position:absolute; top:3px; right:4px;
+  font-size:8px; color:var(--red); letter-spacing:0.06em; font-weight:800;
+}
+.cal-job.overbooked.skill-override::after { content:'OVR·SKL'; }
+.cal-job:hover { transform:translateY(-1px); box-shadow:0 4px 12px rgba(0,0,0,0.12); }
+.cal-job:active { cursor:grabbing; }
+.cal-job.dragging { opacity:0.3; }
+@keyframes jobIn { from{opacity:0;transform:translateX(-8px) scale(0.97);}to{opacity:1;transform:translateX(0) scale(1);} }
+.job-dot { flex-shrink:0; width:8px; height:8px; border-radius:50%; margin-top:2px; }
+.job-key { font-weight:700; color:var(--text); font-size:11px; }
+.job-details { color:var(--text-muted); font-size:9px; margin-top:1px; font-weight:500; }
+.time-bar { height:3px; border-radius:2px; margin-top:3px; opacity:0.5; }
+
+/* ── BOTTOM PANELS ── */
+.bottom-grid { display:grid; grid-template-columns:1fr 1fr; gap:1.25rem; margin-top:1.5rem; }
+.panel { background:var(--surface); border:1px solid var(--border); border-radius:10px; overflow:hidden; box-shadow:0 1px 4px rgba(0,0,0,0.06); }
+.panel-header { display:flex; align-items:center; justify-content:space-between; padding:12px 16px; background:var(--surface2); border-bottom:1px solid var(--border); }
+.panel-title { font-size:13px; font-weight:800; color:var(--text); }
+.panel-count { font-size:10px; color:var(--text-muted); background:var(--surface); border:1px solid var(--border); border-radius:20px; padding:2px 10px; font-weight:600; }
+.panel-body { padding:12px 16px; max-height:280px; overflow-y:auto; }
+.panel-body::-webkit-scrollbar { width:4px; }
+.panel-body::-webkit-scrollbar-track { background:var(--surface2); }
+.panel-body::-webkit-scrollbar-thumb { background:var(--border-mid); border-radius:4px; }
+.tech-row { display:flex; align-items:center; justify-content:space-between; padding:8px 0; border-bottom:1px solid var(--border); font-size:11px; }
+.tech-row:last-child { border-bottom:none; }
+.tech-info { display:flex; align-items:center; gap:8px; }
+.tech-lvl-bar { display:flex; gap:3px; }
+.lvl-pip { width:14px; height:4px; border-radius:2px; background:var(--border); }
+.lvl-pip.filled { background:var(--red); }
+.tech-delete { background:none; border:none; color:var(--text-muted); cursor:pointer; font-size:16px; padding:1px 6px; border-radius:3px; transition:all 0.1s; line-height:1; }
+.tech-delete:hover { color:var(--red); background:var(--red-bg); }
+.overflow-panel-body { padding:10px; min-height:80px; display:flex; flex-wrap:wrap; gap:6px; transition:outline 0.1s,background 0.1s; }
+.overflow-panel-body.drop-target { outline:2px dashed var(--amber); outline-offset:-4px; background:var(--amber-bg); }
+.overflow-chip {
+  display:inline-flex; flex-direction:column; gap:2px;
+  padding:6px 12px; border-radius:20px;
+  background:var(--amber-bg); border:1.5px solid rgba(217,119,6,0.3);
+  font-size:10px; line-height:1.4; cursor:grab; user-select:none;
+  animation:chipAppear 0.3s ease both; transition:transform 0.1s,box-shadow 0.1s;
+}
+.overflow-chip:hover { transform:translateY(-1px); box-shadow:0 3px 10px rgba(0,0,0,0.1); }
+.overflow-chip:active { cursor:grabbing; }
+.overflow-chip.dragging { opacity:0.35; }
+.overflow-chip .chip-name { color:var(--amber); font-weight:700; }
+.empty-state { text-align:center; color:var(--text-muted); font-size:11px; padding:1.5rem; font-weight:500; width:100%; }
+
+/* ── MODALS (shared) ── */
+.modal-overlay {
+  display:none; position:fixed; inset:0;
+  background:rgba(0,0,0,0.5); z-index:100;
+  align-items:center; justify-content:center; backdrop-filter:blur(4px);
+}
+.modal-overlay.open { display:flex; }
+.modal {
+  background:var(--surface); border:1px solid var(--border);
+  border-radius:12px; padding:2rem; width:420px; max-width:95vw;
+  animation:modalIn 0.2s ease; box-shadow:0 20px 60px rgba(0,0,0,0.2);
+}
+.modal.wide { width:520px; }
+@keyframes modalIn { from{opacity:0;transform:scale(0.95) translateY(10px);}to{opacity:1;transform:scale(1) translateY(0);} }
+.modal-title { font-size:20px; font-weight:900; margin-bottom:1.5rem; color:var(--text); }
+.modal-title span { color:var(--red); }
+.modal-title.green span { color:var(--teal); }
+.form-group { margin-bottom:1.25rem; }
+.form-label { display:block; font-size:10px; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:var(--text-muted); margin-bottom:0.5rem; }
+.form-input { width:100%; padding:10px 14px; background:var(--surface2); border:1.5px solid var(--border-mid); border-radius:8px; color:var(--text); font-family:var(--font); font-size:13px; font-weight:500; outline:none; transition:border-color 0.15s; }
+.form-input:focus { border-color:var(--red); }
+.form-row { display:grid; grid-template-columns:1fr 1fr; gap:0.75rem; }
+.skill-picker { display:flex; gap:0.5rem; }
+.skill-opt { flex:1; padding:10px; border-radius:8px; border:2px solid var(--border-mid); background:var(--surface2); color:var(--text-dim); font-family:var(--font); font-size:14px; cursor:pointer; text-align:center; transition:all 0.15s; font-weight:700; }
+.skill-opt:hover { color:var(--text); border-color:var(--border-bright); }
+.skill-opt.selected { color:#fff !important; }
+.skill-opt[data-skill="1"].selected { background:var(--skill1); border-color:var(--skill1); }
+.skill-opt[data-skill="2"].selected { background:var(--skill2); border-color:var(--skill2); }
+.skill-opt[data-skill="3"].selected { background:var(--skill3); border-color:var(--skill3); }
+.skill-opt[data-skill="4"].selected { background:var(--skill4); border-color:var(--skill4); }
+.modal-actions { display:flex; gap:0.75rem; margin-top:1.75rem; }
+.modal-actions .btn { flex:1; justify-content:center; }
+.form-error { color:var(--red); font-size:11px; margin-top:0.4rem; display:none; font-weight:600; }
+.form-error.show { display:block; }
+
+/* ── SUGGESTION PANEL ── */
+.suggestion-box {
+  margin-top: 1.25rem;
+  background: var(--teal-bg); border: 1px solid rgba(26,150,136,0.25);
+  border-radius: 8px; padding: 1rem;
+  animation: modalIn 0.25s ease;
+}
+.sugg-title { font-size:10px; font-weight:800; letter-spacing:0.1em; text-transform:uppercase; color:var(--teal); margin-bottom:0.75rem; }
+.sugg-list { display:flex; flex-direction:column; gap:0.5rem; }
+.sugg-item {
+  display:flex; align-items:center; gap:0.75rem;
+  padding:9px 12px; border-radius:8px;
+  background:var(--surface); border:1.5px solid var(--border);
+  cursor:pointer; transition:all 0.15s; font-size:11px;
+}
+.sugg-item:hover { border-color:var(--teal); background:var(--teal-bg); }
+.sugg-item.best { border-color:rgba(192,21,42,0.3); background:var(--red-bg); }
+.sugg-rank { font-size:9px; color:var(--text-muted); min-width:16px; font-weight:700; }
+.sugg-info { flex:1; }
+.sugg-loc { font-weight:700; color:var(--text); }
+.sugg-meta { font-size:9px; color:var(--text-muted); margin-top:1px; font-weight:500; }
+.sugg-score { font-size:9px; color:var(--teal); text-align:right; font-weight:700; }
+.sugg-item.best .sugg-score { color:var(--red); }
+.best-badge { font-size:8px; background:var(--red); color:#fff; padding:1px 7px; border-radius:10px; font-weight:700; margin-left:4px; }
+
+/* ── OVERBOOKING CONFIRM MODAL ── */
+.overbook-modal .modal-title span { color:var(--amber); }
+.overbook-info {
+  background:var(--amber-bg); border:1px solid rgba(217,119,6,0.25);
+  border-radius:8px; padding:1rem; margin-bottom:1.25rem; font-size:12px; line-height:1.7;
+  color:var(--text-dim); font-weight:500;
+}
+.overbook-info strong { color:var(--amber); }
+
+@media(max-width:768px){
+  .overview{grid-template-columns:1fr;}
+  .bottom-grid{grid-template-columns:1fr;}
+  .header{flex-direction:column;gap:1rem;}
+  .form-row{grid-template-columns:1fr;}
+}
+</style>
+</head>
+<body>
+
+<!-- TOP NAV BAR -->
+<nav class="top-nav">
+  <div class="top-nav-brand">
+    RED Scheduling
+  </div>
+  <div class="top-nav-links">
+    <a href="#" class="active">Dispatch Board</a>
+    <a href="#">Technicians</a>
+    <a href="#">Reports</a>
+  </div>
+</nav>
+
+<div class="wrapper">
+<div class="page-content">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="header-left">
+      <div class="badge">&#9679; Live Demo</div>
+      <h1>Dispatch <span>Scheduler</span></h1>
+      <p class="subtitle">Intelligent call routing &amp; technician assignment engine</p>
+    </div>
+    <div class="status-bar">
+      <div class="stat-pill"><span>Technicians</span><strong id="techStatCount">4</strong></div>
+      <div class="stat-pill"><span>Days</span><strong>5</strong></div>
+      <div class="stat-pill"><span>Capacity</span><strong>8 hrs/day</strong></div>
+    </div>
+  </div>
+
+  <!-- OVERVIEW -->
+  <div class="overview">
+    <div class="overview-card">
+      <h3>🗓️ Technician Availability</h3>
+      <p>Techs have different schedules and time-off. The algorithm respects daily capacity limits automatically.</p>
+    </div>
+    <div class="overview-card">
+      <h3>⭐ Task Proficiency</h3>
+      <p>Every tech holds a skill certification level. Calls are only assigned to techs who meet the requirement.</p>
+    </div>
+    <div class="overview-card">
+      <h3>📍 Geographic Proximity</h3>
+      <p>Calls are routed to minimize drive time. The engine clusters nearby jobs for maximum efficiency.</p>
+    </div>
+  </div>
+
+  <!-- CONTROLS -->
+  <div class="controls">
+    <span class="section-title">Weekly Board</span>
+    <button class="btn btn-primary" id="fillButton" onclick="fillCalendar()">▶ Run Schedule</button>
+    <button class="btn btn-pause" id="pauseButton" onclick="togglePause()">⏸ Pause</button>
+    <button class="btn btn-call" onclick="openCallModal()">📞 Create Call</button>
+    <button class="btn btn-add" onclick="openTechModal()">+ Add Tech</button>
+    <button class="btn btn-secondary" onclick="resetAll()">✕ Clear</button>
+  </div>
+
+  <!-- PROGRESS -->
+  <div class="progress-bar-wrap" id="progressWrap">
+    <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+    <div class="progress-label" id="progressLabel">Scheduling&hellip;</div>
+  </div>
+
+  <!-- LEGEND -->
+  <div class="legend">
+    <div class="legend-item"><div class="legend-dot" style="background:var(--skill1)"></div>Skill 1</div>
+    <div class="legend-item"><div class="legend-dot" style="background:var(--skill2)"></div>Skill 2</div>
+    <div class="legend-item"><div class="legend-dot" style="background:var(--skill3)"></div>Skill 3</div>
+    <div class="legend-item"><div class="legend-dot" style="background:var(--skill4)"></div>Skill 4</div>
+    <div class="legend-item" style="margin-left:auto;">
+      <div class="legend-dot" style="background:var(--red)"></div>
+      <span style="color:var(--red)">Last placed</span>
+    </div>
+    <div class="legend-item">
+      <div class="legend-dot" style="background:var(--teal)"></div>
+      <span style="color:var(--teal)">Skill warning / Suggested</span>
+    </div>
+    <div class="legend-item">
+      <div class="legend-dot" style="background:var(--amber)"></div>
+      <span style="color:var(--amber)">Overbooked</span>
+    </div>
+  </div>
+
+  <!-- ═══ INCOMING CALLS QUEUE (above calendar) ═══ -->
+  <div class="calls-section">
+    <div class="calls-header">
+      <div class="calls-label">
+        <div class="phone-icon" id="phoneIcon">&#128222;</div>
+        <span id="queueLabelText">Incoming calls queue &mdash; drag to calendar</span>
+      </div>
+      <span style="font-size:10px;color:var(--text-muted)" id="queueCount"></span>
+    </div>
+    <div class="calls-queue-wrap">
+      <!-- Ticker showing current "call coming in" -->
+      <div class="queue-ticker" id="queueTicker">
+        <div class="ticker-dot"></div>
+        <span class="ticker-text" id="tickerText">Awaiting calls &mdash; press Fill Calendar to begin</span>
+      </div>
+      <!-- Always-visible Now Handling / Up Next panel -->
+      <div class="incoming-animation" id="incomingAnimation">
+        <div class="incoming-col">
+          <span class="incoming-label">NOW HANDLING</span>
+          <div class="incoming-slot" id="incomingSlot">
+            <div class="incoming-chip incoming-empty">
+              <span class="chip-name" style="color:var(--text-muted)">&#8212; Waiting for call &#8212;</span>
+            </div>
+          </div>
+        </div>
+        <div class="incoming-divider"></div>
+        <div class="incoming-col">
+          <span class="incoming-label" style="color:var(--text-muted)">UP NEXT</span>
+          <div class="incoming-slot" id="nextSlot">
+            <div class="incoming-chip incoming-empty next-chip">
+              <span class="chip-name" style="color:var(--text-muted)">&#8212;</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Queued chips -->
+      <div id="jobs"><div class="empty-state">Press "Fill Calendar" to begin receiving calls</div></div>
+    </div>
+  </div>
+
+  <!-- ═══ CALENDAR ═══ -->
+  <div class="calendar-wrap">
+    <table class="calendar" id="calendarTable">
+      <thead id="calHead"></thead>
+      <tbody id="calBody"></tbody>
+    </table>
+  </div>
+
+  <!-- ═══ BOTTOM PANELS ═══ -->
+  <div class="bottom-grid">
+    <div class="panel">
+      <div class="panel-header">
+        <span class="panel-title">Technicians &amp; Availability</span>
+        <span class="panel-count" id="techPanelCount">4 active</span>
+      </div>
+      <div class="panel-body" id="techsPanel" style="padding:0;max-height:none;"></div>
+    </div>
+    <div class="panel">
+      <div class="panel-header">
+        <span class="panel-title">Overflow Queue</span>
+        <span class="panel-count" id="overflowCount">0 calls</span>
+      </div>
+      <div class="overflow-panel-body" id="overflowPanel">
+        <div class="empty-state">No overflow &mdash; drag calendar jobs here to unschedule</div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /page-content -->
+</div><!-- /wrapper -->
+
+<!-- ══════════════════════════════════════════
+     ADD TECHNICIAN MODAL
+══════════════════════════════════════════ -->
+<div class="modal-overlay" id="techModalOverlay" onclick="closeTechModalOutside(event)">
+  <div class="modal">
+    <div class="modal-title">Add <span>Technician</span></div>
+    <div class="form-group">
+      <label class="form-label" for="techNameInput">Name / ID</label>
+      <input class="form-input" id="techNameInput" type="text" placeholder="e.g. Alex Rivera" autocomplete="off" onkeydown="if(event.key==='Enter')addTechnician()">
+      <div class="form-error" id="nameError">Please enter a name.</div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Skill Level</label>
+      <div class="skill-picker" id="techSkillPicker">
+        <button class="skill-opt" data-skill="1" onclick="selectTechSkill(1)">1</button>
+        <button class="skill-opt" data-skill="2" onclick="selectTechSkill(2)">2</button>
+        <button class="skill-opt" data-skill="3" onclick="selectTechSkill(3)">3</button>
+        <button class="skill-opt" data-skill="4" onclick="selectTechSkill(4)">4</button>
+      </div>
+      <div class="form-error" id="skillError">Please select a skill level.</div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-secondary" onclick="closeTechModal()">Cancel</button>
+      <button class="btn btn-add" onclick="addTechnician()">Add Technician</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     CREATE CALL MODAL
+══════════════════════════════════════════ -->
+<div class="modal-overlay" id="callModalOverlay" onclick="closeCallModalOutside(event)">
+  <div class="modal wide">
+    <div class="modal-title green">Create <span>New Call</span></div>
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label" for="callNameInput">Job Name / ID</label>
+        <input class="form-input" id="callNameInput" type="text" placeholder="e.g. Sarah Johnson" autocomplete="off">
+        <div class="form-error" id="callNameError">Please enter a job name.</div>
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="callLocInput">Location (0–250)</label>
+        <input class="form-input" id="callLocInput" type="number" min="0" max="250" placeholder="e.g. 85" autocomplete="off">
+        <div class="form-error" id="callLocError">Enter a location 0–250.</div>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label" for="callTimeInput">Duration (hours)</label>
+        <input class="form-input" id="callTimeInput" type="number" min="0.5" max="8" step="0.5" placeholder="e.g. 3.5" autocomplete="off">
+        <div class="form-error" id="callTimeError">Enter 0.5–8 hours.</div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Required Skill Level</label>
+        <div class="skill-picker" id="callSkillPicker">
+          <button class="skill-opt" data-skill="1" onclick="selectCallSkill(1)">1</button>
+          <button class="skill-opt" data-skill="2" onclick="selectCallSkill(2)">2</button>
+          <button class="skill-opt" data-skill="3" onclick="selectCallSkill(3)">3</button>
+          <button class="skill-opt" data-skill="4" onclick="selectCallSkill(4)">4</button>
+        </div>
+        <div class="form-error" id="callSkillError">Please select a skill level.</div>
+      </div>
+    </div>
+
+    <div class="modal-actions" style="margin-top:0.5rem;">
+      <button class="btn btn-secondary" onclick="closeCallModal()">Cancel</button>
+      <button class="btn btn-secondary" onclick="suggestPlacement()" style="color:var(--red);border-color:var(--red);">&#128161; Suggest Slot</button>
+      <button class="btn btn-call" onclick="addCallToQueue()">&#10003; Add to Queue</button>
+    </div>
+
+    <!-- Suggestion results appear here -->
+    <div class="suggestion-box" id="suggestionBox" style="display:none;"></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     OVERBOOKING CONFIRM MODAL
+══════════════════════════════════════════ -->
+<div class="modal-overlay" id="overbookModalOverlay">
+  <div class="modal overbook-modal">
+    <div class="modal-title">&#9888; <span>Overbooked Slot</span></div>
+    <div class="overbook-info" id="overbookInfo">
+      This technician is already at capacity for this day.
+    </div>
+    <p style="font-size:12px;color:var(--text-dim);line-height:1.7;margin-bottom:1.5rem;">
+      Scheduling this job will put this technician over their daily limit.
+      Do you want to continue anyway?
+    </p>
+    <div class="modal-actions">
+      <button class="btn btn-secondary" onclick="cancelOverbook()">✕ Cancel</button>
+      <button class="btn" style="background:var(--amber);color:#fff;font-weight:700;" onclick="confirmOverbook()">Force Schedule</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     SKILL MISMATCH WARNING MODAL
+══════════════════════════════════════════ -->
+<div class="modal-overlay" id="skillWarnModalOverlay">
+  <div class="modal">
+    <div class="modal-title" style="color:var(--text);">&#9888; <span style="color:var(--red);">Skill Mismatch</span></div>
+    <div class="overbook-info" id="skillWarnInfo" style="border-color:rgba(192,21,42,0.25);background:var(--red-bg);">
+    </div>
+    <p style="font-size:12px;color:var(--text-dim);line-height:1.7;margin-bottom:1.5rem;">
+      This technician does not have the required certification for this job.
+      Forcing this assignment may result in lower quality or safety issues.
+      Do you want to override and schedule anyway?
+    </p>
+    <div class="modal-actions">
+      <button class="btn btn-secondary" onclick="cancelSkillWarn()">✕ Cancel</button>
+      <button class="btn" style="background:var(--red);color:#fff;font-weight:700;" onclick="confirmSkillWarn()">Override &amp; Schedule</button>
+    </div>
+  </div>
+</div>
+
+
+<script>
+// ═══════════════════════════════════════════════════════════════════
+// CONSTANTS & DATA
+// ═══════════════════════════════════════════════════════════════════
+const TIME_IN_DAY = 8;
+const MAX_DRIVE   = 31;
+const DAYS        = ['Mon','Tue','Wed','Thu','Fri'];
+const SK_COLORS   = ['var(--skill1)','var(--skill2)','var(--skill3)','var(--skill4)'];
+
+const JOBS_DATA = [
+  {key:"Marcus Webb",   location:32, skill_level:3,time:7.5},
+  {key:"Diane Flores",  location:156,skill_level:2,time:3.5},
+  {key:"Tariq Okafor",  location:122,skill_level:3,time:5  },
+  {key:"Svetlana Park", location:74, skill_level:2,time:3  },
+  {key:"Jordan Reyes",  location:112,skill_level:1,time:3  },
+  {key:"Chloe Maddox",  location:91, skill_level:2,time:3.5},
+  {key:"Benicio Cruz",  location:18, skill_level:3,time:4  },
+  {key:"Nora Whitfield",location:200,skill_level:2,time:4  },
+  {key:"Isaiah Huang",  location:160,skill_level:1,time:3  },
+  {key:"Priya Nair",    location:74, skill_level:2,time:4  },
+  {key:"Owen Gallagher",location:100,skill_level:3,time:3.8},
+  {key:"Fatima Saleh",  location:136,skill_level:2,time:3.5},
+  {key:"Caleb Morton",  location:32, skill_level:1,time:3.5},
+  {key:"Yuki Tanaka",   location:112,skill_level:2,time:3.5},
+  {key:"Rosa Stanton",  location:74, skill_level:2,time:4  },
+  {key:"Darius Cole",   location:112,skill_level:4,time:5  },
+  {key:"Imogen Shaw",   location:91, skill_level:1,time:3  },
+  {key:"Rafael Lima",   location:18, skill_level:2,time:4  },
+  {key:"Sienna Brooks", location:100,skill_level:2,time:4  },
+  {key:"Tobias Grant",  location:160,skill_level:2,time:4  },
+  {key:"Amara Diallo",  location:74, skill_level:1,time:3  },
+  {key:"Kevin Marsh",   location:100,skill_level:2,time:3.5},
+  {key:"Leila Haddad",  location:156,skill_level:2,time:4  },
+  {key:"Connor Rizzo",  location:32, skill_level:2,time:4.5},
+  {key:"Zoe Nakamura",  location:192,skill_level:1,time:3.5},
+  {key:"Felix Dupont",  location:60, skill_level:2,time:3  },
+  {key:"Hazel Owens",   location:34, skill_level:1,time:3  },
+  {key:"Mateo Vega",    location:120,skill_level:2,time:3  },
+  {key:"Astrid Lund",   location:136,skill_level:2,time:2  },
+  {key:"Devon Archer",  location:52, skill_level:2,time:4  },
+  {key:"Nadia Petrov",  location:10, skill_level:2,time:3  },
+  {key:"Elliot Ware",   location:44, skill_level:1,time:3  },
+  {key:"Camille Roux",  location:140,skill_level:2,time:3.5},
+  {key:"Rory Sinclair", location:126,skill_level:1,time:4  },
+  {key:"Ingrid Wolff",  location:132,skill_level:2,time:4  },
+  {key:"Percy Adeyemi", location:50, skill_level:1,time:1  }
+];
+
+const TECH_NAMES = [
+  'Ryan Holloway','Brent Tulloch','Marcus Webb','Daniel Price',
+  'Aaron Fitch','Kevin Marsh','Owen Gallagher','Caleb Morton',
+  'Derek Sloane','Tyler Amos','Isaiah Huang','Rory Sinclair',
+  'Felix Dupont','Connor Rizzo','Devon Archer','Elliot Ware'
+];
+function buildRandomTechs() {
+  // Shuffle the name pool and pick 3 names that are not Jason Neff
+  const pool = TECH_NAMES.slice().sort(()=>Math.random()-0.5);
+  const picked = pool.slice(0,3);
+  // Jason Neff goes in at a random position among 4 techs, each gets a distinct skill level
+  const jasonSlot = Math.floor(Math.random()*4);
+  const names = [];
+  let pi = 0;
+  for(let i=0;i<4;i++) names.push(i===jasonSlot ? 'Jason Neff' : picked[pi++]);
+  // Assign skill levels 1-4 in order so each tech has a unique level
+  return names.map((name,i)=>({key:name, skill_level:i+1}));
+}
+
+const DEFAULT_TECHS = buildRandomTechs();
+
+// ═══════════════════════════════════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════════════════════════════════
+let techs    = clone(DEFAULT_TECHS);
+let cal      = buildCal();      // cal[day][techIdx] = [{job,...},...]
+let overflow = [];
+let queueJobs = [];             // chips shown in queue
+let allJobs   = [];             // full run set
+
+// Fill animation
+let isPaused     = false;
+let pauseResolve = null;
+let isFilling    = false;
+
+// Modal states
+let selectedTechSkill = null;
+let selectedCallSkill = null;
+let customJobCounter  = 37;
+
+// Drag
+let dragJob = null;
+let dragSrc = null;
+
+// Overbook confirm callback
+let overbookCallback = null;
+
+// Skill-warn confirm callback
+let skillWarnCallback = null;
+
+// Suggestion highlights
+let suggCells = [];
+
+// Availability: techAvail[techIdx][dayIdx] = {mode:'available'|'limited'|'blocked', hours:8}
+let techAvail = {};
+
+// ═══════════════════════════════════════════════════════════════════
+// UTILS
+// ═══════════════════════════════════════════════════════════════════
+function clone(x)       { return JSON.parse(JSON.stringify(x)); }
+function buildCal()     { return Array.from({length:5}, ()=>Array.from({length:techs.length}, ()=>[])); }
+function cellId(k,j)    { return `cell-${k}-${j}`; }
+function getAvail(k,j)  { return (techAvail[j] && techAvail[j][k]) || {mode:'available', hours:TIME_IN_DAY}; }
+function dayCapacity(k,j) { const a=getAvail(k,j); return a.mode==='blocked'?0 : a.mode==='limited'?a.hours : TIME_IN_DAY; }
+function usedTime(k,j)  { return cal[k][j].reduce((s,jj)=>s+jj.time, 0); }
+function sleep(ms)      { return new Promise(r=>setTimeout(r,ms)); }
+function waitPause()    { return isPaused ? new Promise(r=>{pauseResolve=r;}) : Promise.resolve(); }
+function pct(k,j)       { const cap=dayCapacity(k,j); return cap===0?100:Math.min(100, Math.round((usedTime(k,j)/cap)*100)); }
+function findJob(key)   {
+  return allJobs.find(j=>j.key===key)
+      || queueJobs.find(j=>j.key===key)
+      || overflow.find(j=>j.key===key)
+      || JOBS_DATA.find(j=>j.key===key);
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// TABLE BUILD
+// ═══════════════════════════════════════════════════════════════════
+function buildTable() {
+  // HEADER
+  let hr = '<tr><th class="cal-header-cell" style="vertical-align:bottom;">Day</th>';
+  techs.forEach((t,j) => {
+    const c = SK_COLORS[t.skill_level-1];
+    const bars = DAYS.map((day,k) => {
+      const p = pct(k,j);
+      const avail = getAvail(k,j);
+      const cls = p>=100?'full':p>=75?'warn':'';
+      const rowCls = avail.mode==='blocked'?'day-blocked':avail.mode==='limited'?'day-limited':'';
+      const icon = avail.mode==='blocked'?'⛔ ':avail.mode==='limited'?'🕐 ':'';
+      return `<div class="tech-day-row ${rowCls}" data-avail-day="${k}" data-avail-tech="${j}" title="Click to edit availability">
+        <span>${icon}${day.slice(0,1)}</span>
+        <div class="tech-day-track"><div class="tech-day-fill ${cls}" id="tbar-${k}-${j}" style="width:${p}%"></div></div>
+        <span class="tech-day-pct" id="tpct-${k}-${j}">${avail.mode==='blocked'?'OFF':avail.mode==='limited'?avail.hours+'h':p+'%'}</span>
+      </div>`;
+    }).join('');
+    hr += `<th class="cal-header-cell" id="thcell-${j}">
+      <div class="tech-header">
+        <div class="tech-badge" style="background:${c}"></div>
+        <span class="tech-name">${t.key}</span>
+        <span class="tech-skill-label">Skill ${t.skill_level}</span>
+        <div class="tech-day-bars">${bars}</div>
+      </div>
+    </th>`;
+  });
+  document.getElementById('calHead').innerHTML = hr + '</tr>';
+
+  // BODY
+  let body = '';
+  DAYS.forEach((day,k) => {
+    body += `<tr class="cal-row"><td class="day-cell">${day}</td>`;
+    techs.forEach((_,j) => {
+      body += `<td class="cal-cell" id="${cellId(k,j)}" data-day="${k}" data-tech="${j}"></td>`;
+    });
+    body += '</tr>';
+  });
+  document.getElementById('calBody').innerHTML = body;
+  bindCellDrop();
+}
+
+// Update just the utilization bars without rebuilding whole table
+function updateUtilBars(k, j) {
+  const p = pct(k,j);
+  const cls = p>=100?'full':p>=75?'warn':'';
+  const bar = document.getElementById(`tbar-${k}-${j}`);
+  const label = document.getElementById(`tpct-${k}-${j}`);
+  if (bar) { bar.style.width = p+'%'; bar.className = 'tech-day-fill '+cls; }
+  if (label) label.textContent = p+'%';
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// RENDER
+// ═══════════════════════════════════════════════════════════════════
+function cardHTML(job, justPlaced=false) {
+  const sl = job.skill_level;
+  const c  = SK_COLORS[sl-1];
+  const tw = Math.min(100, Math.round((job.time/TIME_IN_DAY)*100));
+  const ob = job._overbooked ? ' overbooked' : '';
+  const sk = job._skillOverride ? ' skill-override' : '';
+  const jp = justPlaced ? ' just-placed' : '';
+  return `<div class="cal-job s${sl}${ob}${sk}${jp}" draggable="true" data-key="${job.key}">
+    <div class="job-dot" style="background:${c}"></div>
+    <div class="job-info">
+      <div class="job-key">${job.key}</div>
+      <div class="job-details">Loc ${job.location} &middot; ${job.time}h &middot; Skill ${sl}</div>
+      <div class="time-bar" style="background:${c};width:${tw}%"></div>
+    </div>
+  </div>`;
+}
+
+function renderCell(k, j, lastKey=null) {
+  const cell = document.getElementById(cellId(k,j));
+  if (!cell) return;
+  const avail = getAvail(k,j);
+
+  // Apply blocked/limited classes
+  cell.classList.toggle('blocked', avail.mode==='blocked');
+  cell.classList.toggle('limited', avail.mode==='limited');
+
+  if (avail.mode === 'blocked') {
+    cell.innerHTML = '<div class="blocked-banner">Day Off</div>';
+    return;
+  }
+
+  const p = pct(k,j);
+  const cls = p>=100?'full':p>=75?'warn':'';
+  cell.innerHTML = cal[k][j].map(job => cardHTML(job, job.key===lastKey)).join('') +
+    `<div class="cell-footer"><div class="cell-usage ${cls}" style="width:${p}%"></div></div>`;
+  bindCalCardDrag(cell,k,j);
+  updateUtilBars(k,j);
+  if (lastKey) {
+    cell.classList.remove('just-placed-cell');
+    void cell.offsetWidth;
+    cell.classList.add('just-placed-cell');
+  }
+}
+
+function renderAllCells() {
+  for(let k=0;k<5;k++) for(let j=0;j<techs.length;j++) renderCell(k,j);
+}
+
+function renderQueue(removedKey=null) {
+  const el = document.getElementById('jobs');
+  document.getElementById('queueCount').textContent = queueJobs.length ? `${queueJobs.length} waiting` : '';
+
+  if (!queueJobs.length && !removedKey) {
+    // Only show empty state if there are genuinely no chips left AND no ongoing removal
+    const existing = el.querySelectorAll('.job-chip:not(.scheduled-out)');
+    if (existing.length === 0) {
+      // keep any chips mid-fade then replace after their transition
+      setTimeout(() => {
+        if (queueJobs.length === 0) {
+          el.innerHTML = '<div class="empty-state">Queue empty &mdash; drag overflow jobs here to re-queue</div>';
+        }
+      }, 450);
+    }
+    return;
+  }
+
+  // Mark the departing chip as scheduled-out (smooth shrink)
+  if (removedKey) {
+    const chip = el.querySelector(`.job-chip[data-key="${removedKey}"]`);
+    if (chip) {
+      chip.classList.add('scheduled-out');
+      // Remove from DOM after transition
+      setTimeout(() => { if (chip.parentNode) chip.remove(); }, 420);
+    }
+  }
+
+  // Add any chips that don't exist yet
+  queueJobs.forEach(job => {
+    if (!el.querySelector(`.job-chip[data-key="${job.key}"]`)) {
+      const sl = job.skill_level;
+      const div = document.createElement('div');
+      div.className = 'job-chip';
+      div.draggable = true;
+      div.dataset.key = job.key;
+      div.innerHTML = `<span class="chip-name"><span class="chip-skill skill-${sl}"></span>${job.key}</span>
+        <span class="chip-meta">Loc ${job.location} &middot; ${job.time}h &middot; Skill ${sl}</span>`;
+      el.appendChild(div);
+    }
+  });
+
+  // Remove empty-state if present
+  const es = el.querySelector('.empty-state');
+  if (es && queueJobs.length) es.remove();
+
+  bindQueueDrag();
+}
+
+function renderOverflow() {
+  const el = document.getElementById('overflowPanel');
+  document.getElementById('overflowCount').textContent = `${overflow.length} calls`;
+  if (!overflow.length) {
+    el.innerHTML = '<div class="empty-state">No overflow &mdash; drag jobs here to unschedule</div>';
+    return;
+  }
+  el.innerHTML = overflow.map(job => {
+    const sl = job.skill_level;
+    return `<div class="overflow-chip" draggable="true" data-key="${job.key}">
+      <span class="chip-name"><span class="chip-skill skill-${sl}"></span>${job.key}</span>
+      <span class="chip-meta">Loc ${job.location} &middot; ${job.time}h &middot; Skill ${sl}</span>
+    </div>`;
+  }).join('');
+  bindOverflowDrag();
+}
+
+function renderTechs() {
+  const el = document.getElementById('techsPanel');
+  document.getElementById('techPanelCount').textContent = `${techs.length} active`;
+  document.getElementById('techStatCount').textContent  = techs.length;
+  el.innerHTML = techs.map((t, idx) => {
+    const sl = t.skill_level;
+    const pips = [1,2,3,4].map(i=>`<div class="lvl-pip ${i<=sl?'filled':''}"></div>`).join('');
+    const dayBtns = DAYS.map((day, k) => {
+      const blocked = getAvail(k, idx).mode === 'blocked';
+      return `<button class="avail-day-btn ${blocked ? 'is-blocked' : ''}"
+        onclick="toggleAvail(${k},${idx})" title="${blocked ? 'Click to restore' : 'Click to block'}">
+        <span class="day-label">${day}</span>
+        <span class="day-status">${blocked ? '⛔' : '✅'}</span>
+      </button>`;
+    }).join('');
+    return `<div class="tech-avail-row">
+      <div class="tech-avail-info">
+        <div class="job-dot" style="background:${SK_COLORS[sl-1]}"></div>
+        <div>
+          <div class="tech-avail-name">${t.key}</div>
+          <div class="tech-avail-skill">
+            <span style="margin-right:4px">Skill ${sl}</span>
+            <div style="display:flex;gap:3px">${pips}</div>
+          </div>
+        </div>
+      </div>
+      <div class="tech-avail-days">${dayBtns}</div>
+      <button class="tech-delete" onclick="deleteTech(${idx})" title="Remove">&#215;</button>
+    </div>`;
+  }).join('');
+}
+
+
+// ═══════════════════════════════════════════════════════════════════
+// ALGORITHM
+// ═══════════════════════════════════════════════════════════════════
+function scheduleOne(job) {
+  for (let k=0;k<5;k++) {
+    for (let j=0;j<techs.length;j++) {
+      if (techs[j].skill_level < job.skill_level) continue;
+      const avail = getAvail(k,j);
+      if (avail.mode === 'blocked') continue;
+      const cap = dayCapacity(k,j);
+      if (usedTime(k,j) + job.time > cap) continue;
+      if (cal[k][j].length === 0) { cal[k][j].push(job); return {ok:true,k,j}; }
+      if (Math.abs(cal[k][j][0].location - job.location) <= MAX_DRIVE) {
+        cal[k][j].push(job); return {ok:true,k,j};
+      }
+    }
+  }
+  return {ok:false};
+}
+
+// Score + rank all possible placements for a given job (for suggestions)
+function rankPlacements(job) {
+  const results = [];
+  for (let k=0;k<5;k++) {
+    for (let j=0;j<techs.length;j++) {
+      if (techs[j].skill_level < job.skill_level) continue;
+      const avail = getAvail(k,j);
+      if (avail.mode === 'blocked') continue;
+      const cap = dayCapacity(k,j);
+      const used = usedTime(k,j);
+      const fits = used + job.time <= cap;
+      const dist = cal[k][j].length > 0
+        ? Math.abs(cal[k][j][0].location - job.location)
+        : 0;
+      // Score: lower = better. Penalize distance heavily, reward open slots, penalize near-full
+      let score = 0;
+      if (!fits) score += 1000; // overbook penalty
+      score += dist;
+      score += used * 5; // prefer less-used slots
+      if (cal[k][j].length === 0) score -= 20; // bonus for empty slot
+      results.push({ k, j, score, dist, used, fits, techName: techs[j].key, techSkill: techs[j].skill_level });
+    }
+  }
+  results.sort((a,b)=>a.score-b.score);
+  return results;
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// FILL ANIMATION  (queue ticker / phone ring effect)
+// ═══════════════════════════════════════════════════════════════════
+function setTicker(html) {
+  document.getElementById('tickerText').innerHTML = html;
+}
+
+function chipHTML(job, isCurrent) {
+  const sl = job.skill_level;
+  const cls = isCurrent ? '' : ' next-chip';
+  return `<div class="incoming-chip${cls}">
+    <span class="chip-name"><span class="chip-skill skill-${sl}"></span>${job.key}</span>
+    <span class="chip-meta">Loc ${job.location} &middot; ${job.time}h &middot; Skill ${sl}</span>
+  </div>`;
+}
+
+function showIncoming(currentJob, nextJob) {
+  document.getElementById('incomingSlot').innerHTML = chipHTML(currentJob, true);
+  const nextSlot = document.getElementById('nextSlot');
+  if (nextJob) {
+    nextSlot.innerHTML = chipHTML(nextJob, false);
+  } else {
+    nextSlot.innerHTML = `<div class="incoming-chip incoming-empty next-chip">
+      <span class="chip-name" style="color:var(--text-muted)">&#8212; No more calls &#8212;</span>
+    </div>`;
+  }
+  document.getElementById('phoneIcon').classList.add('ringing');
+}
+
+function clearIncoming() {
+  document.getElementById('incomingSlot').innerHTML = `<div class="incoming-chip incoming-empty">
+    <span class="chip-name" style="color:var(--text-muted)">&#8212; Waiting for call &#8212;</span>
+  </div>`;
+  document.getElementById('nextSlot').innerHTML = `<div class="incoming-chip incoming-empty next-chip">
+    <span class="chip-name" style="color:var(--text-muted)">&#8212;</span>
+  </div>`;
+  document.getElementById('phoneIcon').classList.remove('ringing');
+}
+
+async function fillCalendar() {
+  if (isFilling) return;
+  isFilling = true; isPaused = false;
+
+  document.getElementById('fillButton').disabled = true;
+  const pauseBtn = document.getElementById('pauseButton');
+  pauseBtn.classList.add('visible');
+  pauseBtn.classList.remove('paused');
+  pauseBtn.innerHTML = '&#9208; Pause';
+
+  cal = buildCal(); overflow = []; queueJobs = [];
+
+  // Shuffle
+  allJobs = clone(JOBS_DATA);
+  for (let i=allJobs.length-1;i>0;i--) {
+    const j=Math.floor(Math.random()*(i+1));
+    [allJobs[i],allJobs[j]]=[allJobs[j],allJobs[i]];
+  }
+  queueJobs = [...allJobs];
+
+  // Render initial queue (all chips at once)
+  el_init: {
+    const el = document.getElementById('jobs');
+    el.innerHTML = '';
+    queueJobs.forEach(job => {
+      const sl = job.skill_level;
+      const div = document.createElement('div');
+      div.className = 'job-chip';
+      div.draggable = true;
+      div.dataset.key = job.key;
+      div.innerHTML = `<span class="chip-name"><span class="chip-skill skill-${sl}"></span>${job.key}</span>
+        <span class="chip-meta">Loc ${job.location} &middot; ${job.time}h &middot; Skill ${sl}</span>`;
+      el.appendChild(div);
+    });
+    document.getElementById('queueCount').textContent = `${queueJobs.length} waiting`;
+    bindQueueDrag();
+  }
+  buildTable();
+  renderAllCells();
+  renderTechs();
+  renderOverflow();
+
+  const pw = document.getElementById('progressWrap');
+  const pf = document.getElementById('progressFill');
+  const pl = document.getElementById('progressLabel');
+  pw.classList.add('visible');
+  pf.style.width='0%';
+
+  for (let i=0;i<allJobs.length;i++) {
+    await waitPause();
+    if (!isFilling) break;
+
+    const job = allJobs[i];
+    const nextJob = allJobs[i + 1] || null;
+    const remaining = allJobs.length - i - 1;
+
+    // ── "Phone ringing" effect ──
+    setTicker(`<span class="highlight">&#128222; Incoming call</span> &mdash; ${job.key} &middot; Skill ${job.skill_level} &middot; ${job.time}h &middot; Loc ${job.location}`);
+    showIncoming(job, nextJob);
+    await sleep(350 + Math.random()*200);
+
+    setTicker(`&#9654; Scheduling <span class="highlight">${job.key}</span>&hellip; (${remaining} calls remaining)`);
+    await sleep(180);
+
+    // Smoothly remove from queue (chip shrinks in-place)
+    queueJobs = queueJobs.filter(j=>j.key!==job.key);
+    renderQueue(job.key);  // pass removed key for smooth exit
+    document.getElementById('queueCount').textContent = queueJobs.length ? `${queueJobs.length} waiting` : '';
+
+    const res = scheduleOne(job);
+    if (res.ok) {
+      renderCell(res.k, res.j, job.key);  // pass lastKey for highlight
+      setTicker(`&#10003; Placed <span class="highlight">${job.key}</span> &rarr; ${techs[res.j].key} / ${DAYS[res.k]}`);
+    } else {
+      overflow.push(job);
+      renderOverflow();
+      setTicker(`&#9888; <span class="highlight">${job.key}</span> could not be scheduled &mdash; added to overflow`);
+    }
+
+    pf.style.width = Math.round(((i+1)/allJobs.length)*100)+'%';
+    pl.textContent  = `${i+1} / ${allJobs.length} processed`;
+
+    await sleep(55 + Math.random()*120);
+  }
+
+  if (isFilling) {
+    setTicker('&#10003; All calls processed &mdash; schedule complete');
+    pl.textContent = '&#10003; Complete';
+  }
+  clearIncoming();
+  queueJobs = [];
+  renderQueue();
+  pauseBtn.classList.remove('visible');
+  isFilling = false;
+  bindAllDrop();
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// PAUSE / RESUME
+// ═══════════════════════════════════════════════════════════════════
+function togglePause() {
+  const btn = document.getElementById('pauseButton');
+  if (!isPaused) {
+    isPaused = true;
+    btn.classList.add('paused');
+    btn.innerHTML = '&#9654; Resume';
+    document.getElementById('progressLabel').textContent = 'Paused';
+    setTicker('&#9208; Paused &mdash; click Resume to continue');
+    document.getElementById('phoneIcon').classList.remove('ringing');
+  } else {
+    isPaused = false;
+    btn.classList.remove('paused');
+    btn.innerHTML = '&#9208; Pause';
+    if (pauseResolve) { pauseResolve(); pauseResolve=null; }
+  }
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// RESET
+// ═══════════════════════════════════════════════════════════════════
+function resetAll() {
+  isFilling=false; isPaused=false;
+  if (pauseResolve){pauseResolve();pauseResolve=null;}
+  techs=clone(DEFAULT_TECHS); cal=buildCal(); overflow=[]; queueJobs=[]; allJobs=[];
+  buildTable(); renderAllCells(); renderTechs(); renderOverflow(); clearIncoming();
+  document.getElementById('jobs').innerHTML='<div class="empty-state">Press "Fill Calendar" to begin receiving calls</div>';
+  setTicker('Awaiting calls &mdash; press Fill Calendar to begin');
+  document.getElementById('queueCount').textContent='';
+  document.getElementById('progressWrap').classList.remove('visible');
+  document.getElementById('progressFill').style.width='0%';
+  document.getElementById('fillButton').disabled=false;
+  document.getElementById('pauseButton').classList.remove('visible','paused');
+  clearSuggestions();
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// ADD / DELETE TECH
+// ═══════════════════════════════════════════════════════════════════
+function openTechModal() {
+  selectedTechSkill=null;
+  document.getElementById('techNameInput').value='';
+  document.querySelectorAll('#techSkillPicker .skill-opt').forEach(b=>b.classList.remove('selected'));
+  document.getElementById('nameError').classList.remove('show');
+  document.getElementById('skillError').classList.remove('show');
+  document.getElementById('techModalOverlay').classList.add('open');
+  setTimeout(()=>document.getElementById('techNameInput').focus(),80);
+}
+function closeTechModal()       { document.getElementById('techModalOverlay').classList.remove('open'); }
+function closeTechModalOutside(e){ if(e.target.id==='techModalOverlay') closeTechModal(); }
+function selectTechSkill(n) {
+  selectedTechSkill=n;
+  document.querySelectorAll('#techSkillPicker .skill-opt').forEach(b=>b.classList.toggle('selected',+b.dataset.skill===n));
+  document.getElementById('skillError').classList.remove('show');
+}
+function addTechnician() {
+  const name=document.getElementById('techNameInput').value.trim();
+  let ok=true;
+  if(!name){document.getElementById('nameError').classList.add('show');ok=false;}
+  else document.getElementById('nameError').classList.remove('show');
+  if(!selectedTechSkill){document.getElementById('skillError').classList.add('show');ok=false;}
+  else document.getElementById('skillError').classList.remove('show');
+  if(!ok) return;
+  techs.push({key:name,skill_level:selectedTechSkill});
+  for(let k=0;k<5;k++) cal[k].push([]);
+  buildTable(); renderAllCells(); renderTechs(); bindAllDrop();
+  closeTechModal();
+}
+function deleteTech(idx) {
+  for(let k=0;k<5;k++){cal[k][idx].forEach(j=>overflow.push(j));cal[k].splice(idx,1);}
+  techs.splice(idx,1);
+  buildTable(); renderAllCells(); renderTechs(); renderOverflow(); bindAllDrop();
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// CREATE CALL MODAL
+// ═══════════════════════════════════════════════════════════════════
+const RANDOM_FIRST = ['James','Maria','Tyler','Sofia','Devon','Priya','Marcus','Elena','Jordan','Camille','Eli','Nadia','Rory','Leila','Owen','Zoe','Felix','Hazel','Tobias','Amara'];
+const RANDOM_LAST  = ['Johnson','Martinez','Patel','Williams','Chen','Rivera','Thompson','Okafor','Brooks','Nakamura','Walsh','Sinclair','Dupont','Haddad','Gallagher','Stanton','Adeyemi','Wolff','Petrov','Archer'];
+function randomCallDefaults() {
+  const first = RANDOM_FIRST[Math.floor(Math.random()*RANDOM_FIRST.length)];
+  const last  = RANDOM_LAST[Math.floor(Math.random()*RANDOM_LAST.length)];
+  const loc   = Math.floor(Math.random()*251);
+  const durations = [1,1.5,2,2.5,3,3.5,4,4.5,5,5.5,6,7,7.5,8];
+  const dur   = durations[Math.floor(Math.random()*durations.length)];
+  const skill = Math.ceil(Math.random()*4);
+  return { name:`${first} ${last}`, loc, dur, skill };
+}
+
+function openCallModal() {
+  selectedCallSkill=null;
+  const d = randomCallDefaults();
+  document.getElementById('callNameInput').value = d.name;
+  document.getElementById('callLocInput').value  = d.loc;
+  document.getElementById('callTimeInput').value = d.dur;
+  // Pre-select skill level
+  selectedCallSkill = d.skill;
+  document.querySelectorAll('#callSkillPicker .skill-opt').forEach(b=>{
+    b.classList.toggle('selected', +b.dataset.skill === d.skill);
+  });
+  ['callNameError','callLocError','callTimeError','callSkillError'].forEach(id=>document.getElementById(id).classList.remove('show'));
+  document.getElementById('suggestionBox').style.display='none';
+  document.getElementById('callModalOverlay').classList.add('open');
+  clearSuggestions();
+  setTimeout(()=>document.getElementById('callNameInput').focus(),80);
+}
+function closeCallModal() {
+  document.getElementById('callModalOverlay').classList.remove('open');
+  clearSuggestions();
+}
+function closeCallModalOutside(e){ if(e.target.id==='callModalOverlay') closeCallModal(); }
+function selectCallSkill(n) {
+  selectedCallSkill=n;
+  document.querySelectorAll('#callSkillPicker .skill-opt').forEach(b=>b.classList.toggle('selected',+b.dataset.skill===n));
+  document.getElementById('callSkillError').classList.remove('show');
+}
+
+function validateCallForm() {
+  const name = document.getElementById('callNameInput').value.trim();
+  const loc  = parseFloat(document.getElementById('callLocInput').value);
+  const time = parseFloat(document.getElementById('callTimeInput').value);
+  let ok=true;
+  if(!name){document.getElementById('callNameError').classList.add('show');ok=false;}
+  else document.getElementById('callNameError').classList.remove('show');
+  if(isNaN(loc)||loc<0||loc>250){document.getElementById('callLocError').classList.add('show');ok=false;}
+  else document.getElementById('callLocError').classList.remove('show');
+  if(isNaN(time)||time<0.5||time>8){document.getElementById('callTimeError').classList.add('show');ok=false;}
+  else document.getElementById('callTimeError').classList.remove('show');
+  if(!selectedCallSkill){document.getElementById('callSkillError').classList.add('show');ok=false;}
+  else document.getElementById('callSkillError').classList.remove('show');
+  if(!ok) return null;
+  return {
+    key: name, location: loc, skill_level: selectedCallSkill, time: time
+  };
+}
+
+function addCallToQueue() {
+  const job = validateCallForm();
+  if (!job) return;
+  customJobCounter++;
+  queueJobs.push(job);
+  allJobs.push(job);
+  renderQueue();
+  setTicker(`&#128222; Custom call <span class="highlight">${job.key}</span> added to queue`);
+  closeCallModal();
+}
+
+// ── Suggest Placement ─────────────────────────────────────────────
+function suggestPlacement() {
+  const job = validateCallForm();
+  if (!job) return;
+
+  clearSuggestions();
+  const ranked = rankPlacements(job);
+  if (!ranked.length) {
+    document.getElementById('suggestionBox').style.display='block';
+    document.getElementById('suggestionBox').innerHTML='<div class="sugg-title">No Suggestions</div><div style="font-size:11px;color:var(--text-muted)">No technicians available with required skill.</div>';
+    return;
+  }
+
+  const top = ranked.slice(0,5);
+
+  // Highlight cells on calendar
+  top.forEach((r,idx)=>{
+    const cell = document.getElementById(cellId(r.k,r.j));
+    if (!cell) return;
+    cell.classList.add('suggested');
+    if (idx===0) {
+      let badge = document.createElement('div');
+      badge.className='sugg-badge'; badge.textContent='BEST';
+      cell.appendChild(badge);
+    }
+    suggCells.push({cell,idx});
+  });
+
+  // Build suggestion list
+  const listHTML = top.map((r,i)=>{
+    const isBest = i===0;
+    const overText = r.fits ? '' : ' <span style="color:var(--amber)">(overbooks)</span>';
+    const usedPct = Math.round((r.used/TIME_IN_DAY)*100);
+    return `<div class="sugg-item ${isBest?'best':''}" onclick="applySuggestion(${r.k},${r.j})">
+      <span class="sugg-rank">#${i+1}</span>
+      <div class="sugg-info">
+        <div class="sugg-loc">${techs[r.j].key} &mdash; ${DAYS[r.k]}${isBest?`<span class="best-badge">BEST</span>`:''}</div>
+        <div class="sugg-meta">Dist ${r.dist} &middot; Used ${usedPct}% &middot; Skill ${r.techSkill}${overText}</div>
+      </div>
+      <div class="sugg-score">Score ${Math.round(r.score)}</div>
+    </div>`;
+  }).join('');
+
+  const box = document.getElementById('suggestionBox');
+  box.style.display='block';
+  box.innerHTML=`<div class="sugg-title">&#128161; Suggested Placements</div><div class="sugg-list">${listHTML}</div>
+    <div style="font-size:9px;color:var(--text-muted);margin-top:0.75rem">Click a suggestion to place the job immediately, or add to queue manually.</div>`;
+}
+
+function applySuggestion(k, j) {
+  const job = validateCallForm();
+  if (!job) return;
+  customJobCounter++;
+  const used = usedTime(k,j);
+  if (used + job.time > TIME_IN_DAY) {
+    // Trigger overbook confirm
+    overbookCallback = ()=>{
+      forcePlace(job,k,j);
+      closeCallModal();
+    };
+    showOverbookModal(job, k, j, used);
+    return;
+  }
+  forcePlace(job,k,j);
+  closeCallModal();
+}
+
+function forcePlace(job, k, j) {
+  if (job._overbooked===undefined) {
+    const used=usedTime(k,j);
+    job._overbooked = (used+job.time > TIME_IN_DAY) ? true : false;
+  }
+  cal[k][j].push(job);
+  // also add to allJobs if not there
+  if (!allJobs.find(jj=>jj.key===job.key)) allJobs.push(job);
+  renderCell(k,j);
+  clearSuggestions();
+  setTicker(`&#10003; Custom call <span class="highlight">${job.key}</span> placed &rarr; ${techs[j].key} / ${DAYS[k]}`);
+  bindAllDrop();
+}
+
+function clearSuggestions() {
+  suggCells.forEach(({cell})=>{
+    cell.classList.remove('suggested');
+    cell.querySelectorAll('.sugg-badge').forEach(b=>b.remove());
+  });
+  suggCells=[];
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// OVERBOOK CONFIRM MODAL
+// ═══════════════════════════════════════════════════════════════════
+function showOverbookModal(job, k, j, currentUsed) {
+  const newTotal = currentUsed + job.time;
+  const over = (newTotal - TIME_IN_DAY).toFixed(1);
+  document.getElementById('overbookInfo').innerHTML =
+    `<strong>${techs[j].key}</strong> on <strong>${DAYS[k]}</strong> currently has
+     <strong>${currentUsed}h</strong> scheduled (${Math.round((currentUsed/TIME_IN_DAY)*100)}% capacity).<br><br>
+     Adding <strong>${job.key}</strong> (${job.time}h) would bring the total to
+     <strong>${newTotal}h</strong> &mdash; <strong style="color:var(--amber)">${over}h over the ${TIME_IN_DAY}h daily limit</strong>.`;
+  document.getElementById('overbookModalOverlay').classList.add('open');
+}
+function cancelOverbook()  { document.getElementById('overbookModalOverlay').classList.remove('open'); overbookCallback=null; }
+function confirmOverbook() {
+  document.getElementById('overbookModalOverlay').classList.remove('open');
+  if (overbookCallback) { overbookCallback(); overbookCallback=null; }
+}
+
+// ── Skill Mismatch Modal ──────────────────────────────────────────
+function showSkillWarnModal(job, k, j) {
+  const techSkill = techs[j].skill_level;
+  const jobSkill  = job.skill_level;
+  const used      = usedTime(k,j);
+  const alsoFull  = (used + job.time) > TIME_IN_DAY;
+  let extra = '';
+  if (alsoFull) {
+    extra = `<br><br><strong style="color:var(--amber)">Note:</strong> This slot is also over capacity by ${((used+job.time)-TIME_IN_DAY).toFixed(1)}h.`;
+  }
+  document.getElementById('skillWarnInfo').innerHTML =
+    `<strong>${techs[j].key}</strong> has <strong>Skill Level ${techSkill}</strong>, but
+     <strong>${job.key}</strong> requires <strong>Skill Level ${jobSkill}</strong>.
+     This technician is <strong style="color:var(--red)">${jobSkill - techSkill} level(s) below</strong> the required certification.${extra}`;
+  document.getElementById('skillWarnModalOverlay').classList.add('open');
+}
+function cancelSkillWarn()  { document.getElementById('skillWarnModalOverlay').classList.remove('open'); skillWarnCallback=null; }
+function confirmSkillWarn() {
+  document.getElementById('skillWarnModalOverlay').classList.remove('open');
+  if (skillWarnCallback) { skillWarnCallback(); skillWarnCallback=null; }
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// AVAILABILITY PANEL (inline, below calendar)
+// ═══════════════════════════════════════════════════════════════════
+
+function toggleAvail(k, j) {
+  if (!techAvail[j]) techAvail[j] = {};
+  const current = getAvail(k, j).mode;
+  const next = current === 'blocked' ? 'available' : 'blocked';
+  techAvail[j][k] = { mode: next, hours: TIME_IN_DAY };
+  if (next === 'blocked' && cal[k][j].length > 0) {
+    cal[k][j].forEach(job => { job._overbooked = false; overflow.push(job); });
+    cal[k][j] = [];
+    renderOverflow();
+    setTicker(`⛔ ${DAYS[k]} blocked for ${techs[j].key} — jobs moved to overflow`);
+  }
+  renderCell(k, j);
+  buildTable();
+  renderTechs();
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// DRAG & DROP
+// ═══════════════════════════════════════════════════════════════════
+
+// Best-spot tracking
+let bestSpotCell = null;
+
+function showBestSpot(job) {
+  clearBestSpot();
+  if (!job) return;
+  // Temporarily exclude source cell from ranking when dragging from calendar
+  const rankings = rankPlacements(job);
+  // Filter out the source cell itself if dragging from cal
+  const valid = rankings.filter(r => {
+    if (typeof dragSrc === 'object' && r.k === dragSrc.day && r.j === dragSrc.tech) return false;
+    return true;
+  });
+  if (!valid.length) return;
+  const best = valid[0];
+  const cell = document.getElementById(cellId(best.k, best.j));
+  if (!cell) return;
+  cell.classList.add('drag-best');
+  // Insert badge
+  const badge = document.createElement('div');
+  badge.className = 'best-spot-badge';
+  badge.id = 'bestSpotBadge';
+  badge.textContent = '★ BEST MATCH';
+  cell.appendChild(badge);
+  bestSpotCell = cell;
+}
+
+function clearBestSpot() {
+  if (bestSpotCell) {
+    bestSpotCell.classList.remove('drag-best');
+    const b = bestSpotCell.querySelector('#bestSpotBadge');
+    if (b) b.remove();
+    bestSpotCell = null;
+  }
+}
+
+function bindQueueDrag() {
+  document.querySelectorAll('#jobs .job-chip').forEach(chip => {
+    chip.addEventListener('dragstart', e=>{
+      dragJob = findJob(chip.dataset.key);
+      dragSrc = 'queue';
+      chip.classList.add('dragging');
+      e.dataTransfer.effectAllowed='move';
+      e.stopPropagation();
+      setTimeout(() => showBestSpot(dragJob), 0);
+    });
+    chip.addEventListener('dragend',()=>{ chip.classList.remove('dragging'); clearBestSpot(); });
+  });
+}
+
+function bindOverflowDrag() {
+  document.querySelectorAll('#overflowPanel .overflow-chip').forEach(chip=>{
+    chip.addEventListener('dragstart',e=>{
+      dragJob=overflow.find(j=>j.key===chip.dataset.key);
+      dragSrc='overflow';
+      chip.classList.add('dragging');
+      e.dataTransfer.effectAllowed='move';
+      e.stopPropagation();
+      setTimeout(() => showBestSpot(dragJob), 0);
+    });
+    chip.addEventListener('dragend',()=>{ chip.classList.remove('dragging'); clearBestSpot(); });
+  });
+}
+
+function bindCalCardDrag(cell,k,j) {
+  cell.querySelectorAll('.cal-job').forEach(card=>{
+    card.addEventListener('dragstart',e=>{
+      dragJob=cal[k][j].find(jj=>jj.key===card.dataset.key);
+      dragSrc={day:k,tech:j};
+      card.classList.add('dragging');
+      e.dataTransfer.effectAllowed='move';
+      e.stopPropagation();
+      setTimeout(() => showBestSpot(dragJob), 0);
+    });
+    card.addEventListener('dragend',()=>{ card.classList.remove('dragging'); clearBestSpot(); });
+  });
+}
+
+// Check: same source cell (prevent dropping on self)
+function isSameCell(toDay, toTech) {
+  return typeof dragSrc==='object' && dragSrc.day===toDay && dragSrc.tech===toTech;
+}
+
+// Check: can we fit WITHOUT overbooking (skill must match)?
+function canDropFit(toDay, toTech) {
+  if(!dragJob) return false;
+  if(isSameCell(toDay,toTech)) return false;
+  if(techs[toTech].skill_level < dragJob.skill_level) return false;
+  if(getAvail(toDay,toTech).mode === 'blocked') return false;
+  const cap = dayCapacity(toDay, toTech);
+  let used=0;
+  cal[toDay][toTech].forEach(j=>{
+    if(typeof dragSrc==='object' && j.key===dragJob.key) return;
+    used+=j.time;
+  });
+  return used+dragJob.time <= cap;
+}
+
+// Check: skill matches (ignores time — overbook allowed via confirm)
+function canDropSkill(toDay, toTech) {
+  if(!dragJob) return false;
+  if(isSameCell(toDay,toTech)) return false;
+  if(getAvail(toDay,toTech).mode === 'blocked') return false;
+  return techs[toTech].skill_level >= dragJob.skill_level;
+}
+
+// Check: skill mismatch but otherwise droppable (show purple warning)
+function isSkillMismatch(toDay, toTech) {
+  if(!dragJob) return false;
+  if(isSameCell(toDay,toTech)) return false;
+  return techs[toTech].skill_level < dragJob.skill_level;
+}
+
+function removeDragSrc() {
+  if(dragSrc==='queue'){
+    queueJobs=queueJobs.filter(j=>j.key!==dragJob.key);
+    renderQueue(dragJob.key);  // smooth removal
+  } else if(dragSrc==='overflow'){
+    overflow=overflow.filter(j=>j.key!==dragJob.key);
+    renderOverflow();
+  } else if(typeof dragSrc==='object'){
+    const{day,tech}=dragSrc;
+    cal[day][tech]=cal[day][tech].filter(j=>j.key!==dragJob.key);
+    renderCell(day,tech);
+  }
+}
+
+function doDrop(toDay, toTech, flagOverbook=false, flagSkill=false) {
+  clearBestSpot();
+  removeDragSrc();
+  dragJob._overbooked    = flagOverbook;
+  dragJob._skillOverride = flagSkill;
+  const key = dragJob.key;
+  cal[toDay][toTech].push(dragJob);
+  renderCell(toDay, toTech, key);  // highlight last placed
+  if(!allJobs.find(j=>j.key===key)) allJobs.push(dragJob);
+  dragJob=null; dragSrc=null;
+  bindAllDrop();
+}
+
+function bindCellDrop() {
+  document.querySelectorAll('.cal-cell').forEach(cell=>{
+    const k=+cell.dataset.day, j=+cell.dataset.tech;
+
+    cell.addEventListener('dragover',e=>{
+      e.preventDefault();
+      if(!dragJob) return;
+      if(isSameCell(k,j)) return;
+      const fits      = canDropFit(k,j);
+      const skillOk   = canDropSkill(k,j);
+      const skillMiss = isSkillMismatch(k,j);
+      if(fits) {
+        cell.classList.add('drag-over');
+        cell.classList.remove('drag-overbook','drag-skillwarn','drop-reject');
+      } else if(skillOk) {
+        // time overbook, skill ok → orange
+        cell.classList.add('drag-overbook');
+        cell.classList.remove('drag-over','drag-skillwarn','drop-reject');
+      } else if(skillMiss) {
+        // skill mismatch → purple warning (still droppable with confirm)
+        cell.classList.add('drag-skillwarn');
+        cell.classList.remove('drag-over','drag-overbook','drop-reject');
+      } else {
+        cell.classList.add('drop-reject');
+        cell.classList.remove('drag-over','drag-overbook','drag-skillwarn');
+      }
+      e.dataTransfer.dropEffect='move';
+    });
+
+    cell.addEventListener('dragleave',()=>{
+      cell.classList.remove('drag-over','drag-overbook','drag-skillwarn','drop-reject');
+    });
+
+    cell.addEventListener('drop',e=>{
+      e.preventDefault();
+      cell.classList.remove('drag-over','drag-overbook','drag-skillwarn','drop-reject');
+      if(!dragJob||isSameCell(k,j)) return;
+
+      const fits      = canDropFit(k,j);
+      const skillOk   = canDropSkill(k,j);
+      const skillMiss = isSkillMismatch(k,j);
+
+      if(skillMiss) {
+        // Skill mismatch — show warning, allow override
+        const used = usedTime(k,j);
+        const savedJob=dragJob, savedSrc=dragSrc;
+        skillWarnCallback=()=>{
+          dragJob=savedJob; dragSrc=savedSrc;
+          const alsoOverbook = (used + savedJob.time) > TIME_IN_DAY;
+          doDrop(k, j, alsoOverbook, true);
+        };
+        showSkillWarnModal(dragJob, k, j);
+      } else if(!fits) {
+        // Overbook only
+        const used=usedTime(k,j);
+        const savedJob=dragJob, savedSrc=dragSrc;
+        overbookCallback=()=>{
+          dragJob=savedJob; dragSrc=savedSrc;
+          savedJob._overbooked=true;
+          doDrop(k, j, true, false);
+        };
+        showOverbookModal(dragJob, k, j, used);
+      } else {
+        doDrop(k, j, false, false);
+      }
+    });
+  });
+}
+
+function bindQueueDropZone() {
+  const el=document.getElementById('jobs');
+  const fresh=el.cloneNode(true);
+  el.parentNode.replaceChild(fresh,el);
+  const zone=document.getElementById('jobs');
+  zone.addEventListener('dragover',e=>{e.preventDefault();zone.classList.add('drop-target');});
+  zone.addEventListener('dragleave',()=>zone.classList.remove('drop-target'));
+  zone.addEventListener('drop',e=>{
+    e.preventDefault();zone.classList.remove('drop-target');
+    if(!dragJob||dragSrc==='queue') return;
+    removeDragSrc();
+    if(!queueJobs.find(j=>j.key===dragJob.key)) queueJobs.push(dragJob);
+    renderQueue();dragJob=null;dragSrc=null;
+  });
+  bindQueueDrag();
+}
+
+function bindOverflowDropZone() {
+  const el=document.getElementById('overflowPanel');
+  const fresh=el.cloneNode(true);
+  el.parentNode.replaceChild(fresh,el);
+  const zone=document.getElementById('overflowPanel');
+  zone.addEventListener('dragover',e=>{e.preventDefault();zone.classList.add('drop-target');});
+  zone.addEventListener('dragleave',()=>zone.classList.remove('drop-target'));
+  zone.addEventListener('drop',e=>{
+    e.preventDefault();zone.classList.remove('drop-target');
+    if(!dragJob||dragSrc==='overflow') return;
+    removeDragSrc();
+    if(!overflow.find(j=>j.key===dragJob.key)) overflow.push(dragJob);
+    renderOverflow();dragJob=null;dragSrc=null;
+  });
+  bindOverflowDrag();
+}
+
+function bindAllDrop() {
+  bindCellDrop();
+  bindQueueDropZone();
+  bindOverflowDropZone();
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════════════════════════════
+buildTable();
+renderTechs();
+
+bindAllDrop();
+</script>
+</body>
+</html>
