@@ -4,7 +4,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Schedule Demo</title>
+<title>RED Scheduling</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <style>
@@ -116,13 +116,13 @@ body::before { display: none; }
 
 /* Sidebar sections */
 .sb-header {
-  padding: 16px 18px 12px;
+  padding: 18px 18px 16px;
   border-bottom: 1px solid var(--border);
-  background: linear-gradient(135deg, var(--surface2) 0%, var(--surface) 100%);
+  background: var(--surface);
 }
 .sb-logo { font-size: 18px; font-weight: 900; color: var(--text); }
 .sb-logo span { color: var(--red); }
-.sb-tagline { font-size: 10px; color: var(--text-muted); margin-top: 3px; font-weight: 500; }
+.sb-tagline { font-size: 10px; color: var(--text-muted); margin-top: 3px; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; }
 
 .sb-section { border-bottom: 1px solid var(--border); }
 .sb-section-trigger {
@@ -528,7 +528,10 @@ h1 span { color: var(--red); }
   font-size: 10px; font-weight: 700; color: #aaa; letter-spacing: 0.06em;
   text-transform: uppercase;
 }
-.blocked-banner::before { content: '⛔'; font-size: 14px; }
+.blocked-icon {
+  display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0;
+}
+.blocked-icon svg { display: block; }
 
 /* Drive time block between jobs */
 .drive-block {
@@ -581,7 +584,7 @@ h1 span { color: var(--red); }
 .avail-day-btn.is-blocked { background: var(--red-bg); border-color: var(--red-border); }
 .avail-day-btn .day-label { font-size: 9px; font-weight: 800; letter-spacing: 0.07em; text-transform: uppercase; color: var(--text-muted); }
 .avail-day-btn.is-blocked .day-label { color: var(--red); }
-.avail-day-btn .day-status { font-size: 15px; line-height: 1; }
+.avail-day-btn .day-status { display: flex; align-items: center; justify-content: center; line-height: 1; }
 .tech-delete { background: none; border: none; color: var(--text-muted); cursor: pointer; font-size: 18px; padding: 2px 6px; border-radius: 4px; transition: all 0.1s; line-height: 1; margin-left: auto; flex-shrink: 0; }
 .tech-delete:hover { color: var(--red); background: var(--red-bg); }
 .cal-cell.drag-best {
@@ -860,17 +863,145 @@ h1 span { color: var(--red); }
 }
 .overbook-info strong { color:var(--amber); }
 
-/* ══════════════════════════════════════════
-   MOBILE RESPONSIVE  ≤ 768px
+/* ── SCHEDULE SUMMARY MODAL ── */
+.summary-overlay {
+  display: none; position: fixed; inset: 0;
+  background: rgba(0,0,0,0.55); z-index: 110;
+  align-items: center; justify-content: center;
+  backdrop-filter: blur(6px);
+}
+.summary-overlay.open { display: flex; }
+.summary-modal {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 16px; width: 780px; max-width: 96vw;
+  max-height: 92vh; overflow-y: auto;
+  box-shadow: 0 32px 80px rgba(0,0,0,0.22);
+  animation: modalIn 0.25s cubic-bezier(0.22,1,0.36,1);
+}
+.sum-header {
+  padding: 24px 28px 16px;
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: flex-start; justify-content: space-between; gap: 12px;
+  background: linear-gradient(135deg, var(--red-dark) 0%, var(--red) 100%);
+  border-radius: 15px 15px 0 0;
+}
+.sum-header-text {}
+.sum-title { font-size: 22px; font-weight: 900; color: #fff; line-height: 1.1; }
+.sum-subtitle { font-size: 11px; color: rgba(255,255,255,0.7); margin-top: 4px; font-weight: 500; }
+.sum-close { background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.25); color: #fff; border-radius: 8px; padding: 6px 14px; font-size: 11px; font-weight: 700; cursor: pointer; font-family: var(--font); white-space: nowrap; flex-shrink: 0; }
+.sum-close:hover { background: rgba(255,255,255,0.25); }
+.sum-body { padding: 20px 24px; }
+
+/* Score ring */
+.sum-score-row {
+  display: flex; align-items: center; gap: 20px;
+  background: var(--surface2); border: 1px solid var(--border);
+  border-radius: 12px; padding: 16px 20px; margin-bottom: 16px;
+}
+.sum-ring-wrap { flex-shrink: 0; position: relative; width: 90px; height: 90px; }
+.sum-ring-wrap svg { transform: rotate(-90deg); }
+.sum-ring-center {
+  position: absolute; inset: 0; display: flex; flex-direction: column;
+  align-items: center; justify-content: center; pointer-events: none;
+}
+.sum-ring-pct { font-size: 20px; font-weight: 900; color: var(--text); line-height: 1; }
+.sum-ring-label { font-size: 8px; font-weight: 800; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.08em; margin-top: 1px; }
+.sum-score-info { flex: 1; }
+.sum-score-title { font-size: 16px; font-weight: 900; color: var(--text); margin-bottom: 4px; }
+.sum-score-desc { font-size: 11px; color: var(--text-muted); line-height: 1.6; }
+.sum-grade {
+  font-size: 38px; font-weight: 900; flex-shrink: 0;
+  width: 64px; height: 64px; border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  border: 2px solid;
+}
+
+/* Big stat grid */
+.sum-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 16px; }
+.sum-stat-card {
+  background: var(--surface2); border: 1px solid var(--border);
+  border-radius: 10px; padding: 14px 12px; position: relative; overflow: hidden;
+}
+.sum-stat-card::before { content:''; position:absolute; top:0; left:0; right:0; height:3px; border-radius:10px 10px 0 0; }
+.sum-stat-card.red::before  { background: var(--red); }
+.sum-stat-card.teal::before { background: var(--teal); }
+.sum-stat-card.amber::before{ background: var(--amber); }
+.sum-stat-card.blue::before { background: var(--blue); }
+.sum-stat-val { font-size: 26px; font-weight: 900; color: var(--text); line-height: 1; }
+.sum-stat-unit { font-size: 12px; font-weight: 700; color: var(--text-muted); margin-left: 2px; }
+.sum-stat-label { font-size: 9px; font-weight: 800; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.08em; margin-top: 5px; }
+.sum-stat-sub { font-size: 9px; color: var(--text-light); margin-top: 2px; font-weight: 500; }
+
+/* Section headers */
+.sum-section-title {
+  font-size: 10px; font-weight: 800; color: var(--text-muted);
+  text-transform: uppercase; letter-spacing: 0.1em;
+  margin: 0 0 8px; padding-bottom: 6px;
+  border-bottom: 1px solid var(--border);
+}
+
+/* Tech breakdown table */
+.sum-tech-table { width: 100%; border-collapse: collapse; margin-bottom: 16px; }
+.sum-tech-table th { font-size: 9px; font-weight: 800; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.08em; text-align: left; padding: 6px 10px; border-bottom: 1px solid var(--border); }
+.sum-tech-table td { font-size: 11px; padding: 7px 10px; border-bottom: 1px solid var(--border); color: var(--text); vertical-align: middle; }
+.sum-tech-table tr:last-child td { border-bottom: none; }
+.sum-tech-table tr:nth-child(even) td { background: var(--surface2); }
+.sum-util-bar { display: flex; align-items: center; gap: 6px; }
+.sum-util-track { flex: 1; height: 5px; background: var(--border); border-radius: 3px; overflow: hidden; min-width: 60px; }
+.sum-util-fill { height: 100%; border-radius: 3px; }
+.sum-util-num { font-size: 10px; font-weight: 700; color: var(--text-muted); min-width: 32px; text-align: right; }
+
+/* Day breakdown bars */
+.sum-day-grid { display: grid; grid-template-columns: repeat(7,1fr); gap: 6px; margin-bottom: 16px; }
+.sum-day-col { display: flex; flex-direction: column; align-items: center; gap: 4px; }
+.sum-day-bar-wrap { width: 100%; height: 80px; background: var(--surface2); border: 1px solid var(--border); border-radius: 6px; display: flex; flex-direction: column; justify-content: flex-end; overflow: hidden; position: relative; }
+.sum-day-bar { width: 100%; transition: height 0.6s ease; border-radius: 0; }
+.sum-day-label { font-size: 9px; font-weight: 800; color: var(--text-muted); text-transform: uppercase; }
+.sum-day-val { font-size: 9px; font-weight: 700; color: var(--text-muted); }
+
+/* Insight pills row */
+.sum-insights { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 4px; }
+.sum-insight {
+  display: flex; align-items: center; gap: 7px;
+  background: var(--surface2); border: 1px solid var(--border);
+  border-radius: 20px; padding: 6px 12px;
+  font-size: 11px; color: var(--text-dim); font-weight: 500;
+}
+.sum-insight svg { flex-shrink: 0; }
+.sum-insight strong { color: var(--text); font-weight: 700; }
+.sum-insight.good { background: rgba(26,150,136,0.06); border-color: rgba(26,150,136,0.25); }
+.sum-insight.good svg { stroke: var(--teal); }
+.sum-insight.warn { background: rgba(217,119,6,0.06); border-color: rgba(217,119,6,0.25); }
+.sum-insight.warn svg { stroke: var(--amber); }
+.sum-insight.bad  { background: rgba(192,21,42,0.06); border-color: rgba(192,21,42,0.25); }
+.sum-insight.bad  svg { stroke: var(--red); }
+
+@media (max-width: 768px) {
+  .sum-stats { grid-template-columns: repeat(2,1fr); }
+  .sum-score-row { flex-wrap: wrap; }
+  .sum-ring-wrap { width: 72px; height: 72px; }
+  .sum-ring-pct { font-size: 16px; }
+  .sum-grade { font-size: 28px; width: 52px; height: 52px; }
+  .sum-body { padding: 14px 14px; }
+  .sum-header { padding: 16px 18px 12px; }
+  .sum-title { font-size: 18px; }
+  .sum-day-grid { grid-template-columns: repeat(7,1fr); gap: 3px; }
+  .sum-day-bar-wrap { height: 56px; }
+  .sum-tech-table th, .sum-tech-table td { padding: 5px 6px; font-size: 10px; }
+  .sum-stat-val { font-size: 20px; }
+  .sum-modal { max-width: 100vw; border-radius: 16px 16px 0 0; }
+  .summary-overlay { align-items: flex-end; }
+}
+
 ══════════════════════════════════════════ */
 @media (max-width: 768px) {
 
-  /* NAV — hide links, compact brand */
+  /* NAV */
   .top-nav { padding: 0 1rem; height: 48px; }
   .top-nav-brand { font-size: 15px; }
   .top-nav-links { display: none; }
 
-  /* SIDEBAR — hidden by default on mobile, slides in as overlay */
+  /* SIDEBAR — overlay, slides in on demand */
   .sidebar {
     top: 48px;
     transform: translateX(-100%);
@@ -880,131 +1011,121 @@ h1 span { color: var(--red); }
   }
   .sidebar:not(.collapsed) { transform: translateX(0); }
   .sidebar.collapsed { transform: translateX(-100%); width: 280px !important; }
-
-  /* Dim overlay behind open sidebar */
-  .sidebar:not(.collapsed)::after {
-    content: '';
-    position: fixed; inset: 0; left: 280px;
-    background: rgba(0,0,0,0.35); z-index: -1;
-  }
-
-  /* Toggle button — always visible, repositions with sidebar */
+  .main-content { margin-left: 0 !important; }
   .sidebar-toggle {
-    top: 56px; left: 8px;
-    width: 32px; height: 44px;
-    border-radius: 8px; border: 1px solid var(--border);
-    border-left: 1px solid var(--border);
-    box-shadow: 0 2px 8px rgba(0,0,0,0.12);
-    z-index: 52;
+    top: 56px; left: 8px; width: 28px; height: 40px;
+    border-radius: 8px; border: 1px solid var(--border); z-index: 52;
   }
-  .sidebar:not(.collapsed) ~ .main-content .sidebar-toggle,
   .sidebar-toggle:not(.collapsed) { left: 288px; }
   .sidebar-toggle.collapsed { left: 8px; }
 
-  /* Main content — full width always */
-  .main-content { margin-left: 0 !important; }
+  /* PAGE */
+  .page-content { padding: 0.6rem; }
 
-  /* PAGE CONTENT — tighter padding */
-  .page-content { padding: 1rem; }
+  /* HEADER */
+  .header { flex-direction: column; gap: 0.5rem; margin-bottom: 0.75rem; }
+  .header-left h1 { font-size: 1.4rem; }
+  .header-left .subtitle { display: none; }
+  .status-bar { flex-direction: row; flex-wrap: wrap; gap: 4px; }
+  .stat-pill { font-size: 10px; padding: 3px 8px; }
 
-  /* HEADER — stack vertically, smaller text */
-  .header { flex-direction: column; gap: 0.75rem; margin-bottom: 1rem; }
-  .header-left h1 { font-size: 1.6rem; }
-  .header-left .subtitle { font-size: 11px; }
-  .status-bar { flex-direction: row; align-items: flex-start; flex-wrap: wrap; gap: 6px; }
-  .stat-pill { font-size: 10px; padding: 4px 10px; }
+  /* OVERVIEW — hide to save space */
+  .overview { display: none; }
 
-  /* OVERVIEW CARDS — single column, more compact */
-  .overview { grid-template-columns: 1fr; gap: 0.6rem; margin-bottom: 1rem; }
-  .overview-card { padding: 0.9rem 1rem; }
-  .overview-card h3 { font-size: 9px; }
-  .overview-card p { font-size: 11px; }
+  /* QUEUE — compact */
+  .incoming-animation { min-height: 60px; }
+  .incoming-col { padding: 8px 10px 6px; }
+  .incoming-chip { padding: 4px 10px; font-size: 10px; }
+  .incoming-chip .chip-name { font-size: 10px; }
+  #jobs { height: 70px; padding: 6px 8px; gap: 4px; }
+  .job-chip { padding: 3px 8px; font-size: 9px; }
 
-  /* INCOMING QUEUE — more compact */
-  .incoming-animation { min-height: 70px; }
-  .incoming-col { padding: 10px 12px 8px; }
-  .incoming-chip { padding: 5px 10px; font-size: 10px; }
-  .incoming-chip .chip-name { font-size: 11px; }
-  #jobs { height: 90px; padding: 8px 10px; gap: 5px; }
-  .job-chip { padding: 4px 10px; font-size: 10px; }
+  /* CONTROLS */
+  .calls-controls { gap: 5px; padding: 8px 10px; }
+  .calls-controls .btn { padding: 5px 9px; font-size: 9px; }
 
-  /* CONTROLS — wrap tightly, smaller buttons */
-  .calls-controls { gap: 6px; padding: 10px 12px; }
-  .calls-controls .btn { padding: 6px 12px; font-size: 10px; }
-
-  /* CALENDAR TABLE — horizontal scroll, no min-width enforcement */
+  /* ─── CALENDAR: full fit on screen ─── */
   .calendar-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
-  .cal-header-cell { padding: 6px 8px !important; font-size: 9px !important; }
-  .day-col-name { font-size: 9px !important; }
-  .map-day-btn { font-size: 8px !important; padding: 1px 5px !important; margin-left: 3px; }
-  .tech-row-header { min-width: 110px !important; max-width: 120px !important; padding: 6px 8px !important; }
-  .tech-name { font-size: 10px !important; }
-  .tech-skill-label { font-size: 8px !important; }
-  .tech-day-bars { display: none; } /* hide utilisation bars — too cramped */
-  .cal-cell { min-width: 90px !important; padding: 4px !important; }
+  .calendar { table-layout: fixed; width: 100%; }
 
-  /* JOB CARDS — reduce height tiers */
-  .cal-job { font-size: 9px !important; padding: 5px 8px !important; }
-  .job-details { font-size: 8px !important; }
-  .win-divider { padding: 2px 0 !important; }
-  .win-label { font-size: 7px !important; }
-  .drive-block { min-height: 14px !important; }
-  .drive-label { font-size: 8px !important; }
+  /* Tech name column — very narrow, first-name only visible */
+  .day-header-corner { width: 60px !important; min-width: 60px !important; padding: 4px 4px !important; }
+  .tech-row-header   { width: 60px !important; min-width: 60px !important; max-width: 60px !important; padding: 4px 4px !important; position: sticky; left: 0; z-index: 5; }
+  .tech-name { font-size: 8px !important; font-weight: 800 !important; white-space: normal; overflow: visible; word-break: break-word; line-height: 1.2; display: block; }
+  .tech-skill-label { display: none !important; }   /* hide skill label */
+  .tech-day-bars    { display: none !important; }   /* hide % bars */
 
-  /* OVERFLOW — compact */
-  .overflow-panel { padding: 0.6rem 0.8rem !important; }
-  .overflow-chip { padding: 4px 10px; font-size: 10px; }
+  /* Day header cells — narrow */
+  .cal-header-cell { padding: 3px 2px !important; font-size: 8px !important; }
+  .day-col-header  { width: auto !important; min-width: 0 !important; }
+  .day-col-name    { font-size: 8px !important; letter-spacing: 0; display: block; }
 
-  /* MODALS — full screen on mobile */
+  /* Map button — icon only, no text */
+  .map-day-btn { font-size: 0 !important; padding: 2px 4px !important; margin-left: 2px; line-height: 1; }
+  .map-day-btn svg { display: inline-block !important; width: 11px !important; height: 11px !important; }
+
+  /* Calendar cells */
+  .cal-cell { padding: 2px !important; min-width: 0 !important; }
+
+  /* Job cards — name + duration only, no address */
+  .cal-job { padding: 3px 5px !important; margin-bottom: 2px; border-radius: 4px; gap: 1px; }
+  .job-key { font-size: 8px !important; font-weight: 800 !important; line-height: 1.2; }
+  .job-details { display: none !important; }        /* hide address */
+  .job-dur { font-size: 8px !important; }
+  .job-footer { gap: 2px; }
+  .asap-badge { font-size: 6px !important; padding: 0 2px !important; letter-spacing: 0; }
+  .lock-badge svg { width: 7px; height: 7px; }
+
+  /* Day off — icon only on mobile */
+  .blocked-banner { min-height: 30px; gap: 0; }
+  .blocked-banner-text { display: none; }
+
+  /* Drive blocks */
+  .drive-block { min-height: 10px !important; padding: 1px 3px !important; gap: 2px; }
+  .drive-label { font-size: 7px !important; }
+  .drive-bar-track { display: none; }
+  .drive-icon { display: none; }
+
+  /* Window dividers */
+  .win-divider { padding: 1px 0 !important; }
+  .win-label { font-size: 6px !important; }
+  .win-divider::before, .win-divider::after { display: none; }
+
+  /* OVERFLOW */
+  .overflow-panel { padding: 0.5rem 0.75rem !important; }
+  .overflow-chip { padding: 3px 8px; font-size: 9px; }
+
+  /* MODALS — bottom sheet */
   .modal-overlay { align-items: flex-end; }
-  .modal {
-    width: 100% !important; max-width: 100% !important;
-    border-radius: 16px 16px 0 0 !important;
-    max-height: 90vh; overflow-y: auto;
-    padding: 1.5rem 1.25rem;
-  }
+  .modal { width: 100% !important; max-width: 100% !important; border-radius: 16px 16px 0 0 !important; max-height: 90vh; overflow-y: auto; padding: 1.25rem 1rem; }
   .modal.wide { width: 100% !important; }
-
-  /* MAP MODAL — full screen */
-  .map-modal {
-    width: 100vw !important; max-width: 100vw !important;
-    height: 100vh !important; border-radius: 0 !important;
-  }
+  .map-modal { width: 100vw !important; max-width: 100vw !important; height: 100vh !important; border-radius: 0 !important; }
   .map-modal-header { padding: 10px 14px; }
   .map-modal-title { font-size: 14px; }
   .map-modal-legend { padding: 6px 14px; gap: 6px; }
-
-  /* SETTINGS MODAL */
   .settings-panel { padding: 1rem !important; }
-
-  /* BOTTOM GRID */
   .bottom-grid { grid-template-columns: 1fr; }
-
-  /* FORM ROWS */
   .form-row { grid-template-columns: 1fr; }
 }
 
-/* Extra small — ≤ 400px */
-@media (max-width: 400px) {
-  .top-nav-brand { font-size: 13px; }
-  .page-content { padding: 0.75rem; }
-  .calls-controls .btn { padding: 5px 9px; font-size: 9px; }
-  .tech-row-header { min-width: 90px !important; max-width: 95px !important; }
-  .tech-name { font-size: 9px !important; }
+/* Extra small ≤ 390px — squeeze even tighter */
+@media (max-width: 390px) {
+  .day-header-corner, .tech-row-header { width: 52px !important; min-width: 52px !important; max-width: 52px !important; }
+  .tech-name { word-break: break-word; font-size: 7px !important; }
+  .cal-job { padding: 2px 4px !important; }
+  .job-key { font-size: 7px !important; }
+  .calls-controls .btn { padding: 4px 7px; font-size: 8px; }
 }
 </style>
 </head>
 <body>
 
 <!-- TOP NAV BAR -->
-<nav class="top-nav">
-  <div class="top-nav-brand">
-    RED Scheduling
-  </div>
+<nav class="top-nav" style="justify-content: flex-end;">
   <div class="top-nav-links">
     <a href="#" class="active">Dispatch Board</a>
-    <a href="#">Technicians</a>
-    <a href="#">Reports</a>
+    <a href="#" style="text-decoration: line-through; opacity: 0.45; cursor: not-allowed;">Technicians</a>
+    <a href="#" style="text-decoration: line-through; opacity: 0.45; cursor: not-allowed;">Reports</a>
   </div>
 </nav>
 
@@ -1018,8 +1139,40 @@ h1 span { color: var(--red); }
   <div class="sidebar-inner">
 
     <div class="sb-header">
-      <div class="sb-logo">RED <span>Dispatch</span></div>
-      <div class="sb-tagline">Feature Guide &amp; Documentation</div>
+      <div class="sb-logo">RED <span>Scheduling</span></div>
+      <div class="sb-tagline">Intelligent Field Service Scheduler</div>
+      <p style="font-size:11px;color:var(--text-muted);line-height:1.6;margin-top:8px;">
+        A real-time dispatch engine that simulates an incoming call center and automatically assigns every service call to the right technician, on the right day, in the most efficient route.
+      </p>
+      <div style="display:flex;flex-direction:column;gap:6px;margin-top:12px;">
+        <div style="display:flex;align-items:flex-start;gap:9px;">
+          <div style="width:26px;height:26px;border-radius:6px;background:var(--red-bg);border:1px solid var(--red-border);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#C0152A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          </div>
+          <div>
+            <div style="font-size:10px;font-weight:800;color:var(--text);letter-spacing:0.04em;">Technician Availability</div>
+            <div style="font-size:10px;color:var(--text-muted);line-height:1.5;margin-top:1px;">Respects each tech's schedule, days off, and daily capacity limits.</div>
+          </div>
+        </div>
+        <div style="display:flex;align-items:flex-start;gap:9px;">
+          <div style="width:26px;height:26px;border-radius:6px;background:var(--red-bg);border:1px solid var(--red-border);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#C0152A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          </div>
+          <div>
+            <div style="font-size:10px;font-weight:800;color:var(--text);letter-spacing:0.04em;">Task Proficiency</div>
+            <div style="font-size:10px;color:var(--text-muted);line-height:1.5;margin-top:1px;">Calls are only assigned to techs who meet the required skill level.</div>
+          </div>
+        </div>
+        <div style="display:flex;align-items:flex-start;gap:9px;">
+          <div style="width:26px;height:26px;border-radius:6px;background:var(--red-bg);border:1px solid var(--red-border);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#C0152A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          </div>
+          <div>
+            <div style="font-size:10px;font-weight:800;color:var(--text);letter-spacing:0.04em;">Geographic Proximity</div>
+            <div style="font-size:10px;color:var(--text-muted);line-height:1.5;margin-top:1px;">Routes minimize drive time by clustering nearby jobs for each tech.</div>
+          </div>
+        </div>
+      </div>
     </div>
 
     <!-- OVERVIEW -->
@@ -1032,8 +1185,6 @@ h1 span { color: var(--red); }
         <span class="sb-chevron">▼</span>
       </button>
       <div class="sb-section-body">
-        <p class="sb-desc">RED Dispatch Scheduler is a real-time intelligent dispatch engine. It simulates an incoming call center and automatically assigns every service call to the right technician, on the right day, in the most geographically efficient order.</p>
-
         <div class="sb-stat-row">
           <div class="sb-stat"><div class="sb-stat-val">9</div><div class="sb-stat-label">Technicians</div></div>
           <div class="sb-stat"><div class="sb-stat-val">7</div><div class="sb-stat-label">Days</div></div>
@@ -1462,7 +1613,7 @@ h1 span { color: var(--red); }
       </div>
     </div>
 
-    <div class="sb-footer">RED Dispatch Scheduler · Demo Build<br>Southwest Florida Coverage Area</div>
+    <div class="sb-footer">RED Scheduling · Demo Build<br>Southwest Florida Coverage Area</div>
   </div>
 </aside>
 
@@ -1475,31 +1626,13 @@ h1 span { color: var(--red); }
   <div class="header">
     <div class="header-left">
       <div class="badge">&#9679; Live Demo</div>
-      <h1>Dispatch <span>Scheduler</span></h1>
+      <h1>RED <span>Scheduling</span></h1>
       <p class="subtitle">Intelligent call routing &amp; technician assignment engine</p>
     </div>
-    <div class="status-bar">
-      <div class="stat-pill"><span>Technicians</span><strong id="techStatCount">4</strong></div>
-      <div class="stat-pill"><span>Days</span><strong>5</strong></div>
-      <div class="stat-pill"><span>Capacity</span><strong id="capacityStat">9 hrs/day</strong></div>
-    </div>
+
   </div>
 
   <!-- OVERVIEW -->
-  <div class="overview">
-    <div class="overview-card">
-      <h3>🗓️ Technician Availability</h3>
-      <p>Techs have different schedules and time-off. The algorithm respects daily capacity limits automatically.</p>
-    </div>
-    <div class="overview-card">
-      <h3>⭐ Task Proficiency</h3>
-      <p>Every tech holds a skill certification level. Calls are only assigned to techs who meet the requirement.</p>
-    </div>
-    <div class="overview-card">
-      <h3>📍 Geographic Proximity</h3>
-      <p>Calls are routed to minimize drive time. The engine clusters nearby jobs for maximum efficiency.</p>
-    </div>
-  </div>
 
   <!-- PROGRESS -->
   <div class="progress-bar-wrap" id="progressWrap">
@@ -1514,7 +1647,7 @@ h1 span { color: var(--red); }
     <div class="calls-header">
       <div class="calls-label">
         <div class="phone-icon" id="phoneIcon">&#128222;</div>
-        <span id="queueLabelText">Incoming calls queue &mdash; drag to calendar</span>
+        <span id="queueLabelText">Incoming calls queue</span>
       </div>
       <span style="font-size:10px;color:var(--text-muted)" id="queueCount"></span>
     </div>
@@ -1523,7 +1656,7 @@ h1 span { color: var(--red); }
       <!-- Ticker showing current "call coming in" -->
       <div class="queue-ticker" id="queueTicker">
         <div class="ticker-dot"></div>
-        <span class="ticker-text" id="tickerText">Awaiting calls &mdash; press Fill Calendar to begin</span>
+        <span class="ticker-text" id="tickerText">Awaiting calls &mdash; press Run Schedule to begin</span>
       </div>
       <!-- Always-visible Now Handling / Up Next panel -->
       <div class="incoming-animation" id="incomingAnimation">
@@ -1546,7 +1679,7 @@ h1 span { color: var(--red); }
         </div>
       </div>
       <!-- Queued chips -->
-      <div id="jobs"><div class="empty-state">Press "Fill Calendar" to begin receiving calls</div></div>
+      <div id="jobs"><div class="empty-state">Press "Run Schedule" to begin receiving calls</div></div>
     </div>
 
     <!-- Dispatch Controls -->
@@ -1580,11 +1713,11 @@ h1 span { color: var(--red); }
     </div>
     <div class="panel">
       <div class="panel-header">
-        <span class="panel-title">Overflow Queue</span>
+        <span class="panel-title">Next Week's Queue</span>
         <span class="panel-count" id="overflowCount">0 calls</span>
       </div>
       <div class="overflow-panel-body" id="overflowPanel">
-        <div class="empty-state">No overflow &mdash; drag calendar jobs here to unschedule</div>
+        <div class="empty-state">All calls scheduled this week</div>
       </div>
     </div>
   </div>
@@ -1719,7 +1852,10 @@ h1 span { color: var(--red); }
     <div class="modal-title" id="jobDetailTitle">Job <span>Details</span></div>
     <div id="jobDetailBody" style="margin-bottom:1.2rem"></div>
     <div id="asapSuggestSection" style="display:none">
-      <div style="font-size:11px;font-weight:700;color:var(--text-muted);letter-spacing:0.05em;text-transform:uppercase;margin-bottom:0.5rem">ASAP Replacements Available</div>
+      <div style="font-size:11px;font-weight:700;color:var(--text-muted);letter-spacing:0.05em;text-transform:uppercase;margin-bottom:0.5rem;display:flex;align-items:center;gap:6px">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="var(--amber)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        ASAP Replacements Available
+      </div>
       <div id="asapSuggestList" style="display:flex;flex-direction:column;gap:6px;max-height:200px;overflow-y:auto"></div>
     </div>
     <div id="asapNoneSection" style="display:none;font-size:11px;color:var(--text-muted);margin-bottom:0.8rem">No ASAP jobs currently in overflow or queue.</div>
@@ -2081,7 +2217,7 @@ function buildTable() {
   DAYS.forEach((day, k) => {
     hr += `<th class="cal-header-cell day-col-header" id="dayhdr-${k}">
       <span class="day-col-name">${day}</span>
-      <button class="map-day-btn" onclick="openDayMap(${k})" title="View routes for ${day}">📍 Map</button>
+      <button class="map-day-btn" onclick="openDayMap(${k})" title="View routes for ${day}"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg> Map</button>
     </th>`;
   });
   document.getElementById('calHead').innerHTML = hr + '</tr>';
@@ -2096,7 +2232,7 @@ function buildTable() {
       const avail = getAvail(k, j);
       const cls = p >= 100 ? 'full' : p >= 75 ? 'warn' : '';
       const blocked = avail.mode === 'blocked';
-      const icon = blocked ? '⛔ ' : '';
+      const icon = blocked ? '<span class="blocked-icon" style="margin-right:3px"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#C0152A" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg></span>' : '';
       return `<div class="tech-day-row${blocked ? ' day-blocked' : ''}" id="trow-${k}-${j}">
         <div class="tech-day-track"><div class="tech-day-fill ${cls}" id="tbar-${k}-${j}" style="width:${p}%"></div></div>
         <span class="tech-day-pct" id="tpct-${k}-${j}">${blocked ? 'OFF' : p + '%'}</span>
@@ -2206,7 +2342,7 @@ function renderCell(k, j, lastKey=null) {
   cell.classList.remove('limited');
 
   if (avail.mode === 'blocked') {
-    cell.innerHTML = '<div class="blocked-banner">Day Off</div>';
+    cell.innerHTML = '<div class="blocked-banner"><span class="blocked-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#C0152A" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg></span><span class="blocked-banner-text">Day Off</span></div>';
     return;
   }
 
@@ -2284,9 +2420,9 @@ function renderQueue(removedKey=null) {
 
 function renderOverflow() {
   const el = document.getElementById('overflowPanel');
-  document.getElementById('overflowCount').textContent = `${overflow.length} calls`;
+  document.getElementById('overflowCount').textContent = `${overflow.length} carry over`;
   if (!overflow.length) {
-    el.innerHTML = '<div class="empty-state">No overflow &mdash; drag jobs here to unschedule</div>';
+    el.innerHTML = '<div class="empty-state">All calls scheduled this week</div>';
     return;
   }
   el.innerHTML = overflow.map(job => {
@@ -2302,7 +2438,8 @@ function renderOverflow() {
 function renderTechs() {
   const el = document.getElementById('techsPanel');
   document.getElementById('techPanelCount').textContent = `${techs.length} active`;
-  document.getElementById('techStatCount').textContent  = techs.length;
+  const tsc = document.getElementById('techStatCount');
+  if (tsc) tsc.textContent = techs.length;
   el.innerHTML = techs.map((t, idx) => {
     const sl = t.skill_level;
     const pips = [1,2,3,4].map(i=>`<div class="lvl-pip ${i<=sl?'filled':''}"></div>`).join('');
@@ -2311,7 +2448,10 @@ function renderTechs() {
       return `<button class="avail-day-btn ${blocked ? 'is-blocked' : ''}"
         onclick="toggleAvail(${k},${idx})" title="${blocked ? 'Click to restore' : 'Click to block'}">
         <span class="day-label">${day}</span>
-        <span class="day-status">${blocked ? '⛔' : '✅'}</span>
+        <span class="day-status">${blocked
+          ? '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#C0152A" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg>'
+          : '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#1a9688" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>'
+        }</span>
       </button>`;
     }).join('');
     return `<div class="tech-avail-row">
@@ -2481,6 +2621,8 @@ async function fillCalendar() {
     toggleFastForward();
     return;
   }
+  // Stop idle preview and clear its chips from the queue
+  stopIdlePreview();
   isFilling = true; isPaused = false; speedMultiplier = 1;
 
   const fillBtn = document.getElementById('fillButton');
@@ -2566,7 +2708,7 @@ async function fillCalendar() {
 
   if (isFilling) {
     setTicker('&#10003; All calls processed &mdash; schedule complete');
-    pl.textContent = '&#10003; Complete';
+    pl.textContent = 'Complete';
   }
   clearIncoming();
   queueJobs = [];
@@ -2580,6 +2722,8 @@ async function fillCalendar() {
   fb.disabled = false;
   // schedule saved
   bindAllDrop();
+  // Show summary after a short delay
+  setTimeout(showScheduleSummary, 600);
 }
 
 function toggleFastForward() {
@@ -2616,13 +2760,13 @@ function togglePause() {
 // RESET
 // ═══════════════════════════════════════════════════════════════════
 function resetAll() {
+  stopIdlePreview();
   isFilling=false; isPaused=false;
   if (pauseResolve){pauseResolve();pauseResolve=null;}
   techs=clone(DEFAULT_TECHS); cal=buildCal(); overflow=[]; queueJobs=[]; allJobs=[]; techAvail={};
   initWeekendBlocked();
   buildTable(); renderAllCells(); renderTechs(); renderOverflow(); clearIncoming();
-  document.getElementById('jobs').innerHTML='<div class="empty-state">Press "Fill Calendar" to begin receiving calls</div>';
-  setTicker('Awaiting calls &mdash; press Fill Calendar to begin');
+  document.getElementById('jobs').innerHTML='';
   document.getElementById('queueCount').textContent='';
   document.getElementById('progressWrap').classList.remove('visible');
   document.getElementById('progressFill').style.width='0%';
@@ -2632,6 +2776,7 @@ function resetAll() {
   speedMultiplier = 1;
   document.getElementById('pauseButton').classList.remove('visible','paused');
   clearSuggestions();
+  setTimeout(startIdlePreview, 400);
 }
 
 // ═══════════════════════════════════════════════════════════════════
@@ -2880,11 +3025,17 @@ function openJobDetail(job, k, j) {
     for (let tj = 0; tj < techs.length; tj++) {
       cal[laterK][tj].forEach(jj => {
         if (jj._asap && jj.skill_level <= techs[_detailJ].skill_level) {
-          asapCandidates.push({ job: jj, fromDay: laterK, fromTech: tj });
+          asapCandidates.push({ job: jj, fromDay: laterK, fromTech: tj, source: 'calendar' });
         }
       });
     }
   }
+  // Also pull ASAP jobs from next week's queue (overflow)
+  overflow.forEach(jj => {
+    if (jj._asap && jj.skill_level <= techs[_detailJ].skill_level) {
+      asapCandidates.push({ job: jj, fromDay: -1, fromTech: -1, source: 'nextweek' });
+    }
+  });
   // Dedupe by job key
   const seen = new Set();
   const unique = asapCandidates.filter(({ job }) => {
@@ -2892,22 +3043,54 @@ function openJobDetail(job, k, j) {
     seen.add(job.key); return true;
   });
 
+  // Compute drive time from each candidate to the freed slot's location, sort shortest first
+  const withDrive = unique.map(entry => ({
+    ...entry,
+    driveMin: driveMinsGeo(entry.job.location, _detailJob.location)
+  })).sort((a, b) => a.driveMin - b.driveMin);
+
   const suggestSection = document.getElementById('asapSuggestSection');
   const noneSection    = document.getElementById('asapNoneSection');
 
-  if (unique.length > 0) {
+  if (withDrive.length > 0) {
     suggestSection.style.display = '';
     noneSection.style.display = 'none';
-    document.getElementById('asapSuggestList').innerHTML = unique.map(({ job: c, fromDay, fromTech }, idx) => `
-      <div style="display:flex;align-items:center;gap:8px;background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:8px 10px">
-        <div style="flex:1">
-          <div style="font-size:11px;font-weight:700;color:var(--text)">${c.key}</div>
-          <div style="font-size:9px;color:var(--text-muted)">${c.location.addr} · ${fmtHours(c.time)} · ${skillName(c.skill_level)} · currently ${DAYS[fromDay]}</div>
+    document.getElementById('asapSuggestList').innerHTML = withDrive.map((entry, idx) => {
+      const { job: c, fromDay, fromTech, driveMin } = entry;
+      const isLong = driveMin > 25;
+      const isMed  = driveMin > 12 && !isLong;
+      const driveColor = isLong ? 'var(--red)' : isMed ? 'var(--amber)' : 'var(--teal)';
+      const driveLabel = driveMin < 1 ? '<1 min' : `${driveMin} min`;
+      const warning = isLong
+        ? `<div style="display:flex;align-items:center;gap:4px;font-size:9px;color:var(--red);font-weight:700;margin-top:3px">
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+            Long drive — consider a closer option
+           </div>` : '';
+      const bestBadge = idx === 0
+        ? `<span style="font-size:8px;font-weight:800;color:var(--teal);background:rgba(26,150,136,0.1);border:1px solid rgba(26,150,136,0.25);border-radius:4px;padding:1px 5px;margin-left:4px">CLOSEST</span>`
+        : '';
+      const isNextWeek = entry.source === 'nextweek';
+      const sourceLabel = isNextWeek
+        ? `<span style="font-size:8px;font-weight:800;color:var(--amber);background:rgba(217,119,6,0.1);border:1px solid rgba(217,119,6,0.3);border-radius:4px;padding:1px 5px;margin-left:4px">NEXT WEEK</span>`
+        : `<span style="font-size:9px;color:var(--text-muted)">· currently ${DAYS[entry.fromDay]}</span>`;
+      return `
+      <div style="display:flex;align-items:center;gap:8px;background:var(--surface);border:1px solid ${isLong ? 'var(--red-border)' : 'var(--border)'};border-radius:6px;padding:8px 10px">
+        <div style="flex:1;min-width:0">
+          <div style="font-size:11px;font-weight:700;color:var(--text);display:flex;align-items:center;flex-wrap:wrap;gap:2px">
+            ${c.key}${bestBadge}${sourceLabel}
+          </div>
+          <div style="font-size:9px;color:var(--text-muted);margin-top:1px">${fmtHours(c.time)} · ${skillName(c.skill_level)}</div>
+          <div style="display:flex;align-items:center;gap:4px;margin-top:3px">
+            <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="${driveColor}" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            <span style="font-size:9px;font-weight:700;color:${driveColor}">${driveLabel} away</span>
+          </div>
+          ${warning}
         </div>
         <span class="asap-badge">ASAP</span>
         <button class="btn btn-primary" style="font-size:9px;padding:4px 8px;white-space:nowrap"
-          onclick="removeAndReplace('${c.key}',${fromDay},${fromTech})">Remove &amp; Replace</button>
-      </div>`).join('');
+          onclick="${isNextWeek ? `replaceWithOverflowAsap('${c.key}')` : `removeAndReplace('${c.key}',${entry.fromDay},${entry.fromTech})`}">Replace</button>
+      </div>`;
+    }).join('');
   } else {
     suggestSection.style.display = 'none';
     noneSection.style.display = '';
@@ -2976,6 +3159,40 @@ function removeAndReplace(asapKey, fromDay, fromTech) {
 
   closeJobDetail();
 }
+
+// Pull an ASAP job from next week's queue into the freed slot
+function replaceWithOverflowAsap(asapKey) {
+  if (!_detailJob) return;
+  const targetK = _detailK, targetJ = _detailJ;
+
+  // 1. Remove the detail job → back to overflow
+  cal[targetK][targetJ] = cal[targetK][targetJ].filter(jj => jj.key !== _detailJob.key);
+  let hrs = 0;
+  cal[targetK][targetJ].forEach(jj => { jj._window = jobWindow(hrs); hrs += jj.time; });
+  _detailJob._confirmed = false;
+  overflow.push(_detailJob);
+
+  // 2. Pull the ASAP job out of overflow
+  const asapJob = overflow.find(jj => jj.key === asapKey);
+  if (asapJob) {
+    overflow = overflow.filter(jj => jj.key !== asapKey);
+
+    // Place into freed slot
+    asapJob._confirmed = true;
+    cal[targetK][targetJ].push(asapJob);
+    cal[targetK][targetJ].sort((a, b) => b.time - a.time);
+    let hrs2 = 0;
+    cal[targetK][targetJ].forEach(jj => { jj._window = jobWindow(hrs2); hrs2 += jj.time; });
+
+    renderCell(targetK, targetJ, asapJob.key);
+    renderTechs();
+    renderOverflow();
+    setTicker(`${asapJob.key} pulled from Next Week's Queue → ${DAYS[targetK]}, ${_detailJob.key} sent to overflow`);
+  }
+
+  closeJobDetail();
+}
+
 // ─────────────────────────────────────────────────────────────────
 
 // ── Skill Mismatch Modal ──────────────────────────────────────────
@@ -3013,7 +3230,7 @@ function toggleAvail(k, j) {
     cal[k][j].forEach(job => { job._overbooked = false; overflow.push(job); });
     cal[k][j] = [];
     renderOverflow();
-    setTicker(`⛔ ${DAYS[k]} blocked for ${techs[j].key} — jobs moved to overflow`);
+    setTicker(`${DAYS[k]} blocked for ${techs[j].key} — jobs moved to overflow`);
   }
   buildTable();
   renderAllCells();
@@ -3424,7 +3641,7 @@ function applySettings() {
   renderTechs();
   renderOverflow();
   clearIncoming();
-  document.getElementById('jobs').innerHTML = '<div class="empty-state">Press "Fill Calendar" to begin receiving calls</div>';
+  document.getElementById('jobs').innerHTML = '<div class="empty-state">Press "Run Schedule" to begin receiving calls</div>';
   setTicker('Settings applied — press Run Schedule to fill');
   document.getElementById('progressWrap').classList.remove('visible');
   document.getElementById('fillButton').disabled = false;
@@ -3452,32 +3669,110 @@ updateCapacityStat();
 if (window.innerWidth <= 768) {
   const sidebar = document.getElementById('sidebar');
   const toggle  = document.getElementById('sidebarToggle');
-  const main    = document.getElementById('mainContent');
   sidebar.classList.add('collapsed');
   toggle.classList.add('collapsed');
   toggle.innerHTML = '&#10095;';
 }
 
 // ═══════════════════════════════════════════════════════════════════
-// SIDEBAR
+// IDLE PREVIEW MODE
+// Calls trickle in and queue up, but nothing gets scheduled.
+// Stops the moment the user clicks Run Schedule.
 // ═══════════════════════════════════════════════════════════════════
+let _idleTimer   = null;
+let _idleRunning = false;
+let _idlePool    = [];
+let _idleIdx     = 0;
+
+function startIdlePreview() {
+  if (_idleRunning || isFilling) return;
+  _idleRunning = true;
+
+  // Build a shuffled pool of preview jobs (won't be scheduled — display only)
+  _idlePool = generateJobs(40).sort(() => Math.random() - 0.5);
+  _idleIdx  = 0;
+
+  const tickerMessages = [
+    'Calls are coming in &mdash; press <strong>▶ Run Schedule</strong> to begin dispatching',
+    'Queue building &mdash; the algorithm will assign each call to the optimal tech &amp; day',
+    'Ready to dispatch &mdash; <strong>▶ Run Schedule</strong> places every call automatically',
+    'Incoming calls waiting &mdash; press <strong>▶ Run Schedule</strong> to schedule the week',
+  ];
+  let tickerIdx = 0;
+
+  function showNextIdleCall() {
+    if (!_idleRunning) return;
+
+    const job     = _idlePool[_idleIdx % _idlePool.length];
+    const nextJob = _idlePool[(_idleIdx + 1) % _idlePool.length];
+    _idleIdx++;
+
+    // Animate NOW HANDLING
+    const sl = job.skill_level;
+    document.getElementById('incomingSlot').innerHTML = `
+      <div class="incoming-chip">
+        <span class="chip-name">${job.key}</span>
+        <span class="chip-meta">${fmtHours(job.time)} &middot; ${skillName(sl)}</span>
+      </div>`;
+
+    // Show UP NEXT
+    const nsl = nextJob.skill_level;
+    document.getElementById('nextSlot').innerHTML = `
+      <div class="incoming-chip next-chip">
+        <span class="chip-name">${nextJob.key}</span>
+        <span class="chip-meta">${fmtHours(nextJob.time)} &middot; ${skillName(nsl)}</span>
+      </div>`;
+
+    document.getElementById('phoneIcon').classList.add('ringing');
+
+    // Add to visual queue (no scheduling) — prepend so newest is at front
+    const queueEl = document.getElementById('jobs');
+    // Keep max 14 chips visible
+    const existing = queueEl.querySelectorAll('.job-chip');
+    if (existing.length >= 14) existing[existing.length - 1].remove();
+    const chip = document.createElement('div');
+    chip.className = 'job-chip';
+    chip.draggable = true;
+    chip.innerHTML = `<span class="chip-name">${job.key}</span>
+      <span class="chip-meta">${fmtHours(job.time)} &middot; ${skillName(sl)}</span>`;
+    queueEl.prepend(chip);
+
+    // Rotate ticker message every 4 calls
+    if (_idleIdx % 4 === 1) {
+      setTicker(tickerMessages[tickerIdx % tickerMessages.length]);
+      tickerIdx++;
+    }
+
+    // Update queue count label
+    document.getElementById('queueCount').textContent = `${queueEl.querySelectorAll('.job-chip').length} waiting`;
+
+    _idleTimer = setTimeout(showNextIdleCall, 1800 + Math.random() * 1200);
+  }
+
+  // First call after a short intro pause
+  setTicker('Calls are coming in &mdash; press <strong>▶ Run Schedule</strong> to begin dispatching');
+  _idleTimer = setTimeout(showNextIdleCall, 800);
+}
+
+function stopIdlePreview() {
+  _idleRunning = false;
+  if (_idleTimer) { clearTimeout(_idleTimer); _idleTimer = null; }
+  document.getElementById('phoneIcon').classList.remove('ringing');
+}
+
+// Start idle preview on load
+startIdlePreview();
+
 function toggleSidebar() {
   const sidebar = document.getElementById('sidebar');
   const main    = document.getElementById('mainContent');
   const toggle  = document.getElementById('sidebarToggle');
   const isMobile = window.innerWidth <= 768;
   const collapsed = sidebar.classList.toggle('collapsed');
-
-  if (!isMobile) {
-    main.classList.toggle('expanded', collapsed);
-  }
+  if (!isMobile) main.classList.toggle('expanded', collapsed);
   toggle.classList.toggle('collapsed', collapsed);
   toggle.innerHTML = collapsed ? '&#10095;' : '&#10094;';
-
-  // On mobile, update toggle button position
-  if (isMobile) {
-    toggle.style.left = collapsed ? '8px' : '288px';
-  }
+  if (isMobile) toggle.style.left = collapsed ? '8px' : '288px';
 }
 
 function toggleSbSection(id) {
@@ -3564,6 +3859,284 @@ function renderDayMap(k) {
     L.polyline(pts, { color, weight: 3.5, opacity: 0.85 }).addTo(_mapLeaflet);
   });
 }
+// ═══════════════════════════════════════════════════════════════════
+// SCHEDULE SUMMARY INFOGRAPHIC
+// ═══════════════════════════════════════════════════════════════════
+function closeSummary() { document.getElementById('summaryOverlay').classList.remove('open'); }
+function closeSummaryOutside(e) { if (e.target.id === 'summaryOverlay') closeSummary(); }
+
+function showScheduleSummary() {
+  // ── Compute stats ──────────────────────────────────────────────
+  const totalCalls   = allJobs.length;
+  const placed       = totalCalls - overflow.length;
+  const placedPct    = totalCalls ? Math.round(placed / totalCalls * 100) : 0;
+  const overflowCnt  = overflow.length;
+
+  // Collect active (non-blocked) day-tech combos with at least 1 job
+  let totalDriveMins = 0, totalJobHours = 0, totalWorkHours = 0;
+  let activeDays = 0;
+  let maxUtil = 0, minUtil = Infinity;
+  let bestTech = '', worstTech = '';
+  let allDriveMins = [], allJobsPerDay = [];
+  let driveLegs = 0, driveLegSum = 0;
+
+  // Per-tech stats
+  const techStats = techs.map((t, j) => {
+    let tjobs = 0, tdrive = 0, tjobH = 0, tdays = 0;
+    for (let k = 0; k < DAYS.length; k++) {
+      if (getAvail(k,j).mode === 'blocked') continue;
+      const jobs = cal[k][j];
+      if (!jobs.length) continue;
+      tjobs += jobs.length;
+      const dm = driveMins(k, j);
+      tdrive += dm;
+      tjobH  += jobs.reduce((s, jj) => s + jj.time, 0);
+      tdays++;
+      // drive leg detail
+      for (let i = 0; i < jobs.length - 1; i++) {
+        driveLegSum += driveMinsGeo(jobs[i].location, jobs[i+1].location);
+        driveLegs++;
+      }
+    }
+    const util = tdays ? Math.min(100, Math.round((tjobH + tdrive/60) / (tdays * TIME_IN_DAY) * 100)) : 0;
+    return { name: t.key, skill: t.skill_level, jobs: tjobs, driveMin: tdrive, jobHours: tjobH, days: tdays, util };
+  });
+
+  techStats.forEach(ts => {
+    totalDriveMins += ts.driveMin;
+    totalJobHours  += ts.jobHours;
+    totalWorkHours += ts.jobHours + ts.driveMin / 60;
+    if (ts.days > 0) {
+      activeDays++;
+      if (ts.util > maxUtil) { maxUtil = ts.util; bestTech  = ts.name; }
+      if (ts.util < minUtil) { minUtil = ts.util; worstTech = ts.name; }
+    }
+  });
+
+  // Avg weekly job hours per tech (sum each tech's real weekly hours, average across active techs)
+  const activeTechCount = techStats.filter(ts => ts.days > 0).length;
+  const avgWeeklyJobHours = activeTechCount
+    ? (techStats.filter(ts => ts.days > 0).reduce((s, ts) => s + ts.jobHours, 0) / activeTechCount).toFixed(1)
+    : '0';
+  const avgWeeklyWorkHours = activeTechCount
+    ? (techStats.filter(ts => ts.days > 0).reduce((s, ts) => s + ts.jobHours + ts.driveMin / 60, 0) / activeTechCount).toFixed(1)
+    : '0';
+  const avgDrivePerDay     = activeDays ? Math.round(totalDriveMins / activeDays) : 0;
+  const avgJobHoursPerDay  = activeDays ? (totalJobHours  / activeDays).toFixed(1) : '0';
+  const avgWorkHoursPerDay = activeDays ? (totalWorkHours / activeDays).toFixed(1) : '0';
+  const avgDriveLeg        = driveLegs  ? Math.round(driveLegSum / driveLegs) : 0;
+  const driveRatio         = totalWorkHours ? Math.round(totalDriveMins / 60 / totalWorkHours * 100) : 0;
+
+  // Per-day job totals for bar chart
+  const dayJobCounts = DAYS.map((_, k) => {
+    let n = 0;
+    techs.forEach((__, j) => { n += cal[k][j].length; });
+    return n;
+  });
+  const maxDayJobs = Math.max(...dayJobCounts, 1);
+
+  // Grade
+  let grade, gradeColor;
+  if (placedPct >= 97 && driveRatio <= 20) { grade = 'A+'; gradeColor = '#16a34a'; }
+  else if (placedPct >= 93 && driveRatio <= 25) { grade = 'A';  gradeColor = '#16a34a'; }
+  else if (placedPct >= 88) { grade = 'B+'; gradeColor = '#1a9688'; }
+  else if (placedPct >= 80) { grade = 'B';  gradeColor = '#2563eb'; }
+  else if (placedPct >= 70) { grade = 'C';  gradeColor = '#d97706'; }
+  else                       { grade = 'D';  gradeColor = '#C0152A'; }
+
+  const scoreDesc = placedPct >= 93
+    ? 'Excellent — nearly all calls were successfully placed with efficient routing.'
+    : placedPct >= 80
+    ? 'Good — most calls placed. A few carry over to next week due to capacity or skill constraints.'
+    : 'Fair — several calls carry over to next week. Consider adding technicians or adjusting settings.';
+
+  // Insight flags
+  const insights = [];
+  if (overflowCnt === 0)
+    insights.push({ cls:'good', icon:'check', text:`<strong>Full week scheduled</strong> — every call was placed successfully` });
+  else
+    insights.push({ cls: overflowCnt <= 5 ? 'warn' : 'bad', icon:'alert', text:`<strong>${overflowCnt} call${overflowCnt>1?'s':''} carry over</strong> — will need to be scheduled next week` });
+
+  if (avgDriveLeg <= 12)
+    insights.push({ cls:'good', icon:'check', text:`<strong>Tight routing</strong> — avg ${avgDriveLeg} min between stops` });
+  else if (avgDriveLeg <= 22)
+    insights.push({ cls:'warn', icon:'clock', text:`<strong>Moderate drive legs</strong> — avg ${avgDriveLeg} min between stops` });
+  else
+    insights.push({ cls:'bad', icon:'alert', text:`<strong>Long drive legs</strong> — avg ${avgDriveLeg} min between stops` });
+
+  if (driveRatio <= 18)
+    insights.push({ cls:'good', icon:'check', text:`<strong>${driveRatio}% of work time is driving</strong> — highly productive` });
+  else if (driveRatio <= 28)
+    insights.push({ cls:'warn', icon:'clock', text:`<strong>${driveRatio}% of work time is driving</strong> — room to improve clustering` });
+  else
+    insights.push({ cls:'bad', icon:'alert', text:`<strong>${driveRatio}% of work time is driving</strong> — consider tightening geographic clusters` });
+
+  if (maxUtil - minUtil < 25 && activeDays > 2)
+    insights.push({ cls:'good', icon:'check', text:`<strong>Balanced workload</strong> — techs within ${maxUtil - minUtil}% utilization of each other` });
+  else if (activeDays > 2)
+    insights.push({ cls:'warn', icon:'alert', text:`<strong>Uneven workload</strong> — ${worstTech} underloaded vs ${bestTech}` });
+
+  // ── SVG helpers ───────────────────────────────────────────────
+  const iconCheck = `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>`;
+  const iconAlert = `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>`;
+  const iconClock = `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>`;
+  const iconMap   = `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>`;
+  const iconStar  = `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>`;
+  function getIcon(name) {
+    if (name === 'check') return iconCheck;
+    if (name === 'clock') return iconClock;
+    return iconAlert;
+  }
+
+  // ── Skill mix ───────────────────────────────────────────────────
+  const skillCounts = {1:0,2:0,3:0,4:0};
+  allJobs.filter(j => !overflow.find(o => o.key === j.key)).forEach(j => skillCounts[j.skill_level]++);
+  const skillColors = { 1: 'var(--skill1)', 2: 'var(--skill2)', 3: 'var(--skill3)', 4: 'var(--skill4)' };
+  const skillLabels = { 1:'New', 2:'Specialist', 3:'Pro', 4:'Expert' };
+
+  // ── Ring circumference ─────────────────────────────────────────
+  const r = 36; const circ = 2 * Math.PI * r;
+  const ringFill = circ - (placedPct / 100 * circ);
+  const ringColor = placedPct >= 90 ? '#16a34a' : placedPct >= 75 ? '#d97706' : '#C0152A';
+
+  // ── Render ────────────────────────────────────────────────────
+  const body = document.getElementById('summaryBody');
+  document.getElementById('sumSubtitle').textContent =
+    `${placed} of ${totalCalls} calls placed · ${DAYS.length}-day window · ${techs.length} technicians`;
+
+  body.innerHTML = `
+
+    <!-- Score row -->
+    <div class="sum-score-row">
+      <div class="sum-ring-wrap">
+        <svg width="90" height="90" viewBox="0 0 90 90">
+          <circle cx="45" cy="45" r="${r}" fill="none" stroke="var(--border)" stroke-width="8"/>
+          <circle cx="45" cy="45" r="${r}" fill="none" stroke="${ringColor}" stroke-width="8"
+            stroke-dasharray="${circ}" stroke-dashoffset="${ringFill}"
+            stroke-linecap="round" style="transition:stroke-dashoffset 0.8s ease"/>
+        </svg>
+        <div class="sum-ring-center">
+          <div class="sum-ring-pct">${placedPct}%</div>
+          <div class="sum-ring-label">placed</div>
+        </div>
+      </div>
+      <div class="sum-score-info">
+        <div class="sum-score-title">Scheduling Score</div>
+        <div class="sum-score-desc">${scoreDesc}</div>
+      </div>
+      <div class="sum-grade" style="color:${gradeColor};border-color:${gradeColor};background:${gradeColor}18">${grade}</div>
+    </div>
+
+    <!-- 4 big stats -->
+    <div class="sum-stats">
+      <div class="sum-stat-card red">
+        <div><span class="sum-stat-val">${avgDriveLeg}</span><span class="sum-stat-unit">min</span></div>
+        <div class="sum-stat-label">Avg drive leg between stops</div>
+        <div class="sum-stat-sub">${avgDrivePerDay} min total drive per tech-day</div>
+      </div>
+      <div class="sum-stat-card teal">
+        <div><span class="sum-stat-val">${avgWeeklyJobHours}</span><span class="sum-stat-unit">hrs</span></div>
+        <div class="sum-stat-label">Avg job hours per tech per week</div>
+        <div class="sum-stat-sub">${avgJobHoursPerDay} hrs/day · ${avgWeeklyWorkHours} incl. drive</div>
+      </div>
+      <div class="sum-stat-card amber">
+        <div><span class="sum-stat-val">${driveRatio}</span><span class="sum-stat-unit">%</span></div>
+        <div class="sum-stat-label">Time spent driving</div>
+        <div class="sum-stat-sub">${(totalDriveMins/60).toFixed(1)} hrs total drive</div>
+      </div>
+      <div class="sum-stat-card blue">
+        <div><span class="sum-stat-val">${overflowCnt}</span></div>
+        <div class="sum-stat-label">Carry over to next week</div>
+        <div class="sum-stat-sub">${placed} placed of ${totalCalls}</div>
+      </div>
+    </div>
+
+    <!-- Insights -->
+    <div class="sum-section-title">Key Insights</div>
+    <div class="sum-insights" style="margin-bottom:16px">
+      ${insights.map(ins => `
+        <div class="sum-insight ${ins.cls}">
+          ${getIcon(ins.icon)}
+          <span>${ins.text}</span>
+        </div>`).join('')}
+    </div>
+
+    <!-- Jobs per day bar chart -->
+    <div class="sum-section-title">Jobs Scheduled Per Day</div>
+    <div class="sum-day-grid" style="margin-bottom:16px">
+      ${DAYS.map((day, k) => {
+        const n = dayJobCounts[k];
+        const pct = Math.round(n / maxDayJobs * 100);
+        const barColor = pct > 80 ? 'var(--red)' : pct > 50 ? 'var(--teal)' : 'var(--blue)';
+        return `<div class="sum-day-col">
+          <div class="sum-day-bar-wrap">
+            <div class="sum-day-bar" style="height:${pct}%;background:${barColor};opacity:0.85"></div>
+          </div>
+          <div class="sum-day-label">${day}</div>
+          <div class="sum-day-val">${n}</div>
+        </div>`;
+      }).join('')}
+    </div>
+
+    <!-- Technician breakdown -->
+    <div class="sum-section-title">Technician Breakdown</div>
+    <table class="sum-tech-table">
+      <thead>
+        <tr>
+          <th>Technician</th>
+          <th>Skill</th>
+          <th>Jobs</th>
+          <th>Job hrs</th>
+          <th>Drive</th>
+          <th>Utilization</th>
+        </tr>
+      </thead>
+      <tbody>
+        ${techStats.filter(ts => ts.days > 0).sort((a,b) => b.util - a.util).map(ts => {
+          const utilColor = ts.util >= 90 ? 'var(--red)' : ts.util >= 70 ? 'var(--teal)' : 'var(--amber)';
+          return `<tr>
+            <td><strong>${ts.name}</strong></td>
+            <td><span style="font-size:9px;font-weight:700;color:${skillColors[ts.skill]}">${skillLabels[ts.skill]}</span></td>
+            <td>${ts.jobs}</td>
+            <td>${ts.jobHours.toFixed(1)}h</td>
+            <td>${ts.driveMin}m</td>
+            <td>
+              <div class="sum-util-bar">
+                <div class="sum-util-track">
+                  <div class="sum-util-fill" style="width:${ts.util}%;background:${utilColor}"></div>
+                </div>
+                <span class="sum-util-num">${ts.util}%</span>
+              </div>
+            </td>
+          </tr>`;
+        }).join('')}
+      </tbody>
+    </table>
+
+    <!-- Skill mix -->
+    <div class="sum-section-title">Skill Mix of Placed Calls</div>
+    <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:4px">
+      ${[1,2,3,4].map(s => {
+        const n = skillCounts[s];
+        const w = placed ? Math.round(n/placed*100) : 0;
+        if (!n) return '';
+        return `<div style="display:flex;align-items:center;gap:5px;font-size:11px;color:var(--text-muted)">
+          <div style="width:10px;height:10px;border-radius:50%;background:${skillColors[s]};flex-shrink:0"></div>
+          <strong style="color:var(--text)">${skillLabels[s]}</strong> — ${n} calls (${w}%)
+        </div>`;
+      }).join('')}
+    </div>
+    <div style="height:10px;border-radius:5px;overflow:hidden;display:flex;gap:1px;margin-top:8px">
+      ${[1,2,3,4].map(s => {
+        const w = placed ? (skillCounts[s]/placed*100) : 0;
+        if (!w) return '';
+        return `<div style="height:100%;width:${w}%;background:${skillColors[s]};flex-shrink:0"></div>`;
+      }).join('')}
+    </div>
+  `;
+
+  document.getElementById('summaryOverlay').classList.add('open');
+}
 </script>
 <!-- ══════════════════════════════════════════
      DAY ROUTE MAP MODAL
@@ -3581,6 +4154,22 @@ function renderDayMap(k) {
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+
+<!-- ══════════════════════════════════════════
+     SCHEDULE SUMMARY MODAL
+══════════════════════════════════════════ -->
+<div class="summary-overlay" id="summaryOverlay" onclick="closeSummaryOutside(event)">
+  <div class="summary-modal" id="summaryModal">
+    <div class="sum-header">
+      <div class="sum-header-text">
+        <div class="sum-title">📊 Schedule Report</div>
+        <div class="sum-subtitle" id="sumSubtitle">Scheduling efficiency analysis</div>
+      </div>
+      <button class="sum-close" onclick="closeSummary()">✕ Close</button>
+    </div>
+    <div class="sum-body" id="summaryBody"></div>
+  </div>
+</div>
 
 </body>
 </html>
