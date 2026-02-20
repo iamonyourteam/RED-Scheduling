@@ -52,7 +52,7 @@ body {
 }
 /* Clean light background — no dark grid */
 body::before { display: none; }
-.wrapper { position: relative; z-index: 1; max-width: 1400px; margin: 0 auto; padding: 0; }
+.wrapper { position: relative; z-index: 1; max-width: 1800px; margin: 0 auto; padding: 0 1rem; }
 
 /* ── TOP NAV BAR ── */
 .top-nav {
@@ -82,6 +82,137 @@ body::before { display: none; }
 
 /* ── PAGE CONTENT ── */
 .page-content { padding: 1.75rem 2rem; }
+
+/* ── SIDEBAR ── */
+.app-layout { display:flex; min-height:calc(100vh - 52px); }
+.sidebar {
+  width: 300px; flex-shrink: 0;
+  background: var(--surface); border-right: 1px solid var(--border);
+  position: fixed; top: 52px; left: 0; bottom: 0;
+  overflow-y: auto; overflow-x: hidden;
+  transition: width 0.25s cubic-bezier(0.4,0,0.2,1), transform 0.25s cubic-bezier(0.4,0,0.2,1);
+  z-index: 50;
+}
+.sidebar.collapsed { width: 0; }
+.sidebar-inner { width: 300px; padding: 0; }
+.sidebar-toggle {
+  position: fixed; top: 62px; left: 308px; z-index: 51;
+  width: 24px; height: 56px;
+  background: var(--surface); border: 1px solid var(--border);
+  border-left: none; border-radius: 0 8px 8px 0;
+  cursor: pointer; display: flex; align-items: center; justify-content: center;
+  transition: left 0.25s cubic-bezier(0.4,0,0.2,1);
+  box-shadow: 2px 0 8px rgba(0,0,0,0.08);
+  color: var(--text-muted); font-size: 12px;
+}
+.sidebar-toggle.collapsed { left: 8px; }
+.sidebar-toggle:hover { background: var(--red); color: #fff; border-color: var(--red); }
+.main-content {
+  flex: 1; margin-left: 300px;
+  transition: margin-left 0.25s cubic-bezier(0.4,0,0.2,1);
+  min-width: 0;
+}
+.main-content.expanded { margin-left: 0; }
+
+/* Sidebar sections */
+.sb-header {
+  padding: 16px 18px 12px;
+  border-bottom: 1px solid var(--border);
+  background: linear-gradient(135deg, var(--surface2) 0%, var(--surface) 100%);
+}
+.sb-logo { font-size: 18px; font-weight: 900; color: var(--text); }
+.sb-logo span { color: var(--red); }
+.sb-tagline { font-size: 10px; color: var(--text-muted); margin-top: 3px; font-weight: 500; }
+
+.sb-section { border-bottom: 1px solid var(--border); }
+.sb-section-trigger {
+  width: 100%; display: flex; align-items: center; justify-content: space-between;
+  padding: 13px 18px; background: none; border: none; cursor: pointer;
+  font-family: var(--font); text-align: left;
+  transition: background 0.12s;
+}
+.sb-section-trigger:hover { background: var(--surface2); }
+.sb-section-title {
+  display: flex; align-items: center; gap: 9px;
+  font-size: 12px; font-weight: 700; color: var(--text);
+}
+.sb-section-icon { width:20px; height:20px; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+.sb-chevron { font-size: 10px; color: var(--text-muted); transition: transform 0.2s; flex-shrink:0; }
+.sb-section.open .sb-chevron { transform: rotate(180deg); }
+.sb-section-body {
+  display: none; padding: 0 18px 14px;
+}
+.sb-section.open .sb-section-body { display: block; }
+.sb-desc { font-size: 11px; color: var(--text-muted); line-height: 1.65; margin-bottom: 10px; }
+.sb-feature-img {
+  width: 100%; border-radius: 8px; border: 1px solid var(--border);
+  margin-bottom: 10px; display: block;
+  background: var(--surface2);
+}
+.sb-badge {
+  display: inline-flex; align-items: center; gap: 4px;
+  font-size: 9px; font-weight: 800; letter-spacing: 0.06em;
+  padding: 2px 7px; border-radius: 4px; margin: 2px 2px 2px 0;
+  background: var(--surface2); color: var(--text-muted); border: 1px solid var(--border);
+}
+.sb-badge.red { background: rgba(192,21,42,0.1); color: var(--red); border-color: rgba(192,21,42,0.25); }
+.sb-badge.amber { background: rgba(245,158,11,0.1); color: var(--amber); border-color: rgba(245,158,11,0.25); }
+.sb-badge.teal { background: rgba(20,184,166,0.1); color: var(--teal); border-color: rgba(20,184,166,0.25); }
+.sb-bullet { font-size: 11px; color: var(--text-muted); line-height: 1.7; padding-left: 4px; }
+.sb-bullet li { list-style: none; padding: 1px 0; }
+.sb-bullet li::before { content: '›  '; color: var(--red); font-weight: 700; }
+.sb-footer {
+  padding: 14px 18px; font-size: 10px; color: var(--text-muted);
+  text-align: center; line-height: 1.6;
+}
+
+/* Rich sidebar content elements */
+.sb-step { display:flex; gap:10px; margin-bottom:10px; align-items:flex-start; }
+.sb-step-num {
+  width:20px; height:20px; border-radius:50%; background:var(--red);
+  color:#fff; font-size:10px; font-weight:800; display:flex; align-items:center;
+  justify-content:center; flex-shrink:0; margin-top:1px;
+}
+.sb-step-content { flex:1; }
+.sb-step-title { font-size:11px; font-weight:700; color:var(--text); margin-bottom:2px; }
+.sb-step-desc { font-size:10px; color:var(--text-muted); line-height:1.55; }
+
+.sb-callout {
+  background:rgba(192,21,42,0.06); border:1px solid rgba(192,21,42,0.18);
+  border-left:3px solid var(--red); border-radius:0 6px 6px 0;
+  padding:8px 10px; margin-bottom:10px;
+  font-size:10px; color:var(--text-muted); line-height:1.6;
+}
+.sb-callout strong { color:var(--red); }
+
+.sb-callout.amber {
+  background:rgba(245,158,11,0.06); border-color:rgba(245,158,11,0.18);
+  border-left-color:var(--amber);
+}
+.sb-callout.amber strong { color:var(--amber); }
+
+.sb-callout.teal {
+  background:rgba(20,184,166,0.06); border-color:rgba(20,184,166,0.18);
+  border-left-color:var(--teal);
+}
+.sb-callout.teal strong { color:var(--teal); }
+
+.sb-stat-row {
+  display:flex; gap:6px; margin-bottom:10px;
+}
+.sb-stat {
+  flex:1; background:var(--surface2); border:1px solid var(--border);
+  border-radius:6px; padding:7px 8px; text-align:center;
+}
+.sb-stat-val { font-size:16px; font-weight:900; color:var(--red); line-height:1; }
+.sb-stat-label { font-size:9px; color:var(--text-muted); margin-top:2px; font-weight:500; text-transform:uppercase; letter-spacing:0.04em; }
+
+.sb-divider { border:none; border-top:1px solid var(--border); margin:10px 0; }
+
+.sb-kv { display:flex; justify-content:space-between; align-items:center; padding:4px 0; border-bottom:1px solid var(--border); }
+.sb-kv:last-child { border-bottom:none; }
+.sb-kv-key { font-size:10px; color:var(--text-muted); font-weight:500; }
+.sb-kv-val { font-size:10px; color:var(--text); font-weight:700; }
 
 /* ── HEADER ── */
 .header {
@@ -141,6 +272,9 @@ h1 span { color: var(--red); }
 }
 .calls-controls .btn-primary { background: var(--red); color: #fff; border: none; box-shadow: none; }
 .calls-controls .btn-primary:hover:not(:disabled) { background: var(--red-light); transform: none; box-shadow: none; }
+.calls-controls .btn-primary.btn-fastforward { background: var(--amber); animation: ffPulse 0.8s ease-in-out infinite alternate; }
+.calls-controls .btn-primary.btn-fastforward:hover { background: #d97706; }
+@keyframes ffPulse { from { box-shadow: 0 0 0 0 rgba(245,158,11,0); } to { box-shadow: 0 0 0 6px rgba(245,158,11,0.25); } }
 .calls-controls .btn-pause { border-radius: 8px; }
 .calls-controls .btn-call { background: transparent; border: 1.5px solid var(--border-mid); color: var(--text-dim); }
 .calls-controls .btn-call:hover { background: var(--surface); color: var(--text); border-color: var(--border-bright); }
@@ -307,7 +441,7 @@ h1 span { color: var(--red); }
 
 /* ── CALENDAR ── */
 .calendar-wrap { overflow-x:auto; margin-bottom:1.5rem; }
-.calendar { width:100%; border-collapse:collapse; border:1px solid var(--border); border-radius:10px; overflow:hidden; box-shadow:0 1px 4px rgba(0,0,0,0.06); }
+.calendar { width:100%; border-collapse:separate; border-spacing:0 6px; border:1px solid var(--border); border-radius:10px; overflow:hidden; box-shadow:0 1px 4px rgba(0,0,0,0.06); }
 .cal-header-cell {
   background: var(--surface2); padding:10px 12px;
   text-align:center; font-size:11px; font-weight:700; letter-spacing:0.06em; text-transform:uppercase;
@@ -321,6 +455,10 @@ h1 span { color: var(--red); }
 
 /* Per-tech daily utilization bar in header */
 .tech-day-bars { display: flex; flex-direction: column; gap: 3px; margin-top: 7px; }
+.day-header-corner { vertical-align:bottom; }
+.day-col-header { text-align:center; padding:10px 6px 8px; }
+.day-col-name { font-size:11px; font-weight:800; letter-spacing:0.07em; text-transform:uppercase; color:var(--text-muted); }
+.tech-row-header { vertical-align:top; min-width:160px; max-width:190px; width:175px; }
 .tech-day-row { display: flex; align-items: center; gap: 5px; font-size: 8px; color: var(--text-muted); font-weight: 600; }
 .tech-day-track { flex:1; height:4px; background: var(--border); border-radius:2px; overflow:hidden; min-width:60px; }
 .tech-day-fill { height:100%; border-radius:2px; transition:width 0.4s ease; background: var(--teal); }
@@ -328,15 +466,17 @@ h1 span { color: var(--red); }
 .tech-day-fill.full { background: var(--red); }
 .tech-day-pct { min-width:26px; text-align:right; font-size:8px; color: var(--text-muted); }
 
-.cal-row { border-bottom:1px solid var(--border); }
-.cal-row:last-child { border-bottom:none; }
+.cal-row { border-bottom:none; }
+.cal-row td { border-top:1px solid var(--border); border-bottom:1px solid var(--border); }
+.cal-row td:first-child { border-left:1px solid var(--border); border-radius:8px 0 0 8px; }
+.cal-row td:last-child  { border-right:1px solid var(--border); border-radius:0 8px 8px 0; }
 .cal-row.past-row .day-cell { opacity: 0.55; }
 .cal-row.weekend-row .day-cell { background: var(--surface); }
 .cal-row.weekend-row .day-cell-name { color: var(--red); opacity: 0.6; }
 .day-cell {
-  background: var(--surface2); padding: 8px 12px;
+  background: var(--surface2); padding: 10px 12px;
   font-size: 11px; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase;
-  color: var(--text-muted); border-right: 1px solid var(--border); vertical-align: top; min-width: 70px;
+  color: var(--text-muted); border-right: 1px solid var(--border); vertical-align: top;
 }
 .day-cell-name { font-size: 10px; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; color: var(--text-muted); }
 .day-cell-date { font-size: 12px; font-weight: 700; color: var(--text); margin-top: 2px; }
@@ -362,15 +502,15 @@ h1 span { color: var(--red); }
 .week-nav-btn:hover { background: var(--red-bg); border-color: var(--red-border); color: var(--red); }
 .cal-cell {
   padding:5px; border-right:1px solid var(--border);
-  vertical-align:top; min-width:160px; min-height:72px;
+  vertical-align:top; min-width:130px; min-height:72px;
   transition:background 0.15s; position:relative; background: var(--surface);
 }
+.cal-cell:last-child { border-right:none; }
 .cal-cell.just-placed-cell { animation: cellFlash 1.4s ease forwards; }
 @keyframes cellFlash {
   0%   { background: rgba(192,21,42,0.15); }
   100% { background: var(--surface); }
 }
-.cal-cell:last-child { border-right:none; }
 /* ── BLOCKED / REDUCED AVAILABILITY CELLS ── */
 .cal-cell.blocked {
   background: repeating-linear-gradient(
@@ -389,6 +529,25 @@ h1 span { color: var(--red); }
   text-transform: uppercase;
 }
 .blocked-banner::before { content: '⛔'; font-size: 14px; }
+
+/* Drive time block between jobs */
+.drive-block {
+  display: flex; align-items: center; gap: 6px;
+  padding: 4px 8px;
+  margin: 0;
+  background: repeating-linear-gradient(
+    90deg,
+    var(--border) 0px, var(--border) 1px,
+    transparent 1px, transparent 8px
+  );
+  background-color: var(--surface2);
+  border-left: 2px solid var(--border-mid);
+  border-right: 2px solid var(--border-mid);
+}
+.drive-icon { display:flex; align-items:center; flex-shrink:0; color:var(--text-muted); opacity:0.7; }
+.drive-label { font-size: 9px; font-weight: 700; color: var(--text-muted); letter-spacing: 0.04em; white-space: nowrap; flex-shrink: 0; }
+.drive-bar-track { flex: 1; height: 3px; background: var(--border); border-radius: 2px; overflow: hidden; min-width: 20px; }
+.drive-bar-fill { height: 100%; background: var(--text-muted); border-radius: 2px; opacity: 0.4; }
 /* Past day overlay */
 .past-overlay {
   position: absolute; inset: 0;
@@ -479,6 +638,7 @@ h1 span { color: var(--red); }
   border-left:3px solid transparent; background:var(--surface);
   box-shadow: 0 1px 3px rgba(0,0,0,0.07);
   transition:transform 0.1s,box-shadow 0.1s;
+  box-sizing:border-box;
 }
 .cal-job::before { content:''; position:absolute; inset:0; opacity:0.05; transition:opacity 0.1s; }
 .cal-job.s1 { border-left-color:var(--skill1); }.cal-job.s1::before { background:var(--skill1); }
@@ -510,11 +670,32 @@ h1 span { color: var(--red); }
 .cal-job:hover { transform:translateY(-1px); box-shadow:0 4px 12px rgba(0,0,0,0.12); }
 .cal-job:active { cursor:grabbing; }
 .cal-job.dragging { opacity:0.3; }
+.cal-job.locked { cursor:default; }
+.cal-job.locked:hover { transform:none; box-shadow:0 1px 3px rgba(0,0,0,0.07); }
 @keyframes jobIn { from{opacity:0;transform:translateX(-8px) scale(0.97);}to{opacity:1;transform:translateX(0) scale(1);} }
-.job-dot { flex-shrink:0; width:8px; height:8px; border-radius:50%; margin-top:2px; }
+.job-key-row { display:flex; align-items:center; gap:5px; }
 .job-key { font-weight:700; color:var(--text); font-size:11px; }
 .job-details { color:var(--text-muted); font-size:9px; margin-top:1px; font-weight:500; }
 .time-bar { height:3px; border-radius:2px; margin-top:3px; opacity:0.5; }
+.lock-badge { display:inline-flex; align-items:center; color:var(--text-muted); opacity:0.6; flex-shrink:0; }
+.asap-badge { display:inline-flex; align-items:center; font-size:8px; font-weight:800; letter-spacing:0.07em; color:var(--amber); border:1px solid var(--amber); border-radius:3px; padding:1px 4px; flex-shrink:0; opacity:0.9; }
+.cal-job.asap { border-left-style: dashed; }
+
+/* Window dividers */
+.win-divider {
+  display:flex; align-items:center; gap:6px;
+  margin:5px 0 4px;
+  padding: 0 2px;
+}
+.win-divider::before, .win-divider::after {
+  content:''; flex:1; height:1px; background:var(--border-mid);
+}
+.win-label {
+  font-size:8px; font-weight:800; letter-spacing:0.08em;
+  text-transform:uppercase; color:var(--text-muted);
+  white-space:nowrap; opacity:0.7;
+  padding: 0 4px;
+}
 
 /* ── BOTTOM PANELS ── */
 .bottom-grid { display:grid; grid-template-columns:1fr 1fr; gap:1.25rem; margin-top:1.5rem; }
@@ -549,6 +730,44 @@ h1 span { color: var(--red); }
 .overflow-chip .chip-name { color:var(--amber); font-weight:700; }
 .empty-state { text-align:center; color:var(--text-muted); font-size:11px; padding:1.5rem; font-weight:500; width:100%; }
 
+/* ── MAP MODAL ── */
+.map-modal-overlay {
+  display:none; position:fixed; inset:0;
+  background:rgba(0,0,0,0.65); z-index:200;
+  align-items:center; justify-content:center; backdrop-filter:blur(4px);
+}
+.map-modal-overlay.open { display:flex; }
+.map-modal {
+  background:var(--surface); border:1px solid var(--border);
+  border-radius:14px; width:92vw; max-width:1100px; height:82vh;
+  display:flex; flex-direction:column; overflow:hidden;
+  box-shadow:0 24px 80px rgba(0,0,0,0.4); animation:modalIn 0.2s ease;
+}
+.map-modal-header {
+  display:flex; align-items:center; justify-content:space-between;
+  padding:14px 20px; border-bottom:1px solid var(--border); flex-shrink:0;
+}
+.map-modal-title { font-size:16px; font-weight:900; color:var(--text); }
+.map-modal-title span { color:var(--red); }
+.map-modal-legend {
+  display:flex; flex-wrap:wrap; gap:8px; padding:10px 20px 8px;
+  border-bottom:1px solid var(--border); flex-shrink:0;
+}
+.map-legend-item {
+  display:flex; align-items:center; gap:5px;
+  font-size:10px; font-weight:700; color:var(--text-muted);
+}
+.map-legend-dot { width:10px; height:10px; border-radius:50%; flex-shrink:0; }
+#mapContainer { flex:1; min-height:0; }
+.map-day-btn {
+  display:inline-flex; align-items:center; gap:4px;
+  font-size:9px; font-weight:800; padding:2px 7px; border-radius:4px;
+  background:transparent; border:1px solid var(--border-mid);
+  color:var(--text-muted); cursor:pointer; letter-spacing:0.04em;
+  transition:background 0.1s, color 0.1s; margin-left:6px; vertical-align:middle;
+}
+.map-day-btn:hover { background:var(--red); color:#fff; border-color:var(--red); }
+
 /* ── MODALS (shared) ── */
 .modal-overlay {
   display:none; position:fixed; inset:0;
@@ -581,6 +800,29 @@ h1 span { color: var(--red); }
 .skill-opt[data-skill="4"].selected { background:var(--skill4); border-color:var(--skill4); }
 .modal-actions { display:flex; gap:0.75rem; margin-top:1.75rem; }
 .modal-actions .btn { flex:1; justify-content:center; }
+
+/* Settings modal */
+.btn-settings { font-size:16px; padding:0 10px; min-width:36px; }
+.settings-tabs { display:flex; gap:4px; margin-bottom:1.2rem; border-bottom:2px solid var(--border); padding-bottom:0; }
+.stab { background:none; border:none; border-bottom:2px solid transparent; margin-bottom:-2px; padding:6px 14px; font:600 11px/1 var(--font); color:var(--text-muted); cursor:pointer; letter-spacing:.04em; text-transform:uppercase; transition:color .15s,border-color .15s; }
+.stab:hover { color:var(--text); }
+.stab.active { color:var(--red); border-bottom-color:var(--red); }
+.stab-panel { min-height:160px; }
+.stab-panel.hidden { display:none; }
+.settings-hint { font-size:11px; color:var(--text-muted); margin:0 0 1rem; line-height:1.6; }
+.weight-grid { display:flex; flex-direction:column; gap:8px; }
+.weight-row { display:flex; align-items:center; gap:10px; }
+.weight-label { font-size:12px; font-weight:600; color:var(--text); width:110px; flex-shrink:0; }
+.weight-input { width:68px; text-align:right; }
+.weight-unit { font-size:12px; color:var(--text-muted); }
+.weight-total { margin-top:10px; font-size:11px; font-weight:700; letter-spacing:.04em; }
+.weight-total.ok { color:var(--teal); }
+.weight-total.warn { color:var(--amber); }
+.s-tech-row { display:flex; align-items:center; gap:8px; background:var(--surface); border:1px solid var(--border); border-radius:6px; padding:6px 10px; }
+.s-tech-name { flex:1; font-size:12px; font-weight:600; color:var(--text); }
+.s-tech-skill { font-size:10px; color:var(--text-muted); background:var(--bg); border:1px solid var(--border); border-radius:4px; padding:2px 7px; }
+.s-tech-del { background:none; border:none; cursor:pointer; color:var(--text-muted); font-size:14px; padding:0 4px; }
+.s-tech-del:hover { color:var(--red); }
 .form-error { color:var(--red); font-size:11px; margin-top:0.4rem; display:none; font-weight:600; }
 .form-error.show { display:block; }
 
@@ -618,11 +860,137 @@ h1 span { color: var(--red); }
 }
 .overbook-info strong { color:var(--amber); }
 
-@media(max-width:768px){
-  .overview{grid-template-columns:1fr;}
-  .bottom-grid{grid-template-columns:1fr;}
-  .header{flex-direction:column;gap:1rem;}
-  .form-row{grid-template-columns:1fr;}
+/* ══════════════════════════════════════════
+   MOBILE RESPONSIVE  ≤ 768px
+══════════════════════════════════════════ */
+@media (max-width: 768px) {
+
+  /* NAV — hide links, compact brand */
+  .top-nav { padding: 0 1rem; height: 48px; }
+  .top-nav-brand { font-size: 15px; }
+  .top-nav-links { display: none; }
+
+  /* SIDEBAR — hidden by default on mobile, slides in as overlay */
+  .sidebar {
+    top: 48px;
+    transform: translateX(-100%);
+    width: 280px !important;
+    box-shadow: 4px 0 24px rgba(0,0,0,0.18);
+    transition: transform 0.25s cubic-bezier(0.4,0,0.2,1);
+  }
+  .sidebar:not(.collapsed) { transform: translateX(0); }
+  .sidebar.collapsed { transform: translateX(-100%); width: 280px !important; }
+
+  /* Dim overlay behind open sidebar */
+  .sidebar:not(.collapsed)::after {
+    content: '';
+    position: fixed; inset: 0; left: 280px;
+    background: rgba(0,0,0,0.35); z-index: -1;
+  }
+
+  /* Toggle button — always visible, repositions with sidebar */
+  .sidebar-toggle {
+    top: 56px; left: 8px;
+    width: 32px; height: 44px;
+    border-radius: 8px; border: 1px solid var(--border);
+    border-left: 1px solid var(--border);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+    z-index: 52;
+  }
+  .sidebar:not(.collapsed) ~ .main-content .sidebar-toggle,
+  .sidebar-toggle:not(.collapsed) { left: 288px; }
+  .sidebar-toggle.collapsed { left: 8px; }
+
+  /* Main content — full width always */
+  .main-content { margin-left: 0 !important; }
+
+  /* PAGE CONTENT — tighter padding */
+  .page-content { padding: 1rem; }
+
+  /* HEADER — stack vertically, smaller text */
+  .header { flex-direction: column; gap: 0.75rem; margin-bottom: 1rem; }
+  .header-left h1 { font-size: 1.6rem; }
+  .header-left .subtitle { font-size: 11px; }
+  .status-bar { flex-direction: row; align-items: flex-start; flex-wrap: wrap; gap: 6px; }
+  .stat-pill { font-size: 10px; padding: 4px 10px; }
+
+  /* OVERVIEW CARDS — single column, more compact */
+  .overview { grid-template-columns: 1fr; gap: 0.6rem; margin-bottom: 1rem; }
+  .overview-card { padding: 0.9rem 1rem; }
+  .overview-card h3 { font-size: 9px; }
+  .overview-card p { font-size: 11px; }
+
+  /* INCOMING QUEUE — more compact */
+  .incoming-animation { min-height: 70px; }
+  .incoming-col { padding: 10px 12px 8px; }
+  .incoming-chip { padding: 5px 10px; font-size: 10px; }
+  .incoming-chip .chip-name { font-size: 11px; }
+  #jobs { height: 90px; padding: 8px 10px; gap: 5px; }
+  .job-chip { padding: 4px 10px; font-size: 10px; }
+
+  /* CONTROLS — wrap tightly, smaller buttons */
+  .calls-controls { gap: 6px; padding: 10px 12px; }
+  .calls-controls .btn { padding: 6px 12px; font-size: 10px; }
+
+  /* CALENDAR TABLE — horizontal scroll, no min-width enforcement */
+  .calendar-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  .cal-header-cell { padding: 6px 8px !important; font-size: 9px !important; }
+  .day-col-name { font-size: 9px !important; }
+  .map-day-btn { font-size: 8px !important; padding: 1px 5px !important; margin-left: 3px; }
+  .tech-row-header { min-width: 110px !important; max-width: 120px !important; padding: 6px 8px !important; }
+  .tech-name { font-size: 10px !important; }
+  .tech-skill-label { font-size: 8px !important; }
+  .tech-day-bars { display: none; } /* hide utilisation bars — too cramped */
+  .cal-cell { min-width: 90px !important; padding: 4px !important; }
+
+  /* JOB CARDS — reduce height tiers */
+  .cal-job { font-size: 9px !important; padding: 5px 8px !important; }
+  .job-details { font-size: 8px !important; }
+  .win-divider { padding: 2px 0 !important; }
+  .win-label { font-size: 7px !important; }
+  .drive-block { min-height: 14px !important; }
+  .drive-label { font-size: 8px !important; }
+
+  /* OVERFLOW — compact */
+  .overflow-panel { padding: 0.6rem 0.8rem !important; }
+  .overflow-chip { padding: 4px 10px; font-size: 10px; }
+
+  /* MODALS — full screen on mobile */
+  .modal-overlay { align-items: flex-end; }
+  .modal {
+    width: 100% !important; max-width: 100% !important;
+    border-radius: 16px 16px 0 0 !important;
+    max-height: 90vh; overflow-y: auto;
+    padding: 1.5rem 1.25rem;
+  }
+  .modal.wide { width: 100% !important; }
+
+  /* MAP MODAL — full screen */
+  .map-modal {
+    width: 100vw !important; max-width: 100vw !important;
+    height: 100vh !important; border-radius: 0 !important;
+  }
+  .map-modal-header { padding: 10px 14px; }
+  .map-modal-title { font-size: 14px; }
+  .map-modal-legend { padding: 6px 14px; gap: 6px; }
+
+  /* SETTINGS MODAL */
+  .settings-panel { padding: 1rem !important; }
+
+  /* BOTTOM GRID */
+  .bottom-grid { grid-template-columns: 1fr; }
+
+  /* FORM ROWS */
+  .form-row { grid-template-columns: 1fr; }
+}
+
+/* Extra small — ≤ 400px */
+@media (max-width: 400px) {
+  .top-nav-brand { font-size: 13px; }
+  .page-content { padding: 0.75rem; }
+  .calls-controls .btn { padding: 5px 9px; font-size: 9px; }
+  .tech-row-header { min-width: 90px !important; max-width: 95px !important; }
+  .tech-name { font-size: 9px !important; }
 }
 </style>
 </head>
@@ -640,6 +1008,466 @@ h1 span { color: var(--red); }
   </div>
 </nav>
 
+<div class="app-layout">
+
+<!-- SIDEBAR TOGGLE -->
+<button class="sidebar-toggle" id="sidebarToggle" onclick="toggleSidebar()" title="Toggle guide">&#10094;</button>
+
+<!-- FEATURE GUIDE SIDEBAR -->
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-inner">
+
+    <div class="sb-header">
+      <div class="sb-logo">RED <span>Dispatch</span></div>
+      <div class="sb-tagline">Feature Guide &amp; Documentation</div>
+    </div>
+
+    <!-- OVERVIEW -->
+    <div class="sb-section open" id="sb-overview">
+      <button class="sb-section-trigger" onclick="toggleSbSection('sb-overview')">
+        <span class="sb-section-title">
+          <span class="sb-section-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#C0152A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></span>
+          Getting Started
+        </span>
+        <span class="sb-chevron">▼</span>
+      </button>
+      <div class="sb-section-body">
+        <p class="sb-desc">RED Dispatch Scheduler is a real-time intelligent dispatch engine. It simulates an incoming call center and automatically assigns every service call to the right technician, on the right day, in the most geographically efficient order.</p>
+
+        <div class="sb-stat-row">
+          <div class="sb-stat"><div class="sb-stat-val">9</div><div class="sb-stat-label">Technicians</div></div>
+          <div class="sb-stat"><div class="sb-stat-val">7</div><div class="sb-stat-label">Days</div></div>
+          <div class="sb-stat"><div class="sb-stat-val">90</div><div class="sb-stat-label">Default Calls</div></div>
+        </div>
+
+        <div class="sb-step">
+          <div class="sb-step-num">1</div>
+          <div class="sb-step-content">
+            <div class="sb-step-title">Run the Schedule</div>
+            <div class="sb-step-desc">Press <strong>▶ Run Schedule</strong>. Calls arrive one-by-one and are dispatched in real time. Watch the queue drain as jobs populate the calendar grid.</div>
+          </div>
+        </div>
+        <div class="sb-step">
+          <div class="sb-step-num">2</div>
+          <div class="sb-step-content">
+            <div class="sb-step-title">Review &amp; Adjust</div>
+            <div class="sb-step-desc">Click any job card to see full details. Drag unconfirmed jobs to reposition them. Use overflow chips to manually place jobs the algorithm couldn't fit.</div>
+          </div>
+        </div>
+        <div class="sb-step">
+          <div class="sb-step-num">3</div>
+          <div class="sb-step-content">
+            <div class="sb-step-title">Inspect Routes</div>
+            <div class="sb-step-desc">Click the <strong>📍 Map</strong> button on any day column to open a live map showing all technician routes for that day with color-coded paths.</div>
+          </div>
+        </div>
+
+        <div class="sb-callout">
+          <strong>Pro tip:</strong> Press <strong>⏩ Fast</strong> during a run to jump to 100× speed and fill the schedule instantly.
+        </div>
+      </div>
+    </div>
+
+    <!-- SMART SCHEDULING -->
+    <div class="sb-section" id="sb-scheduling">
+      <button class="sb-section-trigger" onclick="toggleSbSection('sb-scheduling')">
+        <span class="sb-section-title">
+          <span class="sb-section-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#C0152A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg></span>
+          Algorithm &amp; Scheduling
+        </span>
+        <span class="sb-chevron">▼</span>
+      </button>
+      <div class="sb-section-body">
+        <p class="sb-desc">The scheduling engine evaluates every available technician slot for each incoming call and picks the best fit using a weighted scoring system.</p>
+
+        <div class="sb-callout teal">
+          <strong>Scoring formula:</strong> Earlier days are preferred, then fuller cells (pack before opening new days), then geographic proximity. Skill mismatch and drive time violations are hard disqualifiers.
+        </div>
+
+        <div class="sb-step">
+          <div class="sb-step-num">1</div>
+          <div class="sb-step-content">
+            <div class="sb-step-title">Skill Filter</div>
+            <div class="sb-step-desc">Any tech whose skill level is below the job's requirement is immediately excluded. A New tech cannot take a Specialist call.</div>
+          </div>
+        </div>
+        <div class="sb-step">
+          <div class="sb-step-num">2</div>
+          <div class="sb-step-content">
+            <div class="sb-step-title">Capacity Check</div>
+            <div class="sb-step-desc">The algorithm checks if the job + its drive time fits within the tech's remaining day capacity. Default workday is 9 hours. Configurable in Settings.</div>
+          </div>
+        </div>
+        <div class="sb-step">
+          <div class="sb-step-num">3</div>
+          <div class="sb-step-content">
+            <div class="sb-step-title">Drive Time Check</div>
+            <div class="sb-step-desc">If placing the job would create any single transit leg over 30 minutes, that slot is skipped. Drive time is calculated using real Haversine distances × a 1.35 road factor at 28 mph.</div>
+          </div>
+        </div>
+        <div class="sb-step">
+          <div class="sb-step-num">4</div>
+          <div class="sb-step-content">
+            <div class="sb-step-title">Best Score Wins</div>
+            <div class="sb-step-desc">Remaining valid slots are ranked. The lowest score (earliest day, fuller cell, closest address) wins. Jobs within a cell are then re-sorted largest→smallest.</div>
+          </div>
+        </div>
+
+        <hr class="sb-divider">
+        <div class="sb-kv"><span class="sb-kv-key">Max drive leg</span><span class="sb-kv-val">30 min</span></div>
+        <div class="sb-kv"><span class="sb-kv-key">Avg road speed</span><span class="sb-kv-val">28 mph</span></div>
+        <div class="sb-kv"><span class="sb-kv-key">Road factor</span><span class="sb-kv-val">×1.35</span></div>
+        <div class="sb-kv"><span class="sb-kv-key">Overflow</span><span class="sb-kv-val">Unplaced jobs</span></div>
+      </div>
+    </div>
+
+    <!-- TIME WINDOWS -->
+    <div class="sb-section" id="sb-windows">
+      <button class="sb-section-trigger" onclick="toggleSbSection('sb-windows')">
+        <span class="sb-section-title">
+          <span class="sb-section-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#C0152A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></span>
+          Time Windows
+        </span>
+        <span class="sb-chevron">▼</span>
+      </button>
+      <div class="sb-section-body">
+        <p class="sb-desc">Each technician's day is divided into three arrival windows. When a job is placed, it is automatically stamped with its window based on how many hours of work precede it. Customers are told their window — not an exact time — reducing scheduling pressure.</p>
+
+        <svg class="sb-feature-img" viewBox="0 0 264 108" xmlns="http://www.w3.org/2000/svg" style="height:90px">
+          <rect width="264" height="108" fill="#1a1a1f"/>
+          <rect x="8" y="8" width="248" height="28" rx="4" fill="#252528" stroke="#C0152A" stroke-width="1" stroke-opacity="0.4"/>
+          <text x="16" y="19" fill="#C0152A" font-size="7" font-family="sans-serif" font-weight="bold">8:00 AM — 11:00 AM</text>
+          <text x="16" y="30" fill="#888" font-size="7" font-family="sans-serif">Morning Window · first jobs of the day</text>
+          <rect x="8" y="42" width="248" height="28" rx="4" fill="#252528" stroke="#2563eb" stroke-width="1" stroke-opacity="0.4"/>
+          <text x="16" y="53" fill="#2563eb" font-size="7" font-family="sans-serif" font-weight="bold">11:00 AM — 2:00 PM</text>
+          <text x="16" y="64" fill="#888" font-size="7" font-family="sans-serif">Midday Window · peak productivity hours</text>
+          <rect x="8" y="76" width="248" height="28" rx="4" fill="#252528" stroke="#16a34a" stroke-width="1" stroke-opacity="0.4"/>
+          <text x="16" y="87" fill="#16a34a" font-size="7" font-family="sans-serif" font-weight="bold">2:00 PM — 5:00 PM</text>
+          <text x="16" y="98" fill="#888" font-size="7" font-family="sans-serif">Afternoon Window · end-of-day jobs</text>
+        </svg>
+
+        <div class="sb-callout">
+          <strong>How windowing works:</strong> The algorithm accumulates job hours for each tech. When the running total crosses 3h (11 AM) or 6h (2 PM), jobs placed after that point receive the next window label. Divider lines appear in the calendar cell at each boundary.
+        </div>
+
+        <div class="sb-kv"><span class="sb-kv-key">Window 1 boundary</span><span class="sb-kv-val">8:00 – 11:00 AM</span></div>
+        <div class="sb-kv"><span class="sb-kv-key">Window 2 boundary</span><span class="sb-kv-val">11:00 AM – 2:00 PM</span></div>
+        <div class="sb-kv"><span class="sb-kv-key">Window 3 boundary</span><span class="sb-kv-val">2:00 – 5:00 PM</span></div>
+        <div class="sb-kv"><span class="sb-kv-key">Overflow window</span><span class="sb-kv-val">Not assigned</span></div>
+      </div>
+    </div>
+
+    <!-- ASAP JOBS -->
+    <div class="sb-section" id="sb-asap">
+      <button class="sb-section-trigger" onclick="toggleSbSection('sb-asap')">
+        <span class="sb-section-title">
+          <span class="sb-section-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#C0152A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg></span>
+          ASAP Jobs
+        </span>
+        <span class="sb-chevron">▼</span>
+      </button>
+      <div class="sb-section-body">
+        <p class="sb-desc">About 5% of incoming calls are flagged ASAP — urgent jobs where the customer needs the earliest possible appointment. ASAP jobs behave differently from standard confirmed jobs in several key ways.</p>
+
+        <div class="sb-callout amber">
+          <strong>Visual cues:</strong> ASAP jobs have an amber <span style="border:1px solid #d97706;border-radius:3px;padding:0 4px;font-size:9px;font-weight:800;color:#d97706">ASAP</span> badge instead of a lock icon, and a <strong>dashed left border</strong> to distinguish them at a glance.
+        </div>
+
+        <div class="sb-step">
+          <div class="sb-step-num">1</div>
+          <div class="sb-step-content">
+            <div class="sb-step-title">Always Draggable</div>
+            <div class="sb-step-desc">Standard confirmed jobs are locked. ASAP jobs remain draggable at all times so dispatchers can quickly move them if a better slot opens up.</div>
+          </div>
+        </div>
+        <div class="sb-step">
+          <div class="sb-step-num">2</div>
+          <div class="sb-step-content">
+            <div class="sb-step-title">Remove &amp; Replace</div>
+            <div class="sb-step-desc">Click any scheduled job → the detail modal shows ASAP jobs from later days that could fill this slot earlier. Click <strong>Remove &amp; Replace</strong> to execute the swap in one action.</div>
+          </div>
+        </div>
+        <div class="sb-step">
+          <div class="sb-step-num">3</div>
+          <div class="sb-step-content">
+            <div class="sb-step-title">Eligibility Rules</div>
+            <div class="sb-step-desc">Only ASAP jobs scheduled on a <em>later</em> day are suggested — moving a job backwards (to an earlier day) is the only valid ASAP optimization. The tech's skill level must also meet the job requirement.</div>
+          </div>
+        </div>
+
+        <div class="sb-kv"><span class="sb-kv-key">Spawn rate</span><span class="sb-kv-val">~5% of calls</span></div>
+        <div class="sb-kv"><span class="sb-kv-key">Lock status</span><span class="sb-kv-val">Never locked</span></div>
+        <div class="sb-kv"><span class="sb-kv-key">Replace direction</span><span class="sb-kv-val">Later → Earlier only</span></div>
+      </div>
+    </div>
+
+    <!-- CONFIRMED JOBS -->
+    <div class="sb-section" id="sb-locked">
+      <button class="sb-section-trigger" onclick="toggleSbSection('sb-locked')">
+        <span class="sb-section-title">
+          <span class="sb-section-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#C0152A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg></span>
+          Confirmed Jobs &amp; Locking
+        </span>
+        <span class="sb-chevron">▼</span>
+      </button>
+      <div class="sb-section-body">
+        <p class="sb-desc">The moment the algorithm places a job, it is considered <strong>confirmed</strong> — the customer has been given a time window and is expecting their technician. Accidental moves could break that promise.</p>
+
+        <div class="sb-callout">
+          <strong>Lock icon 🔒</strong> means this appointment has been communicated to the customer. The card becomes non-draggable and shows a muted padlock badge in the top-right corner.
+        </div>
+
+        <div class="sb-step">
+          <div class="sb-step-num">1</div>
+          <div class="sb-step-content">
+            <div class="sb-step-title">How jobs get confirmed</div>
+            <div class="sb-step-desc">Any job placed by the scheduling algorithm is automatically confirmed. Jobs you manually drag into the calendar are also confirmed on drop.</div>
+          </div>
+        </div>
+        <div class="sb-step">
+          <div class="sb-step-num">2</div>
+          <div class="sb-step-content">
+            <div class="sb-step-title">Removing a confirmed job</div>
+            <div class="sb-step-desc">Click the job card → the detail modal opens. Press <strong>Remove Job</strong> to unconfirm it and send it back to overflow. The slot is then free for reassignment.</div>
+          </div>
+        </div>
+        <div class="sb-step">
+          <div class="sb-step-num">3</div>
+          <div class="sb-step-content">
+            <div class="sb-step-title">Overflow vs. confirmed</div>
+            <div class="sb-step-desc">Jobs in the overflow panel are <em>not</em> confirmed — they haven't been assigned to a tech yet. Drag an overflow chip directly onto any calendar cell to place and confirm it.</div>
+          </div>
+        </div>
+
+        <div class="sb-kv"><span class="sb-kv-key">Set by algorithm</span><span class="sb-kv-val">Automatic</span></div>
+        <div class="sb-kv"><span class="sb-kv-key">Set by manual drop</span><span class="sb-kv-val">On drop</span></div>
+        <div class="sb-kv"><span class="sb-kv-key">Draggable when confirmed</span><span class="sb-kv-val">No (ASAP: yes)</span></div>
+        <div class="sb-kv"><span class="sb-kv-key">Unconfirm via</span><span class="sb-kv-val">Click → Remove Job</span></div>
+      </div>
+    </div>
+
+    <!-- MAP ROUTES -->
+    <div class="sb-section" id="sb-map">
+      <button class="sb-section-trigger" onclick="toggleSbSection('sb-map')">
+        <span class="sb-section-title">
+          <span class="sb-section-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#C0152A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg></span>
+          Route Maps
+        </span>
+        <span class="sb-chevron">▼</span>
+      </button>
+      <div class="sb-section-body">
+        <p class="sb-desc">Every day column has a <strong>📍 Map</strong> button that opens a full-screen interactive map showing every technician's route for that day — color-coded, numbered, and clickable.</p>
+
+        <svg class="sb-feature-img" viewBox="0 0 264 100" xmlns="http://www.w3.org/2000/svg" style="height:82px">
+          <rect width="264" height="100" fill="#1a2033"/>
+          <line x1="30" y1="75" x2="90" y2="40" stroke="#C0152A" stroke-width="2.5"/>
+          <line x1="90" y1="40" x2="160" y2="65" stroke="#C0152A" stroke-width="2.5"/>
+          <line x1="50" y1="30" x2="130" y2="55" stroke="#2563eb" stroke-width="2.5"/>
+          <line x1="130" y1="55" x2="220" y2="35" stroke="#2563eb" stroke-width="2.5"/>
+          <circle cx="30" cy="75" r="7" fill="#C0152A" stroke="#fff" stroke-width="1.5"/>
+          <circle cx="90" cy="40" r="7" fill="#C0152A" stroke="#fff" stroke-width="1.5"/>
+          <circle cx="160" cy="65" r="7" fill="#C0152A" stroke="#fff" stroke-width="1.5"/>
+          <circle cx="50" cy="30" r="7" fill="#2563eb" stroke="#fff" stroke-width="1.5"/>
+          <circle cx="130" cy="55" r="7" fill="#2563eb" stroke="#fff" stroke-width="1.5"/>
+          <circle cx="220" cy="35" r="7" fill="#2563eb" stroke="#fff" stroke-width="1.5"/>
+          <text x="30" y="78" text-anchor="middle" fill="#fff" font-size="7" font-weight="bold">1</text>
+          <text x="90" y="43" text-anchor="middle" fill="#fff" font-size="7" font-weight="bold">2</text>
+          <text x="160" y="68" text-anchor="middle" fill="#fff" font-size="7" font-weight="bold">3</text>
+          <text x="50" y="33" text-anchor="middle" fill="#fff" font-size="7" font-weight="bold">1</text>
+          <text x="130" y="58" text-anchor="middle" fill="#fff" font-size="7" font-weight="bold">2</text>
+          <text x="220" y="38" text-anchor="middle" fill="#fff" font-size="7" font-weight="bold">3</text>
+          <text x="132" y="95" text-anchor="middle" fill="#555" font-size="7" font-family="sans-serif">Two techs, color-coded numbered routes</text>
+        </svg>
+
+        <div class="sb-step">
+          <div class="sb-step-num">1</div>
+          <div class="sb-step-content">
+            <div class="sb-step-title">Open a Day Map</div>
+            <div class="sb-step-desc">Click <strong>📍 Map</strong> next to any day in the calendar header. The map opens centered on SW Florida showing all scheduled routes for that day.</div>
+          </div>
+        </div>
+        <div class="sb-step">
+          <div class="sb-step-num">2</div>
+          <div class="sb-step-content">
+            <div class="sb-step-title">Read the Routes</div>
+            <div class="sb-step-desc">Each technician gets a unique color. Numbered circle markers show stop order. Lines connect stops sequentially. The map auto-fits to show all stops.</div>
+          </div>
+        </div>
+        <div class="sb-step">
+          <div class="sb-step-num">3</div>
+          <div class="sb-step-content">
+            <div class="sb-step-title">Click Any Stop</div>
+            <div class="sb-step-desc">Clicking a numbered marker opens a popup with the customer name, address, job duration, required skill level, and assigned technician name.</div>
+          </div>
+        </div>
+
+        <div class="sb-kv"><span class="sb-kv-key">Map provider</span><span class="sb-kv-val">OpenStreetMap</span></div>
+        <div class="sb-kv"><span class="sb-kv-key">Coverage area</span><span class="sb-kv-val">Parrish → Cape Coral</span></div>
+        <div class="sb-kv"><span class="sb-kv-key">Lines</span><span class="sb-kv-val">Straight (point-to-point)</span></div>
+        <div class="sb-kv"><span class="sb-kv-key">Techs with no jobs</span><span class="sb-kv-val">Hidden from map</span></div>
+      </div>
+    </div>
+
+    <!-- SKILL LEVELS -->
+    <div class="sb-section" id="sb-skills">
+      <button class="sb-section-trigger" onclick="toggleSbSection('sb-skills')">
+        <span class="sb-section-title">
+          <span class="sb-section-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#C0152A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></span>
+          Skill Levels
+        </span>
+        <span class="sb-chevron">▼</span>
+      </button>
+      <div class="sb-section-body">
+        <p class="sb-desc">Every service call has a minimum skill requirement. Technicians hold a certification level and can only be assigned jobs at or below that level. A higher-skilled tech can always take a simpler job — not the reverse.</p>
+
+        <div style="display:flex;flex-direction:column;gap:6px;margin-bottom:12px">
+          <div style="background:var(--surface2);border:1px solid var(--border);border-left:3px solid var(--skill4);border-radius:0 6px 6px 0;padding:7px 10px">
+            <div style="display:flex;align-items:center;gap:7px;margin-bottom:3px">
+              <div style="width:9px;height:9px;border-radius:50%;background:var(--skill4);flex-shrink:0"></div>
+              <strong style="font-size:11px;color:var(--text)">Expert</strong>
+              <span style="font-size:9px;color:var(--text-muted);margin-left:auto">Level 4</span>
+            </div>
+            <div style="font-size:10px;color:var(--text-muted)">Can take all job types. Required for 6-hour complex jobs. Typically Jason Neff. ~3% of incoming calls.</div>
+          </div>
+          <div style="background:var(--surface2);border:1px solid var(--border);border-left:3px solid var(--skill3);border-radius:0 6px 6px 0;padding:7px 10px">
+            <div style="display:flex;align-items:center;gap:7px;margin-bottom:3px">
+              <div style="width:9px;height:9px;border-radius:50%;background:var(--skill3);flex-shrink:0"></div>
+              <strong style="font-size:11px;color:var(--text)">Pro</strong>
+              <span style="font-size:9px;color:var(--text-muted);margin-left:auto">Level 3</span>
+            </div>
+            <div style="font-size:10px;color:var(--text-muted)">Advanced calls and 4-hour jobs. Can take Specialist and New calls. ~0% default (adjustable in Settings).</div>
+          </div>
+          <div style="background:var(--surface2);border:1px solid var(--border);border-left:3px solid var(--skill2);border-radius:0 6px 6px 0;padding:7px 10px">
+            <div style="display:flex;align-items:center;gap:7px;margin-bottom:3px">
+              <div style="width:9px;height:9px;border-radius:50%;background:var(--skill2);flex-shrink:0"></div>
+              <strong style="font-size:11px;color:var(--text)">Specialist</strong>
+              <span style="font-size:9px;color:var(--text-muted);margin-left:auto">Level 2</span>
+            </div>
+            <div style="font-size:10px;color:var(--text-muted)">The most common tech tier. Handles the majority of calls (~57%). Can take New-level calls too.</div>
+          </div>
+          <div style="background:var(--surface2);border:1px solid var(--border);border-left:3px solid var(--skill1);border-radius:0 6px 6px 0;padding:7px 10px">
+            <div style="display:flex;align-items:center;gap:7px;margin-bottom:3px">
+              <div style="width:9px;height:9px;border-radius:50%;background:var(--skill1);flex-shrink:0"></div>
+              <strong style="font-size:11px;color:var(--text)">New</strong>
+              <span style="font-size:9px;color:var(--text-muted);margin-left:auto">Level 1</span>
+            </div>
+            <div style="font-size:10px;color:var(--text-muted)">Entry-level calls only (~40% of calls). Cannot take 6-hour jobs under any circumstances. Great for high-volume simple tasks.</div>
+          </div>
+        </div>
+
+        <div class="sb-callout">
+          <strong>Skill mismatch warning:</strong> If you manually drag a job onto a tech who lacks the required skill, a warning modal appears asking you to confirm or cancel. The algorithm never makes this mistake automatically.
+        </div>
+
+        <div class="sb-kv"><span class="sb-kv-key">6h jobs → New tech</span><span class="sb-kv-val">Always blocked</span></div>
+        <div class="sb-kv"><span class="sb-kv-key">Higher skill → lower job</span><span class="sb-kv-val">Always allowed</span></div>
+        <div class="sb-kv"><span class="sb-kv-key">Mismatch on drag</span><span class="sb-kv-val">Warning shown</span></div>
+      </div>
+    </div>
+
+    <!-- DRAG & DROP -->
+    <div class="sb-section" id="sb-drag">
+      <button class="sb-section-trigger" onclick="toggleSbSection('sb-drag')">
+        <span class="sb-section-title">
+          <span class="sb-section-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#C0152A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="5 9 2 12 5 15"/><polyline points="9 5 12 2 15 5"/><polyline points="15 19 12 22 9 19"/><polyline points="19 9 22 12 19 15"/><line x1="2" y1="12" x2="22" y2="12"/><line x1="12" y1="2" x2="12" y2="22"/></svg></span>
+          Drag &amp; Drop
+        </span>
+        <span class="sb-chevron">▼</span>
+      </button>
+      <div class="sb-section-body">
+        <p class="sb-desc">The calendar supports full drag-and-drop for manual dispatch adjustments. Jobs in the queue, overflow panel, and ASAP calendar cards can all be repositioned.</p>
+
+        <div class="sb-step">
+          <div class="sb-step-num">1</div>
+          <div class="sb-step-content">
+            <div class="sb-step-title">Dragging from the Queue</div>
+            <div class="sb-step-desc">Unscheduled chips in the incoming queue can be dragged directly onto any calendar cell. The algorithm will check skill and capacity — mismatches trigger a warning.</div>
+          </div>
+        </div>
+        <div class="sb-step">
+          <div class="sb-step-num">2</div>
+          <div class="sb-step-content">
+            <div class="sb-step-title">Dragging from Overflow</div>
+            <div class="sb-step-desc">Jobs the algorithm couldn't place land in overflow. Drag them onto the calendar at any time. If the cell is over capacity you'll see a confirmation warning before placing.</div>
+          </div>
+        </div>
+        <div class="sb-step">
+          <div class="sb-step-num">3</div>
+          <div class="sb-step-content">
+            <div class="sb-step-title">Moving ASAP Cards</div>
+            <div class="sb-step-desc">ASAP-flagged cards already on the calendar remain draggable. Drag them to any valid cell — confirmed status transfers to the new location automatically.</div>
+          </div>
+        </div>
+
+        <div class="sb-callout amber">
+          <strong>Confirmed cards</strong> (non-ASAP) show a lock icon and <strong>cannot be dragged</strong>. To move one, click it → Remove Job → then drag the overflow chip to the new location.
+        </div>
+
+        <div class="sb-kv"><span class="sb-kv-key">Queue chips</span><span class="sb-kv-val">Always draggable</span></div>
+        <div class="sb-kv"><span class="sb-kv-key">Overflow chips</span><span class="sb-kv-val">Always draggable</span></div>
+        <div class="sb-kv"><span class="sb-kv-key">Confirmed cards</span><span class="sb-kv-val">Locked — not draggable</span></div>
+        <div class="sb-kv"><span class="sb-kv-key">ASAP cards</span><span class="sb-kv-val">Always draggable</span></div>
+      </div>
+    </div>
+
+    <!-- SETTINGS -->
+    <div class="sb-section" id="sb-settings">
+      <button class="sb-section-trigger" onclick="toggleSbSection('sb-settings')">
+        <span class="sb-section-title">
+          <span class="sb-section-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#C0152A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg></span>
+          Settings &amp; Configuration
+        </span>
+        <span class="sb-chevron">▼</span>
+      </button>
+      <div class="sb-section-body">
+        <p class="sb-desc">Click <strong>⚙</strong> in the dispatch controls to open the Settings panel. Changes take effect immediately and reset the calendar for a fresh run with the new parameters.</p>
+
+        <div class="sb-step">
+          <div class="sb-step-num">1</div>
+          <div class="sb-step-content">
+            <div class="sb-step-title">Call Duration Weights</div>
+            <div class="sb-step-desc">Control what percentage of incoming calls are 1h, 2h, 3h, 4h, or 6h jobs. Default: 1% / 1% / 40% / 50% / 8%. Higher 6h weight stresses the Expert tech more.</div>
+          </div>
+        </div>
+        <div class="sb-step">
+          <div class="sb-step-num">2</div>
+          <div class="sb-step-content">
+            <div class="sb-step-title">Skill Level Weights</div>
+            <div class="sb-step-desc">Set the probability mix for New / Specialist / Pro / Expert calls. Default: 40% / 57% / 0% / 3%. Increase Expert weight to create more scheduling pressure.</div>
+          </div>
+        </div>
+        <div class="sb-step">
+          <div class="sb-step-num">3</div>
+          <div class="sb-step-content">
+            <div class="sb-step-title">Hours Per Day &amp; Call Count</div>
+            <div class="sb-step-desc">Adjust the workday length (default 9h) and total calls generated per run (default 90). Longer days = more capacity. More calls = more overflow pressure.</div>
+          </div>
+        </div>
+        <div class="sb-step">
+          <div class="sb-step-num">4</div>
+          <div class="sb-step-content">
+            <div class="sb-step-title">Technician Roster</div>
+            <div class="sb-step-desc">Add or remove technicians and set their skill levels. The calendar columns adjust automatically. Default roster has 1 Expert, 1 Pro, 6 Specialists, 1 New.</div>
+          </div>
+        </div>
+
+        <div class="sb-callout">
+          <strong>Applying settings</strong> clears the current schedule and resets all state. Make sure to save any data you need before clicking Apply.
+        </div>
+
+        <div class="sb-kv"><span class="sb-kv-key">Default call count</span><span class="sb-kv-val">90 calls</span></div>
+        <div class="sb-kv"><span class="sb-kv-key">Default day length</span><span class="sb-kv-val">9 hours</span></div>
+        <div class="sb-kv"><span class="sb-kv-key">Default roster</span><span class="sb-kv-val">9 technicians</span></div>
+        <div class="sb-kv"><span class="sb-kv-key">Settings location</span><span class="sb-kv-val">⚙ button, bottom-right</span></div>
+      </div>
+    </div>
+
+    <div class="sb-footer">RED Dispatch Scheduler · Demo Build<br>Southwest Florida Coverage Area</div>
+  </div>
+</aside>
+
+<!-- MAIN CONTENT -->
+<div class="main-content" id="mainContent">
 <div class="wrapper">
 <div class="page-content">
 
@@ -653,7 +1481,7 @@ h1 span { color: var(--red); }
     <div class="status-bar">
       <div class="stat-pill"><span>Technicians</span><strong id="techStatCount">4</strong></div>
       <div class="stat-pill"><span>Days</span><strong>5</strong></div>
-      <div class="stat-pill"><span>Capacity</span><strong>8 hrs/day</strong></div>
+      <div class="stat-pill"><span>Capacity</span><strong id="capacityStat">9 hrs/day</strong></div>
     </div>
   </div>
 
@@ -728,6 +1556,7 @@ h1 span { color: var(--red); }
       <button class="btn btn-call" onclick="openCallModal()">📞 Create Call</button>
       <button class="btn btn-add" onclick="openTechModal()">+ Add Tech</button>
       <button class="btn btn-secondary" onclick="resetAll()">✕ Clear</button>
+      <button class="btn btn-secondary btn-settings" onclick="openSettings()" title="Settings">⚙</button>
     </div>
     </div>
   </div>
@@ -761,6 +1590,9 @@ h1 span { color: var(--red); }
   </div>
 
 </div><!-- /page-content -->
+</div><!-- /wrapper -->
+</div><!-- /main-content -->
+</div><!-- /app-layout -->
 </div><!-- /wrapper -->
 
 <!-- ══════════════════════════════════════════
@@ -804,9 +1636,9 @@ h1 span { color: var(--red); }
         <div class="form-error" id="callNameError">Please enter a job name.</div>
       </div>
       <div class="form-group">
-        <label class="form-label" for="callLocInput">Location (0–250)</label>
-        <input class="form-input" id="callLocInput" type="number" min="0" max="250" placeholder="e.g. 85" autocomplete="off">
-        <div class="form-error" id="callLocError">Enter a location 0–250.</div>
+        <label class="form-label" for="callLocInput">Address (Sarasota)</label>
+        <input class="form-input" id="callLocInput" type="text" placeholder="e.g. 1800 Main St, Sarasota" autocomplete="off">
+        <div class="form-error" id="callLocError">Enter a Sarasota address.</div>
       </div>
     </div>
     <div class="form-row">
@@ -879,55 +1711,257 @@ h1 span { color: var(--red); }
 </div>
 
 
+<!-- ══════════════════════════════════════════
+     JOB DETAIL MODAL
+══════════════════════════════════════════ -->
+<div class="modal-overlay" id="jobDetailOverlay" onclick="closeJobDetailOutside(event)">
+  <div class="modal" style="max-width:420px">
+    <div class="modal-title" id="jobDetailTitle">Job <span>Details</span></div>
+    <div id="jobDetailBody" style="margin-bottom:1.2rem"></div>
+    <div id="asapSuggestSection" style="display:none">
+      <div style="font-size:11px;font-weight:700;color:var(--text-muted);letter-spacing:0.05em;text-transform:uppercase;margin-bottom:0.5rem">ASAP Replacements Available</div>
+      <div id="asapSuggestList" style="display:flex;flex-direction:column;gap:6px;max-height:200px;overflow-y:auto"></div>
+    </div>
+    <div id="asapNoneSection" style="display:none;font-size:11px;color:var(--text-muted);margin-bottom:0.8rem">No ASAP jobs currently in overflow or queue.</div>
+    <div class="modal-actions">
+      <button class="btn btn-secondary" onclick="closeJobDetail()">Cancel</button>
+      <button class="btn" id="jobDetailDeleteBtn" style="background:var(--red);color:#fff;font-weight:700;" onclick="confirmDeleteJob()">✕ Remove Job</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     SETTINGS MODAL
+══════════════════════════════════════════ -->
+<div class="modal-overlay" id="settingsModalOverlay" onclick="closeSettingsOutside(event)">
+  <div class="modal wide" style="max-width:560px">
+    <div class="modal-title" style="color:var(--text)">⚙ <span>Settings</span></div>
+
+    <!-- TABS -->
+    <div class="settings-tabs">
+      <button class="stab active" id="stab-duration" onclick="switchSettingsTab('duration')">Call Duration</button>
+      <button class="stab" id="stab-skill"    onclick="switchSettingsTab('skill')">Skill Weights</button>
+      <button class="stab" id="stab-general"  onclick="switchSettingsTab('general')">General</button>
+    </div>
+
+    <!-- TAB: DURATION WEIGHTS -->
+    <div class="stab-panel" id="spanel-duration">
+      <p class="settings-hint">Set the probability of each job duration. Values auto-normalize to 100%.</p>
+      <div class="weight-grid">
+        <div class="weight-row"><span class="weight-label">1 hour</span><input class="weight-input" id="w-dur-1" type="number" min="0" max="100" value="1" oninput="updateDurTotal()"><span class="weight-unit">%</span></div>
+        <div class="weight-row"><span class="weight-label">2 hours</span><input class="weight-input" id="w-dur-2" type="number" min="0" max="100" value="1" oninput="updateDurTotal()"><span class="weight-unit">%</span></div>
+        <div class="weight-row"><span class="weight-label">3 hours</span><input class="weight-input" id="w-dur-3" type="number" min="0" max="100" value="40" oninput="updateDurTotal()"><span class="weight-unit">%</span></div>
+        <div class="weight-row"><span class="weight-label">4 hours</span><input class="weight-input" id="w-dur-4" type="number" min="0" max="100" value="50" oninput="updateDurTotal()"><span class="weight-unit">%</span></div>
+        <div class="weight-row"><span class="weight-label">6 hours</span><input class="weight-input" id="w-dur-6" type="number" min="0" max="100" value="8" oninput="updateDurTotal()"><span class="weight-unit">%</span></div>
+      </div>
+      <div class="weight-total" id="dur-total">Total: 110%</div>
+    </div>
+
+    <!-- TAB: SKILL WEIGHTS -->
+    <div class="stab-panel hidden" id="spanel-skill">
+      <p class="settings-hint">Set the probability of each required skill level. Values auto-normalize to 100%.</p>
+      <div class="weight-grid">
+        <div class="weight-row"><span class="weight-label">New (1)</span><input class="weight-input" id="w-sk-1" type="number" min="0" max="100" value="40" oninput="updateSkTotal()"><span class="weight-unit">%</span></div>
+        <div class="weight-row"><span class="weight-label">Specialist (2)</span><input class="weight-input" id="w-sk-2" type="number" min="0" max="100" value="57" oninput="updateSkTotal()"><span class="weight-unit">%</span></div>
+        <div class="weight-row"><span class="weight-label">Pro (3)</span><input class="weight-input" id="w-sk-3" type="number" min="0" max="100" value="0" oninput="updateSkTotal()"><span class="weight-unit">%</span></div>
+        <div class="weight-row"><span class="weight-label">Expert (4)</span><input class="weight-input" id="w-sk-4" type="number" min="0" max="100" value="3" oninput="updateSkTotal()"><span class="weight-unit">%</span></div>
+      </div>
+      <div class="weight-total" id="sk-total">Total: 100%</div>
+    </div>
+
+    <!-- TAB: GENERAL -->
+    <div class="stab-panel hidden" id="spanel-general">
+      <div class="form-group" style="margin-bottom:1.2rem">
+        <label class="form-label">Hours per work day</label>
+        <div style="display:flex;align-items:center;gap:10px">
+          <input class="form-input" id="s-hours-day" type="number" min="1" max="24" value="9" style="width:80px">
+          <span style="font-size:12px;color:var(--text-muted)">hours (currently <strong id="s-hours-current">9h</strong>)</span>
+        </div>
+      </div>
+
+      <div class="form-group" style="margin-bottom:1.2rem">
+        <label class="form-label">Calls per test run</label>
+        <div style="display:flex;align-items:center;gap:10px">
+          <input class="form-input" id="s-call-count" type="number" min="1" max="200" value="90" style="width:80px">
+          <span style="font-size:12px;color:var(--text-muted)">calls generated when you press Run Schedule</span>
+        </div>
+      </div>
+
+      <label class="form-label" style="margin-bottom:0.5rem;display:block">Technicians</label>
+      <div id="s-tech-list" style="display:flex;flex-direction:column;gap:6px;margin-bottom:1rem"></div>
+      <div style="display:flex;gap:8px;align-items:center">
+        <input class="form-input" id="s-tech-name" type="text" placeholder="Name" style="flex:1" autocomplete="off">
+        <div class="skill-picker" id="s-tech-skill-picker" style="flex-shrink:0">
+          <button class="skill-opt" data-skill="1" onclick="sSelectSkill(1)">New</button>
+          <button class="skill-opt" data-skill="2" onclick="sSelectSkill(2)">Spec</button>
+          <button class="skill-opt" data-skill="3" onclick="sSelectSkill(3)">Pro</button>
+          <button class="skill-opt" data-skill="4" onclick="sSelectSkill(4)">Expert</button>
+        </div>
+        <button class="btn btn-add" style="flex-shrink:0" onclick="sAddTech()">+ Add</button>
+      </div>
+      <div class="form-error" id="s-tech-error" style="margin-top:4px"></div>
+    </div>
+
+    <div class="modal-actions" style="margin-top:1.4rem">
+      <button class="btn btn-secondary" onclick="closeSettings()">Cancel</button>
+      <button class="btn btn-primary" onclick="applySettings()">✓ Apply</button>
+    </div>
+  </div>
+</div>
+
 <script>
 // ═══════════════════════════════════════════════════════════════════
 // CONSTANTS & DATA
 // ═══════════════════════════════════════════════════════════════════
-const TIME_IN_DAY = 8;
-const MAX_DRIVE   = 31;
+let TIME_IN_DAY = 9;
+const MAX_DRIVE   = 30;
 const DAYS        = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
 const SK_COLORS   = ['var(--skill1)','var(--skill2)','var(--skill3)','var(--skill4)'];
 const SKILL_NAMES = ['New', 'Specialist', 'Pro', 'Expert'];
 const skillName   = n => SKILL_NAMES[n-1] || `Skill ${n}`;
 
-const JOBS_DATA = [
-  {key:"Marcus Webb",   location:32, skill_level:3,time:7.5},
-  {key:"Diane Flores",  location:156,skill_level:2,time:3.5},
-  {key:"Tariq Okafor",  location:122,skill_level:3,time:5  },
-  {key:"Svetlana Park", location:74, skill_level:2,time:3  },
-  {key:"Jordan Reyes",  location:112,skill_level:1,time:3  },
-  {key:"Chloe Maddox",  location:91, skill_level:2,time:3.5},
-  {key:"Benicio Cruz",  location:18, skill_level:3,time:4  },
-  {key:"Nora Whitfield",location:200,skill_level:2,time:4  },
-  {key:"Isaiah Huang",  location:160,skill_level:1,time:3  },
-  {key:"Priya Nair",    location:74, skill_level:2,time:4  },
-  {key:"Owen Gallagher",location:100,skill_level:3,time:3.8},
-  {key:"Fatima Saleh",  location:136,skill_level:2,time:3.5},
-  {key:"Caleb Morton",  location:32, skill_level:1,time:3.5},
-  {key:"Yuki Tanaka",   location:112,skill_level:2,time:3.5},
-  {key:"Rosa Stanton",  location:74, skill_level:2,time:4  },
-  {key:"Darius Cole",   location:112,skill_level:4,time:5  },
-  {key:"Imogen Shaw",   location:91, skill_level:1,time:3  },
-  {key:"Rafael Lima",   location:18, skill_level:2,time:4  },
-  {key:"Sienna Brooks", location:100,skill_level:2,time:4  },
-  {key:"Tobias Grant",  location:160,skill_level:2,time:4  },
-  {key:"Amara Diallo",  location:74, skill_level:1,time:3  },
-  {key:"Kevin Marsh",   location:100,skill_level:2,time:3.5},
-  {key:"Leila Haddad",  location:156,skill_level:2,time:4  },
-  {key:"Connor Rizzo",  location:32, skill_level:2,time:4.5},
-  {key:"Zoe Nakamura",  location:192,skill_level:1,time:3.5},
-  {key:"Felix Dupont",  location:60, skill_level:2,time:3  },
-  {key:"Hazel Owens",   location:34, skill_level:1,time:3  },
-  {key:"Mateo Vega",    location:120,skill_level:2,time:3  },
-  {key:"Astrid Lund",   location:136,skill_level:2,time:2  },
-  {key:"Devon Archer",  location:52, skill_level:2,time:4  },
-  {key:"Nadia Petrov",  location:10, skill_level:2,time:3  },
-  {key:"Elliot Ware",   location:44, skill_level:1,time:3  },
-  {key:"Camille Roux",  location:140,skill_level:2,time:3.5},
-  {key:"Rory Sinclair", location:126,skill_level:1,time:4  },
-  {key:"Ingrid Wolff",  location:132,skill_level:2,time:4  },
-  {key:"Percy Adeyemi", location:50, skill_level:1,time:1  }
+// ── Configurable weights ──────────────────────────────────────────
+let durWeights  = { 1:1, 2:1, 3:40, 4:50, 6:8 };
+let skillWeights = { 1:40, 2:57, 3:0, 4:3 };
+let callCount   = 90;
+
+function weightedPick(weightMap) {
+  const keys = Object.keys(weightMap).map(Number);
+  const total = keys.reduce((s,k) => s + weightMap[k], 0);
+  if (total === 0) return keys[0];
+  let r = Math.random() * total;
+  for (const k of keys) { r -= weightMap[k]; if (r <= 0) return k; }
+  return keys[keys.length - 1];
+}
+function weightedDuration() { return weightedPick(durWeights); }
+function weightedSkill()    { return weightedPick(skillWeights); }
+
+// ── SW Florida address pool (Parrish → Cape Coral) with lat/lng ──
+const SARASOTA_ADDRESSES = [
+  // Parrish / North Manatee County
+  { addr:'12400 US-301 N, Parrish, FL',        lat:27.5810, lng:-82.4386 },
+  { addr:'9210 Erie Rd, Parrish, FL',           lat:27.5671, lng:-82.4289 },
+  { addr:'4707 Lakeside Dr, Parrish, FL',       lat:27.5756, lng:-82.4462 },
+  // Bradenton
+  { addr:'1001 3rd Ave W, Bradenton, FL',       lat:27.4989, lng:-82.5741 },
+  { addr:'5900 Cortez Rd W, Bradenton, FL',     lat:27.4717, lng:-82.6201 },
+  { addr:'4315 14th St W, Bradenton, FL',       lat:27.4880, lng:-82.5864 },
+  { addr:'3001 Manatee Ave W, Bradenton, FL',   lat:27.5028, lng:-82.5789 },
+  { addr:'6800 Manatee Ave W, Bradenton, FL',   lat:27.5038, lng:-82.6358 },
+  { addr:'2507 53rd Ave E, Bradenton, FL',      lat:27.4544, lng:-82.5192 },
+  // Sarasota
+  { addr:'1800 Main St, Sarasota, FL',          lat:27.3364, lng:-82.5307 },
+  { addr:'2100 Ringling Blvd, Sarasota, FL',    lat:27.3371, lng:-82.5283 },
+  { addr:'4141 S Tamiami Trl, Sarasota, FL',    lat:27.2963, lng:-82.5207 },
+  { addr:'3301 N Tamiami Trl, Sarasota, FL',    lat:27.3699, lng:-82.5346 },
+  { addr:'1250 S Osprey Ave, Sarasota, FL',     lat:27.3210, lng:-82.5298 },
+  { addr:'6630 Gateway Ave, Sarasota, FL',      lat:27.2618, lng:-82.4800 },
+  { addr:'5410 Clark Rd, Sarasota, FL',         lat:27.2695, lng:-82.5031 },
+  { addr:'8383 S Tamiami Trl, Sarasota, FL',    lat:27.2352, lng:-82.5016 },
+  { addr:'1100 University Pkwy, Sarasota, FL',  lat:27.3825, lng:-82.5050 },
+  { addr:'7605 N Tamiami Trl, Sarasota, FL',    lat:27.3970, lng:-82.5425 },
+  { addr:'4000 Cattlemen Rd, Sarasota, FL',     lat:27.3316, lng:-82.4640 },
+  { addr:'3000 Bee Ridge Rd, Sarasota, FL',     lat:27.2986, lng:-82.4935 },
+  { addr:'1717 Fruitville Rd, Sarasota, FL',    lat:27.3383, lng:-82.5133 },
+  { addr:'5765 Beneva Rd, Sarasota, FL',        lat:27.2778, lng:-82.4883 },
+  { addr:'3750 N Beneva Rd, Sarasota, FL',      lat:27.3421, lng:-82.4879 },
+  { addr:'5580 Fruitville Rd, Sarasota, FL',    lat:27.3378, lng:-82.4571 },
+  // Venice
+  { addr:'200 US-41 Bypass S, Venice, FL',      lat:27.0998, lng:-82.4543 },
+  { addr:'1000 Albee Farm Rd, Venice, FL',      lat:27.0913, lng:-82.4358 },
+  { addr:'4350 N River Rd, Venice, FL',         lat:27.1263, lng:-82.4183 },
+  { addr:'980 Tamiami Trl S, Venice, FL',       lat:27.0963, lng:-82.4521 },
+  // North Port
+  { addr:'4400 S Tamiami Trl, North Port, FL',  lat:27.0444, lng:-82.2358 },
+  { addr:'14011 Tamiami Trl, North Port, FL',   lat:27.0557, lng:-82.2399 },
+  { addr:'6541 S Biscayne Dr, North Port, FL',  lat:27.0271, lng:-82.1961 },
+  // Port Charlotte
+  { addr:'1441 Tamiami Trl, Port Charlotte, FL',lat:26.9763, lng:-82.0939 },
+  { addr:'3450 Tamiami Trl, Port Charlotte, FL',lat:26.9841, lng:-82.1188 },
+  { addr:'1000 Kings Hwy, Port Charlotte, FL',  lat:26.9956, lng:-82.0796 },
+  { addr:'4200 Tamiami Trl, Port Charlotte, FL',lat:26.9717, lng:-82.1339 },
+  // Punta Gorda
+  { addr:'100 W Marion Ave, Punta Gorda, FL',   lat:26.9284, lng:-82.0457 },
+  { addr:'3300 Tamiami Trl, Punta Gorda, FL',   lat:26.9109, lng:-82.0541 },
+  { addr:'1701 Tamiami Trl, Punta Gorda, FL',   lat:26.9243, lng:-82.0498 },
+  // Cape Coral
+  { addr:'1404 Cape Coral Pkwy E, Cape Coral, FL', lat:26.5629, lng:-81.9495 },
+  { addr:'2301 Del Prado Blvd S, Cape Coral, FL',  lat:26.5744, lng:-81.9611 },
+  { addr:'1625 SE 47th Ter, Cape Coral, FL',        lat:26.5711, lng:-81.9436 },
+  { addr:'820 SW Pine Island Rd, Cape Coral, FL',   lat:26.6200, lng:-81.9927 },
+  { addr:'4519 SE 15th Ave, Cape Coral, FL',        lat:26.5697, lng:-81.9552 },
 ];
+
+// Haversine distance in miles between two lat/lng points
+function haversineMiles(a, b) {
+  const R = 3958.8;
+  const dLat = (b.lat - a.lat) * Math.PI / 180;
+  const dLng = (b.lng - a.lng) * Math.PI / 180;
+  const s = Math.sin(dLat/2)**2 +
+            Math.cos(a.lat * Math.PI/180) * Math.cos(b.lat * Math.PI/180) *
+            Math.sin(dLng/2)**2;
+  return R * 2 * Math.atan2(Math.sqrt(s), Math.sqrt(1-s));
+}
+
+// Drive time in minutes: road factor 1.35, avg 28 mph in Sarasota
+function driveMinsGeo(locA, locB) {
+  const miles = haversineMiles(locA, locB);
+  return Math.round(miles * 1.35 / 28 * 60);
+}
+
+const CALL_FIRST = ['James','Maria','Tyler','Sofia','Devon','Priya','Marcus','Elena','Jordan','Camille','Eli','Nadia','Rory','Leila','Owen','Zoe','Felix','Hazel','Tobias','Amara','Samuel','Ingrid','Omar','Yuki','Rosa','Darius','Imogen','Rafael','Sienna','Astrid'];
+const CALL_LAST  = ['Johnson','Martinez','Patel','Williams','Chen','Rivera','Thompson','Okafor','Brooks','Nakamura','Walsh','Sinclair','Dupont','Haddad','Gallagher','Stanton','Adeyemi','Wolff','Petrov','Archer','Reyes','Maddox','Cruz','Whitfield','Park','Shaw','Lima','Cole','Grant','Diallo'];
+
+function generateJobs(count=30) {
+  const usedNames = new Set();
+  const jobs = [];
+
+  // Shuffle address pool and cycle through it — no address used twice per batch
+  const addrPool = SARASOTA_ADDRESSES.slice().sort(() => Math.random() - 0.5);
+  // If more jobs than addresses, extend with a second shuffle of the pool
+  while (addrPool.length < count) {
+    addrPool.push(...SARASOTA_ADDRESSES.slice().sort(() => Math.random() - 0.5));
+  }
+  let addrIdx = 0;
+  for (let i = 0; i < count; i++) {
+    let name;
+    do {
+      const f = CALL_FIRST[Math.floor(Math.random()*CALL_FIRST.length)];
+      const l = CALL_LAST[Math.floor(Math.random()*CALL_LAST.length)];
+      name = `${f} ${l}`;
+    } while (usedNames.has(name));
+    usedNames.add(name);
+
+    const time = weightedDuration();
+
+    // Blend base skillWeights with a duration bias multiplier.
+    // Longer jobs softly boost higher skills without forcing them.
+    // Multipliers per skill per duration bucket:
+    const biasMap = {
+      1: { 1:2.0, 2:1.2, 3:0.5, 4:0.2 },
+      2: { 1:2.0, 2:1.2, 3:0.5, 4:0.2 },
+      3: { 1:1.4, 2:1.1, 3:0.8, 4:0.5 },
+      4: { 1:0.8, 2:1.0, 3:1.2, 4:1.0 },
+      6: { 1:0,   2:0.9, 3:1.5, 4:1.2 },
+    };
+    const bias = biasMap[time];
+    const blended = {};
+    for (const s of [1,2,3,4]) blended[s] = skillWeights[s] * bias[s];
+    const skill = weightedPick(blended);
+
+    jobs.push({
+      key: name,
+      location: addrPool[addrIdx++],
+      skill_level: skill,
+      time,
+      _asap: Math.random() < 0.05
+    });
+  }
+  return jobs;
+}
+
+// Keep JOBS_DATA as a reference pool for findJob lookups on manually-created calls
+const JOBS_DATA = generateJobs(30);
 
 const TECH_NAMES = [
   'Ryan Holloway','Brent Tulloch','Marcus Webb','Daniel Price',
@@ -936,16 +1970,18 @@ const TECH_NAMES = [
   'Felix Dupont','Connor Rizzo','Devon Archer','Elliot Ware'
 ];
 function buildRandomTechs() {
-  // Shuffle the name pool and pick 3 names that are not Jason Neff
   const pool = TECH_NAMES.slice().sort(()=>Math.random()-0.5);
   const picked = pool.slice(0,3);
-  // Jason Neff goes in at a random position among 4 techs, each gets a distinct skill level
   const jasonSlot = Math.floor(Math.random()*4);
   const names = [];
   let pi = 0;
   for(let i=0;i<4;i++) names.push(i===jasonSlot ? 'Jason Neff' : picked[pi++]);
-  // Assign skill levels 1-4 in order so each tech has a unique level
-  return names.map((name,i)=>({key:name, skill_level:i+1}));
+  const base = names.map((name,i)=>({key:name, skill_level:i+1}));
+  // Add 5 extra Specialist (skill 2) techs
+  const extra = pool.slice(3,8);
+  extra.forEach(name => base.push({key:name, skill_level:2}));
+  // Sort by skill level descending (Expert → New)
+  return base.sort((a,b) => b.skill_level - a.skill_level);
 }
 
 const DEFAULT_TECHS = buildRandomTechs();
@@ -962,6 +1998,7 @@ let allJobs   = [];
 // Fill animation
 let isPaused     = false;
 let pauseResolve = null;
+let speedMultiplier = 1;
 let isFilling    = false;
 
 // Modal states
@@ -1004,8 +2041,28 @@ function buildCal()       { return Array.from({length:DAYS.length}, ()=>Array.fr
 function cellId(k,j)      { return `cell-${k}-${j}`; }
 function getAvail(k,j)    { return (techAvail[j] && techAvail[j][k]) || {mode:'available', hours:TIME_IN_DAY}; }
 function dayCapacity(k,j) { const a=getAvail(k,j); return a.mode==='blocked'?0:a.mode==='limited'?a.hours:TIME_IN_DAY; }
-function usedTime(k,j)    { return cal[k][j].reduce((s,jj)=>s+jj.time, 0); }
-function sleep(ms)        { return new Promise(r=>setTimeout(r,ms)); }
+function driveMins(k,j) {
+  // Total drive minutes between consecutive jobs in a cell
+  const jobs = cal[k][j];
+  let mins = 0;
+  for (let i = 0; i < jobs.length - 1; i++) {
+    mins += driveMinsGeo(jobs[i].location, jobs[i+1].location);
+  }
+  return mins;
+}
+function usedTime(k,j) {
+  const jobHours = cal[k][j].reduce((s,jj) => s + jj.time, 0);
+  const driveHours = driveMins(k,j) / 60;
+  return jobHours + driveHours;
+}
+function fmtHours(h) {
+  const hrs = Math.floor(h);
+  const mins = Math.round((h - hrs) * 60);
+  if (hrs === 0) return `${mins}m`;
+  if (mins === 0) return `${hrs}h`;
+  return `${hrs}h ${mins}m`;
+}
+function sleep(ms) { return new Promise(r=>setTimeout(r, ms / speedMultiplier)); }
 function waitPause()      { return isPaused ? new Promise(r=>{pauseResolve=r;}) : Promise.resolve(); }
 function pct(k,j)         { const cap=dayCapacity(k,j); return cap===0?100:Math.min(100, Math.round((usedTime(k,j)/cap)*100)); }
 function findJob(key)     {
@@ -1019,37 +2076,43 @@ function findJob(key)     {
 // TABLE BUILD
 // ═══════════════════════════════════════════════════════════════════
 function buildTable() {
-  // HEADER
-  let hr = '<tr><th class="cal-header-cell" style="vertical-align:bottom;">Day</th>';
-  techs.forEach((t,j) => {
-    const bars = DAYS.map((day,k) => {
-      const p = pct(k,j);
-      const avail = getAvail(k,j);
-      const cls = p>=100?'full':p>=75?'warn':'';
-      const blocked = avail.mode==='blocked';
-      const icon = blocked ? '⛔ ' : '';
-      return `<div class="tech-day-row${blocked?' day-blocked':''}" id="trow-${k}-${j}">
-        <span>${icon}${day.slice(0,1)}</span>
-        <div class="tech-day-track"><div class="tech-day-fill ${cls}" id="tbar-${k}-${j}" style="width:${p}%"></div></div>
-        <span class="tech-day-pct" id="tpct-${k}-${j}">${blocked?'OFF':p+'%'}</span>
-      </div>`;
-    }).join('');
-    hr += `<th class="cal-header-cell" id="thcell-${j}">
-      <div class="tech-header">
-        <span class="tech-name">${t.key}</span>
-        <span class="tech-skill-label">${skillName(t.skill_level)}</span>
-        <div class="tech-day-bars">${bars}</div>
-      </div>
+  // HEADER — days across the top
+  let hr = '<tr><th class="cal-header-cell day-header-corner" style="min-width:140px">Technician</th>';
+  DAYS.forEach((day, k) => {
+    hr += `<th class="cal-header-cell day-col-header" id="dayhdr-${k}">
+      <span class="day-col-name">${day}</span>
+      <button class="map-day-btn" onclick="openDayMap(${k})" title="View routes for ${day}">📍 Map</button>
     </th>`;
   });
   document.getElementById('calHead').innerHTML = hr + '</tr>';
 
-  // BODY
+  // BODY — one row per tech
   let body = '';
-  DAYS.forEach((day,k) => {
-    body += `<tr class="cal-row"><td class="day-cell">${day}</td>`;
-    techs.forEach((_,j) => {
-      body += `<td class="cal-cell" id="${cellId(k,j)}" data-day="${k}" data-tech="${j}"></td>`;
+  techs.forEach((t, j) => {
+    const sl = t.skill_level;
+    // Utilisation bars per day for this tech
+    const bars = DAYS.map((day, k) => {
+      const p = pct(k, j);
+      const avail = getAvail(k, j);
+      const cls = p >= 100 ? 'full' : p >= 75 ? 'warn' : '';
+      const blocked = avail.mode === 'blocked';
+      const icon = blocked ? '⛔ ' : '';
+      return `<div class="tech-day-row${blocked ? ' day-blocked' : ''}" id="trow-${k}-${j}">
+        <div class="tech-day-track"><div class="tech-day-fill ${cls}" id="tbar-${k}-${j}" style="width:${p}%"></div></div>
+        <span class="tech-day-pct" id="tpct-${k}-${j}">${blocked ? 'OFF' : p + '%'}</span>
+      </div>`;
+    }).join('');
+
+    body += `<tr class="cal-row" id="thcell-${j}">
+      <td class="day-cell tech-row-header">
+        <div class="tech-header">
+          <span class="tech-name">${t.key}</span>
+          <span class="tech-skill-label">${skillName(sl)}</span>
+          <div class="tech-day-bars">${bars}</div>
+        </div>
+      </td>`;
+    DAYS.forEach((_, k) => {
+      body += `<td class="cal-cell" id="${cellId(k, j)}" data-day="${k}" data-tech="${j}"></td>`;
     });
     body += '</tr>';
   });
@@ -1070,16 +2133,65 @@ function updateUtilBars(k, j) {
 // ═══════════════════════════════════════════════════════════════════
 // RENDER
 // ═══════════════════════════════════════════════════════════════════
+function driveBlockHTML(fromJob, toJob) {
+  const mins = driveMinsGeo(fromJob.location, toJob.location);
+  const w = Math.min(100, Math.round((mins / 60 / TIME_IN_DAY) * 100));
+  const PX_PER_HOUR = 44;
+  const h = Math.max(20, Math.round((mins / 60) * PX_PER_HOUR));
+  return `<div class="drive-block" style="min-height:${h}px">
+    <div class="drive-icon"><svg width="12" height="12" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2 8h10M9 5l3 3-3 3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    <div class="drive-label">${mins} min transit</div>
+    <div class="drive-bar-track"><div class="drive-bar-fill" style="width:${w}%"></div></div>
+  </div>`;
+}
+
+function cellJobsHTML(jobs, lastKey) {
+  if (!jobs.length) return '';
+  let html = '';
+  let lastWin = -1;
+  let hoursUsed = 0;
+
+  jobs.forEach((job, i) => {
+    const win = jobWindow(hoursUsed);
+    // Insert a window divider when we cross into a new window
+    if (win !== lastWin) {
+      html += `<div class="win-divider">
+        <span class="win-label">${WINDOWS[win].label}</span>
+      </div>`;
+      lastWin = win;
+    }
+    html += cardHTML(job, job.key === lastKey);
+    hoursUsed += job.time;
+    if (i < jobs.length - 1) {
+      html += driveBlockHTML(job, jobs[i + 1]);
+    }
+  });
+  return html;
+}
+
 function cardHTML(job, justPlaced=false) {
   const sl = job.skill_level;
   const tw = Math.min(100, Math.round((job.time/TIME_IN_DAY)*100));
   const ob = job._overbooked ? ' overbooked' : '';
   const sk = job._skillOverride ? ' skill-override' : '';
   const jp = justPlaced ? ' just-placed' : '';
-  return `<div class="cal-job s${sl}${ob}${sk}${jp}" draggable="true" data-key="${job.key}">
+  const locked = job._confirmed && !job._asap;
+  const drag = locked ? 'false' : 'true';
+  const lockBadge = job._asap
+    ? `<span class="asap-badge" title="ASAP — can be rescheduled">ASAP</span>`
+    : locked
+      ? `<span class="lock-badge" title="Confirmed — customer notified">
+          <svg width="9" height="11" viewBox="0 0 10 12" fill="none"><rect x="2" y="5" width="6" height="6" rx="1.2" stroke="currentColor" stroke-width="1.4"/><path d="M3.5 5V3.5a1.5 1.5 0 013 0V5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+         </span>`
+      : '';
+  const PX_PER_HOUR = 44;
+  const minH = job.time < 3 ? 52 : job.time < 7 ? 88 : 176;
+  return `<div class="cal-job s${sl}${ob}${sk}${jp}${locked?' locked':''}${job._asap?' asap':''}" draggable="${drag}" data-key="${job.key}" style="min-height:${minH}px">
     <div class="job-info">
-      <div class="job-key">${job.key}</div>
-      <div class="job-details">Loc ${job.location} &middot; ${job.time}h &middot; ${skillName(sl)}</div>
+      <div class="job-key-row">
+        <span class="job-key">${job.key}</span>${lockBadge}
+      </div>
+      <div class="job-details">${job.location.addr} &middot; ${fmtHours(job.time)} &middot; ${skillName(sl)}</div>
       <div class="time-bar" style="width:${tw}%"></div>
     </div>
   </div>`;
@@ -1100,7 +2212,7 @@ function renderCell(k, j, lastKey=null) {
 
   const p = pct(k,j);
   const cls = p>=100?'full':p>=75?'warn':'';
-  cell.innerHTML = cal[k][j].map(job => cardHTML(job, job.key===lastKey)).join('') +
+  cell.innerHTML = cellJobsHTML(cal[k][j], lastKey) +
     `<div class="cell-footer"><div class="cell-usage ${cls}" style="width:${p}%"></div></div>`;
   bindCalCardDrag(cell,k,j);
   updateUtilBars(k,j);
@@ -1158,7 +2270,7 @@ function renderQueue(removedKey=null) {
       div.draggable = true;
       div.dataset.key = job.key;
       div.innerHTML = `<span class="chip-name">${job.key}</span>
-        <span class="chip-meta">Loc ${job.location} &middot; ${job.time}h &middot; ${skillName(sl)}</span>`;
+        <span class="chip-meta">${job.location.addr} &middot; ${fmtHours(job.time)} &middot; ${skillName(sl)}</span>`;
       el.appendChild(div);
     }
   });
@@ -1181,7 +2293,7 @@ function renderOverflow() {
     const sl = job.skill_level;
     return `<div class="overflow-chip" draggable="true" data-key="${job.key}">
       <span class="chip-name">${job.key}</span>
-      <span class="chip-meta">Loc ${job.location} &middot; ${job.time}h &middot; ${skillName(sl)}</span>
+      <span class="chip-meta">${job.location.addr} &middot; ${fmtHours(job.time)} &middot; ${skillName(sl)}</span>
     </div>`;
   }).join('');
   bindOverflowDrag();
@@ -1219,24 +2331,82 @@ function renderTechs() {
 }
 
 
-// ═══════════════════════════════════════════════════════════════════
-// ALGORITHM
-// ═══════════════════════════════════════════════════════════════════
+// Day windows: morning 8-11, midday 11-2, afternoon 2-5
+// Stored as hours from 8am start
+const WINDOWS = [
+  { label: '8:00 AM', start: 0, end: 3 },   // 3h window
+  { label: '11:00 AM', start: 3, end: 6 },  // 3h window
+  { label: '2:00 PM', start: 6, end: 9 },   // 3h window (up to 5pm)
+];
+
+// Returns which window index a job lands in given hours already used before it
+function jobWindow(hoursBeforeJob) {
+  for (let w = 0; w < WINDOWS.length; w++) {
+    if (hoursBeforeJob < WINDOWS[w].end) return w;
+  }
+  return WINDOWS.length - 1;
+}
+
+// Returns hours used in a cell before a given job index (job time only, no drive)
+function hoursBeforeIdx(cell, idx) {
+  let h = 0;
+  for (let i = 0; i < idx; i++) h += cell[i].time;
+  return h;
+}
 function scheduleOne(job) {
-  for (let k=0;k<DAYS.length;k++) {
-    for (let j=0;j<techs.length;j++) {
+  // Find the best valid slot across all days and techs
+  let bestK = -1, bestJ = -1, bestScore = Infinity;
+
+  for (let k = 0; k < DAYS.length; k++) {
+    for (let j = 0; j < techs.length; j++) {
       if (techs[j].skill_level < job.skill_level) continue;
-      const avail = getAvail(k,j);
+      const avail = getAvail(k, j);
       if (avail.mode === 'blocked') continue;
-      const cap = dayCapacity(k,j);
-      if (usedTime(k,j) + job.time > cap) continue;
-      if (cal[k][j].length === 0) { cal[k][j].push(job); return {ok:true,k,j}; }
-      if (Math.abs(cal[k][j][0].location - job.location) <= MAX_DRIVE) {
-        cal[k][j].push(job); return {ok:true,k,j};
-      }
+      const cap = dayCapacity(k, j);
+      const existing = cal[k][j];
+
+      // Calculate where this job would sit after sorting (big jobs first)
+      // so we can compute the correct drive time for its position
+      const sorted = [...existing, job].sort((a, b) => b.time - a.time);
+      const idx = sorted.indexOf(job);
+      const prevJob = idx > 0 ? sorted[idx - 1] : null;
+      const nextJob = idx < sorted.length - 1 ? sorted[idx + 1] : null;
+
+      // Drive time: replacing the existing drive leg that this job would slot into
+      const driveTo       = prevJob ? driveMinsGeo(prevJob.location, job.location) : 0;
+      const driveFrom     = nextJob ? driveMinsGeo(job.location, nextJob.location) : 0;
+      const driveOldMins  = (prevJob && nextJob) ? driveMinsGeo(prevJob.location, nextJob.location) : 0;
+      const netNewDrive   = (driveTo + driveFrom - driveOldMins) / 60;  // hours for capacity
+
+      // Hard cap: skip if any individual drive leg would exceed 30 min
+      const worstLeg = Math.max(driveTo, driveFrom);
+      if (existing.length > 0 && worstLeg > 30) continue;
+
+      if (usedTime(k, j) + job.time + netNewDrive > cap) continue;
+
+      // Score: prefer earlier days, less used cells, and slots where job fits naturally
+      // Also penalise placing a small job in an empty cell (leave room for big jobs)
+      let score = k * 100;                          // earlier days preferred
+      score += usedTime(k, j) * 10;               // fill cells before opening new ones
+      if (existing.length === 0 && job.time < 3)  // discourage opening a cell with a small job
+        score += 50;
+      score += (idx === 0 ? 0 : idx * 5);         // prefer slots near the front of sorted order
+      score += worstLeg * 2;                       // soft penalty for longer drive legs
+
+      if (score < bestScore) { bestScore = score; bestK = k; bestJ = j; }
     }
   }
-  return {ok:false};
+
+  if (bestK === -1) return { ok: false };
+
+  // Place the job, sort big → small, then stamp each job with its window
+  job._confirmed = true;
+  cal[bestK][bestJ].push(job);
+  cal[bestK][bestJ].sort((a, b) => b.time - a.time);
+  // Stamp window indices after sorting
+  let hrs = 0;
+  cal[bestK][bestJ].forEach(j => { j._window = jobWindow(hrs); hrs += j.time; });
+  return { ok: true, k: bestK, j: bestJ };
 }
 
 function rankPlacements(job) {
@@ -1248,8 +2418,12 @@ function rankPlacements(job) {
       if (avail.mode === 'blocked') continue;
       const cap = dayCapacity(k,j);
       const used = usedTime(k,j);
-      const fits = used + job.time <= cap;
-      const dist = cal[k][j].length > 0 ? Math.abs(cal[k][j][0].location - job.location) : 0;
+      const existing = cal[k][j];
+      const newDriveHours = existing.length > 0
+        ? driveMinsGeo(existing[existing.length-1].location, job.location) / 60
+        : 0;
+      const fits = used + job.time + newDriveHours <= cap;
+      const dist = cal[k][j].length > 0 ? driveMinsGeo(cal[k][j][0].location, job.location) : 0;
       let score = 0;
       if (!fits) score += 1000;
       score += dist;
@@ -1274,7 +2448,7 @@ function chipHTML(job, isCurrent) {
   const cls = isCurrent ? '' : ' next-chip';
   return `<div class="incoming-chip${cls}">
     <span class="chip-name">${job.key}</span>
-    <span class="chip-meta">Loc ${job.location} &middot; ${job.time}h &middot; ${skillName(sl)}</span>
+    <span class="chip-meta">${job.location.addr} &middot; ${fmtHours(job.time)} &middot; ${skillName(sl)}</span>
   </div>`;
 }
 
@@ -1302,10 +2476,17 @@ function clearIncoming() {
 }
 
 async function fillCalendar() {
-  if (isFilling) return;
-  isFilling = true; isPaused = false;
+  // If already filling, toggle fast-forward mode
+  if (isFilling) {
+    toggleFastForward();
+    return;
+  }
+  isFilling = true; isPaused = false; speedMultiplier = 1;
 
-  document.getElementById('fillButton').disabled = true;
+  const fillBtn = document.getElementById('fillButton');
+  fillBtn.innerHTML = '&#9193; Fast';
+  fillBtn.classList.add('btn-fastforward');
+  fillBtn.disabled = false;
   const pauseBtn = document.getElementById('pauseButton');
   pauseBtn.classList.add('visible');
   pauseBtn.classList.remove('paused');
@@ -1313,13 +2494,10 @@ async function fillCalendar() {
 
   cal = buildCal(); overflow = []; queueJobs = [];
 
-  // Shuffle
-  allJobs = clone(JOBS_DATA);
-  for (let i=allJobs.length-1;i>0;i--) {
-    const j=Math.floor(Math.random()*(i+1));
-    [allJobs[i],allJobs[j]]=[allJobs[j],allJobs[i]];
-  }
-  queueJobs = [...allJobs];
+  // Generate random jobs — arrive and schedule in random order
+  const generatedJobs = generateJobs(callCount);
+  allJobs   = [...generatedJobs];
+  queueJobs = [...generatedJobs];
 
   // Render initial queue (all chips at once)
   el_init: {
@@ -1332,7 +2510,7 @@ async function fillCalendar() {
       div.draggable = true;
       div.dataset.key = job.key;
       div.innerHTML = `<span class="chip-name">${job.key}</span>
-        <span class="chip-meta">Loc ${job.location} &middot; ${job.time}h &middot; ${skillName(sl)}</span>`;
+        <span class="chip-meta">${job.location.addr} &middot; ${fmtHours(job.time)} &middot; ${skillName(sl)}</span>`;
       el.appendChild(div);
     });
     document.getElementById('queueCount').textContent = `${queueJobs.length} waiting`;
@@ -1358,12 +2536,12 @@ async function fillCalendar() {
     const remaining = allJobs.length - i - 1;
 
     // ── "Phone ringing" effect ──
-    setTicker(`<span class="highlight">&#128222; Incoming call</span> &mdash; ${job.key} &middot; ${skillName(job.skill_level)} &middot; ${job.time}h &middot; Loc ${job.location}`);
+    setTicker(`<span class="highlight">&#128222; Incoming call</span> &mdash; ${job.key} &middot; ${skillName(job.skill_level)} &middot; ${fmtHours(job.time)} &middot; ${job.location.addr}`);
     showIncoming(job, nextJob);
-    await sleep(350 + Math.random()*200);
+    await sleep(175 + Math.random()*100);
 
     setTicker(`&#9654; Scheduling <span class="highlight">${job.key}</span>&hellip; (${remaining} calls remaining)`);
-    await sleep(180);
+    await sleep(90);
 
     // Smoothly remove from queue (chip shrinks in-place)
     queueJobs = queueJobs.filter(j=>j.key!==job.key);
@@ -1383,7 +2561,7 @@ async function fillCalendar() {
     pf.style.width = Math.round(((i+1)/allJobs.length)*100)+'%';
     pl.textContent  = `${i+1} / ${allJobs.length} processed`;
 
-    await sleep(55 + Math.random()*120);
+    await sleep(27 + Math.random()*60);
   }
 
   if (isFilling) {
@@ -1395,12 +2573,27 @@ async function fillCalendar() {
   renderQueue();
   pauseBtn.classList.remove('visible');
   isFilling = false;
+  speedMultiplier = 1;
+  const fb = document.getElementById('fillButton');
+  fb.innerHTML = '&#9654; Run Schedule';
+  fb.classList.remove('btn-fastforward');
+  fb.disabled = false;
   // schedule saved
   bindAllDrop();
 }
 
-// ═══════════════════════════════════════════════════════════════════
-// PAUSE / RESUME
+function toggleFastForward() {
+  const fillBtn = document.getElementById('fillButton');
+  if (speedMultiplier === 1) {
+    speedMultiplier = 100;
+    fillBtn.innerHTML = '&#9654; Normal';
+    fillBtn.classList.add('btn-fastforward');
+  } else {
+    speedMultiplier = 1;
+    fillBtn.innerHTML = '&#9193; Fast';
+    fillBtn.classList.remove('btn-fastforward');
+  }
+}
 // ═══════════════════════════════════════════════════════════════════
 function togglePause() {
   const btn = document.getElementById('pauseButton');
@@ -1434,6 +2627,9 @@ function resetAll() {
   document.getElementById('progressWrap').classList.remove('visible');
   document.getElementById('progressFill').style.width='0%';
   document.getElementById('fillButton').disabled=false;
+  document.getElementById('fillButton').innerHTML='&#9654; Run Schedule';
+  document.getElementById('fillButton').classList.remove('btn-fastforward');
+  speedMultiplier = 1;
   document.getElementById('pauseButton').classList.remove('visible','paused');
   clearSuggestions();
 }
@@ -1481,25 +2677,19 @@ function deleteTech(idx) {
 // ═══════════════════════════════════════════════════════════════════
 // CREATE CALL MODAL
 // ═══════════════════════════════════════════════════════════════════
-const RANDOM_FIRST = ['James','Maria','Tyler','Sofia','Devon','Priya','Marcus','Elena','Jordan','Camille','Eli','Nadia','Rory','Leila','Owen','Zoe','Felix','Hazel','Tobias','Amara'];
-const RANDOM_LAST  = ['Johnson','Martinez','Patel','Williams','Chen','Rivera','Thompson','Okafor','Brooks','Nakamura','Walsh','Sinclair','Dupont','Haddad','Gallagher','Stanton','Adeyemi','Wolff','Petrov','Archer'];
 function randomCallDefaults() {
-  const first = RANDOM_FIRST[Math.floor(Math.random()*RANDOM_FIRST.length)];
-  const last  = RANDOM_LAST[Math.floor(Math.random()*RANDOM_LAST.length)];
-  const loc   = Math.floor(Math.random()*251);
-  const durations = [1,1.5,2,2.5,3,3.5,4,4.5,5,5.5,6,7,7.5,8];
-  const dur   = durations[Math.floor(Math.random()*durations.length)];
-  const skill = Math.ceil(Math.random()*4);
-  return { name:`${first} ${last}`, loc, dur, skill };
+  const first = CALL_FIRST[Math.floor(Math.random()*CALL_FIRST.length)];
+  const last  = CALL_LAST[Math.floor(Math.random()*CALL_LAST.length)];
+  const loc   = SARASOTA_ADDRESSES[Math.floor(Math.random()*SARASOTA_ADDRESSES.length)];
+  return { name:`${first} ${last}`, loc, dur: weightedDuration(), skill: weightedSkill() };
 }
 
 function openCallModal() {
   selectedCallSkill=null;
   const d = randomCallDefaults();
   document.getElementById('callNameInput').value = d.name;
-  document.getElementById('callLocInput').value  = d.loc;
+  document.getElementById('callLocInput').value  = d.loc.addr;
   document.getElementById('callTimeInput').value = d.dur;
-  // Pre-select skill level
   selectedCallSkill = d.skill;
   document.querySelectorAll('#callSkillPicker .skill-opt').forEach(b=>{
     b.classList.toggle('selected', +b.dataset.skill === d.skill);
@@ -1523,12 +2713,15 @@ function selectCallSkill(n) {
 
 function validateCallForm() {
   const name = document.getElementById('callNameInput').value.trim();
-  const loc  = parseFloat(document.getElementById('callLocInput').value);
+  const addrText = document.getElementById('callLocInput').value.trim();
   const time = parseFloat(document.getElementById('callTimeInput').value);
   let ok=true;
   if(!name){document.getElementById('callNameError').classList.add('show');ok=false;}
   else document.getElementById('callNameError').classList.remove('show');
-  if(isNaN(loc)||loc<0||loc>250){document.getElementById('callLocError').classList.add('show');ok=false;}
+  // Match address to pool (case-insensitive partial match, else first entry)
+  const matchedAddr = SARASOTA_ADDRESSES.find(a => a.addr.toLowerCase().includes(addrText.toLowerCase()))
+    || SARASOTA_ADDRESSES[0];
+  if(!addrText){document.getElementById('callLocError').classList.add('show');ok=false;}
   else document.getElementById('callLocError').classList.remove('show');
   if(isNaN(time)||time<0.5||time>8){document.getElementById('callTimeError').classList.add('show');ok=false;}
   else document.getElementById('callTimeError').classList.remove('show');
@@ -1536,7 +2729,7 @@ function validateCallForm() {
   else document.getElementById('callSkillError').classList.remove('show');
   if(!ok) return null;
   return {
-    key: name, location: loc, skill_level: selectedCallSkill, time: time
+    key: name, location: matchedAddr, skill_level: selectedCallSkill, time: time
   };
 }
 
@@ -1645,12 +2838,12 @@ function clearSuggestions() {
 // ═══════════════════════════════════════════════════════════════════
 function showOverbookModal(job, k, j, currentUsed) {
   const newTotal = currentUsed + job.time;
-  const over = (newTotal - TIME_IN_DAY).toFixed(1);
+  const over = newTotal - TIME_IN_DAY;
   document.getElementById('overbookInfo').innerHTML =
     `<strong>${techs[j].key}</strong> on <strong>${DAYS[k]}</strong> currently has
-     <strong>${currentUsed}h</strong> scheduled (${Math.round((currentUsed/TIME_IN_DAY)*100)}% capacity).<br><br>
-     Adding <strong>${job.key}</strong> (${job.time}h) would bring the total to
-     <strong>${newTotal}h</strong> &mdash; <strong style="color:var(--amber)">${over}h over the ${TIME_IN_DAY}h daily limit</strong>.`;
+     <strong>${fmtHours(currentUsed)}</strong> scheduled (${Math.round((currentUsed/TIME_IN_DAY)*100)}% capacity).<br><br>
+     Adding <strong>${job.key}</strong> (${fmtHours(job.time)}) would bring the total to
+     <strong>${fmtHours(newTotal)}</strong> &mdash; <strong style="color:var(--amber)">${fmtHours(over)} over the ${TIME_IN_DAY}h daily limit</strong>.`;
   document.getElementById('overbookModalOverlay').classList.add('open');
 }
 function cancelOverbook()  { document.getElementById('overbookModalOverlay').classList.remove('open'); overbookCallback=null; }
@@ -1658,6 +2851,132 @@ function confirmOverbook() {
   document.getElementById('overbookModalOverlay').classList.remove('open');
   if (overbookCallback) { overbookCallback(); overbookCallback=null; }
 }
+
+// ── JOB DETAIL / DELETE MODAL ─────────────────────────────────────
+let _detailJob = null, _detailK = -1, _detailJ = -1;
+
+function openJobDetail(job, k, j) {
+  _detailJob = job; _detailK = k; _detailJ = j;
+
+  const titleEl = document.getElementById('jobDetailTitle');
+  if (job._asap) {
+    titleEl.innerHTML = `<span class="asap-badge" style="font-size:13px;padding:2px 7px">ASAP</span> <span>${job.key}</span>`;
+  } else {
+    titleEl.innerHTML = `Job <span>${job.key}</span>`;
+  }
+
+  document.getElementById('jobDetailBody').innerHTML = `
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:12px;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:12px;margin-bottom:1rem">
+      <div><span style="color:var(--text-muted);font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.05em">Duration</span><br><strong>${fmtHours(job.time)}</strong></div>
+      <div><span style="color:var(--text-muted);font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.05em">Skill</span><br><strong>${skillName(job.skill_level)}</strong></div>
+      <div><span style="color:var(--text-muted);font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.05em">Location</span><br><strong>${job.location.addr}</strong></div>
+      <div><span style="color:var(--text-muted);font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.05em">Day</span><br><strong>${DAYS[k]}</strong></div>
+    </div>
+    <p style="font-size:11px;color:var(--text-muted);margin-bottom:0.5rem">Removing this job will send it to overflow. ASAP jobs currently scheduled <em>later</em> in the week that could move earlier are shown below.</p>`;
+
+  // Find ASAP jobs currently on a LATER day than the freed slot
+  const asapCandidates = [];
+  for (let laterK = _detailK + 1; laterK < DAYS.length; laterK++) {
+    for (let tj = 0; tj < techs.length; tj++) {
+      cal[laterK][tj].forEach(jj => {
+        if (jj._asap && jj.skill_level <= techs[_detailJ].skill_level) {
+          asapCandidates.push({ job: jj, fromDay: laterK, fromTech: tj });
+        }
+      });
+    }
+  }
+  // Dedupe by job key
+  const seen = new Set();
+  const unique = asapCandidates.filter(({ job }) => {
+    if (seen.has(job.key)) return false;
+    seen.add(job.key); return true;
+  });
+
+  const suggestSection = document.getElementById('asapSuggestSection');
+  const noneSection    = document.getElementById('asapNoneSection');
+
+  if (unique.length > 0) {
+    suggestSection.style.display = '';
+    noneSection.style.display = 'none';
+    document.getElementById('asapSuggestList').innerHTML = unique.map(({ job: c, fromDay, fromTech }, idx) => `
+      <div style="display:flex;align-items:center;gap:8px;background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:8px 10px">
+        <div style="flex:1">
+          <div style="font-size:11px;font-weight:700;color:var(--text)">${c.key}</div>
+          <div style="font-size:9px;color:var(--text-muted)">${c.location.addr} · ${fmtHours(c.time)} · ${skillName(c.skill_level)} · currently ${DAYS[fromDay]}</div>
+        </div>
+        <span class="asap-badge">ASAP</span>
+        <button class="btn btn-primary" style="font-size:9px;padding:4px 8px;white-space:nowrap"
+          onclick="removeAndReplace('${c.key}',${fromDay},${fromTech})">Remove &amp; Replace</button>
+      </div>`).join('');
+  } else {
+    suggestSection.style.display = 'none';
+    noneSection.style.display = '';
+    document.getElementById('asapNoneSection').textContent =
+      _detailK === 0
+        ? 'This is the earliest day — no ASAP jobs can move earlier.'
+        : 'No ASAP jobs are scheduled later in the week that could take this slot.';
+  }
+
+  document.getElementById('jobDetailOverlay').classList.add('open');
+}
+
+function closeJobDetail() {
+  document.getElementById('jobDetailOverlay').classList.remove('open');
+  _detailJob = null; _detailK = -1; _detailJ = -1;
+}
+function closeJobDetailOutside(e) { if (e.target.id === 'jobDetailOverlay') closeJobDetail(); }
+
+function confirmDeleteJob() {
+  if (!_detailJob) return;
+  const k = _detailK, j = _detailJ;
+  cal[k][j] = cal[k][j].filter(jj => jj.key !== _detailJob.key);
+  let hrs = 0;
+  cal[k][j].forEach(jj => { jj._window = jobWindow(hrs); hrs += jj.time; });
+  _detailJob._confirmed = false;
+  overflow.push(_detailJob);
+  renderCell(k, j);
+  renderOverflow();
+  renderTechs();
+  setTicker(`${_detailJob.key} removed — moved to overflow`);
+  closeJobDetail();
+}
+
+function removeAndReplace(asapKey, fromDay, fromTech) {
+  if (!_detailJob) return;
+  const targetK = _detailK, targetJ = _detailJ;
+
+  // 1. Remove the job being deleted from its cell → overflow
+  cal[targetK][targetJ] = cal[targetK][targetJ].filter(jj => jj.key !== _detailJob.key);
+  let hrs = 0;
+  cal[targetK][targetJ].forEach(jj => { jj._window = jobWindow(hrs); hrs += jj.time; });
+  _detailJob._confirmed = false;
+  overflow.push(_detailJob);
+
+  // 2. Find the ASAP job in its current cell
+  const asapJob = cal[fromDay][fromTech].find(jj => jj.key === asapKey);
+  if (asapJob) {
+    // Remove from its current day
+    cal[fromDay][fromTech] = cal[fromDay][fromTech].filter(jj => jj.key !== asapKey);
+    let hrs2 = 0;
+    cal[fromDay][fromTech].forEach(jj => { jj._window = jobWindow(hrs2); hrs2 += jj.time; });
+
+    // Place into the freed slot
+    asapJob._confirmed = true;
+    cal[targetK][targetJ].push(asapJob);
+    cal[targetK][targetJ].sort((a, b) => b.time - a.time);
+    let hrs3 = 0;
+    cal[targetK][targetJ].forEach(jj => { jj._window = jobWindow(hrs3); hrs3 += jj.time; });
+
+    renderCell(fromDay, fromTech);
+    renderCell(targetK, targetJ, asapJob.key);
+    renderTechs();
+    renderOverflow();
+    setTicker(`${asapJob.key} moved from ${DAYS[fromDay]} → ${DAYS[targetK]}, ${_detailJob.key} sent to overflow`);
+  }
+
+  closeJobDetail();
+}
+// ─────────────────────────────────────────────────────────────────
 
 // ── Skill Mismatch Modal ──────────────────────────────────────────
 function showSkillWarnModal(job, k, j) {
@@ -1667,7 +2986,7 @@ function showSkillWarnModal(job, k, j) {
   const alsoFull  = (used + job.time) > TIME_IN_DAY;
   let extra = '';
   if (alsoFull) {
-    extra = `<br><br><strong style="color:var(--amber)">Note:</strong> This slot is also over capacity by ${((used+job.time)-TIME_IN_DAY).toFixed(1)}h.`;
+    extra = `<br><br><strong style="color:var(--amber)">Note:</strong> This slot is also over capacity by ${fmtHours((used+job.time)-TIME_IN_DAY)}.`;
   }
   document.getElementById('skillWarnInfo').innerHTML =
     `<strong>${techs[j].key}</strong> has <strong>${skillName(techSkill)}</strong> certification, but this job requires <strong>${skillName(jobSkill)}</strong>.
@@ -1772,8 +3091,14 @@ function bindOverflowDrag() {
 
 function bindCalCardDrag(cell,k,j) {
   cell.querySelectorAll('.cal-job').forEach(card=>{
+    card.addEventListener('click', e => {
+      const job = cal[k][j].find(jj=>jj.key===card.dataset.key);
+      if (job) openJobDetail(job, k, j);
+    });
     card.addEventListener('dragstart',e=>{
-      dragJob=cal[k][j].find(jj=>jj.key===card.dataset.key);
+      const job = cal[k][j].find(jj=>jj.key===card.dataset.key);
+      if (job && job._confirmed && !job._asap) { e.preventDefault(); return; }
+      dragJob = job;
       dragSrc={day:k,tech:j};
       card.classList.add('dragging');
       e.dataTransfer.effectAllowed='move';
@@ -1796,12 +3121,17 @@ function canDropFit(toDay, toTech) {
   if(techs[toTech].skill_level < dragJob.skill_level) return false;
   if(getAvail(toDay,toTech).mode === 'blocked') return false;
   const cap = dayCapacity(toDay, toTech);
-  let used=0;
-  cal[toDay][toTech].forEach(j=>{
-    if(typeof dragSrc==='object' && j.key===dragJob.key) return;
-    used+=j.time;
-  });
-  return used+dragJob.time <= cap;
+  // Remaining jobs after removing the dragged one (if it came from this cell)
+  const remaining = cal[toDay][toTech].filter(j =>
+    !(typeof dragSrc==='object' && j.key===dragJob.key)
+  );
+  // Compute total time with the new job inserted in sorted order
+  const sorted = [...remaining, dragJob].sort((a,b) => b.time - a.time);
+  let used = sorted.reduce((s,j) => s + j.time, 0);
+  for (let i = 0; i < sorted.length - 1; i++) {
+    used += driveMinsGeo(sorted[i].location, sorted[i+1].location) / 60;
+  }
+  return used <= cap;
 }
 
 // Check: skill matches (ignores time — overbook allowed via confirm)
@@ -1838,8 +3168,13 @@ function doDrop(toDay, toTech, flagOverbook=false, flagSkill=false) {
   removeDragSrc();
   dragJob._overbooked    = flagOverbook;
   dragJob._skillOverride = flagSkill;
+  dragJob._confirmed     = true;
   const key = dragJob.key;
   cal[toDay][toTech].push(dragJob);
+  cal[toDay][toTech].sort((a, b) => b.time - a.time);
+  // Re-stamp windows for the whole cell
+  let hrs = 0;
+  cal[toDay][toTech].forEach(j => { j._window = jobWindow(hrs); hrs += j.time; });
   renderCell(toDay, toTech, key);
   scrollToCell(toDay, toTech);
   // schedule saved
@@ -1958,6 +3293,152 @@ function bindAllDrop() {
 }
 
 // ═══════════════════════════════════════════════════════════════════
+// SETTINGS MODAL
+// ═══════════════════════════════════════════════════════════════════
+let sEditTechs = [];   // working copy of techs for the settings panel
+let sSkillSel  = null;
+
+function openSettings() {
+  // Sync inputs from current state
+  document.getElementById('w-dur-1').value = durWeights[1];
+  document.getElementById('w-dur-2').value = durWeights[2];
+  document.getElementById('w-dur-3').value = durWeights[3];
+  document.getElementById('w-dur-4').value = durWeights[4];
+  document.getElementById('w-dur-6').value = durWeights[6];
+  document.getElementById('w-sk-1').value  = skillWeights[1];
+  document.getElementById('w-sk-2').value  = skillWeights[2];
+  document.getElementById('w-sk-3').value  = skillWeights[3];
+  document.getElementById('w-sk-4').value  = skillWeights[4];
+  document.getElementById('s-hours-day').value   = TIME_IN_DAY;
+  document.getElementById('s-hours-current').textContent = `${TIME_IN_DAY}h`;
+  document.getElementById('s-call-count').value  = callCount;
+  sEditTechs = techs.map(t => ({...t}));
+  sSkillSel  = null;
+  document.getElementById('s-tech-name').value = '';
+  document.querySelectorAll('#s-tech-skill-picker .skill-opt').forEach(b => b.classList.remove('selected'));
+  document.getElementById('s-tech-error').textContent = '';
+  switchSettingsTab('duration');
+  updateDurTotal();
+  updateSkTotal();
+  renderSTechList();
+  document.getElementById('settingsModalOverlay').classList.add('open');
+}
+function closeSettings() { document.getElementById('settingsModalOverlay').classList.remove('open'); }
+function closeSettingsOutside(e) { if (e.target.id === 'settingsModalOverlay') closeSettings(); }
+
+function switchSettingsTab(tab) {
+  ['duration','skill','general'].forEach(t => {
+    document.getElementById(`stab-${t}`).classList.toggle('active', t === tab);
+    document.getElementById(`spanel-${t}`).classList.toggle('hidden', t !== tab);
+  });
+}
+
+function updateDurTotal() {
+  const ids = ['w-dur-1','w-dur-2','w-dur-3','w-dur-4','w-dur-6'];
+  const total = ids.reduce((s,id) => s + (parseFloat(document.getElementById(id).value)||0), 0);
+  const el = document.getElementById('dur-total');
+  el.textContent = `Total: ${Math.round(total)}%`;
+  el.className = 'weight-total ' + (Math.abs(total - 100) < 0.5 ? 'ok' : 'warn');
+}
+function updateSkTotal() {
+  const ids = ['w-sk-1','w-sk-2','w-sk-3','w-sk-4'];
+  const total = ids.reduce((s,id) => s + (parseFloat(document.getElementById(id).value)||0), 0);
+  const el = document.getElementById('sk-total');
+  el.textContent = `Total: ${Math.round(total)}%`;
+  el.className = 'weight-total ' + (Math.abs(total - 100) < 0.5 ? 'ok' : 'warn');
+}
+
+// Wire live total updates
+['w-dur-1','w-dur-2','w-dur-3','w-dur-4','w-dur-6'].forEach(id => {
+  document.addEventListener('DOMContentLoaded', () => {});  // just to ensure they exist
+});
+
+function renderSTechList() {
+  const el = document.getElementById('s-tech-list');
+  if (!sEditTechs.length) { el.innerHTML = '<div style="font-size:11px;color:var(--text-muted);padding:4px 0">No technicians — add one below.</div>'; return; }
+  el.innerHTML = sEditTechs.map((t, i) => `
+    <div class="s-tech-row">
+      <span class="s-tech-name">${t.key}</span>
+      <span class="s-tech-skill">${skillName(t.skill_level)}</span>
+      <button class="s-tech-del" onclick="sDeleteTech(${i})" title="Remove">×</button>
+    </div>`).join('');
+}
+
+function sDeleteTech(i) {
+  sEditTechs.splice(i, 1);
+  renderSTechList();
+}
+function sSelectSkill(n) {
+  sSkillSel = n;
+  document.querySelectorAll('#s-tech-skill-picker .skill-opt').forEach(b => b.classList.toggle('selected', +b.dataset.skill === n));
+}
+function sAddTech() {
+  const name = document.getElementById('s-tech-name').value.trim();
+  const errEl = document.getElementById('s-tech-error');
+  if (!name)      { errEl.textContent = 'Enter a name.'; errEl.classList.add('show'); return; }
+  if (!sSkillSel) { errEl.textContent = 'Select a skill level.'; errEl.classList.add('show'); return; }
+  errEl.textContent = ''; errEl.classList.remove('show');
+  sEditTechs.push({ key: name, skill_level: sSkillSel });
+  document.getElementById('s-tech-name').value = '';
+  sSkillSel = null;
+  document.querySelectorAll('#s-tech-skill-picker .skill-opt').forEach(b => b.classList.remove('selected'));
+  renderSTechList();
+}
+
+function applySettings() {
+  // Duration weights
+  durWeights = {
+    1: parseFloat(document.getElementById('w-dur-1').value) || 0,
+    2: parseFloat(document.getElementById('w-dur-2').value) || 0,
+    3: parseFloat(document.getElementById('w-dur-3').value) || 0,
+    4: parseFloat(document.getElementById('w-dur-4').value) || 0,
+    6: parseFloat(document.getElementById('w-dur-6').value) || 0,
+  };
+  // Skill weights
+  skillWeights = {
+    1: parseFloat(document.getElementById('w-sk-1').value) || 0,
+    2: parseFloat(document.getElementById('w-sk-2').value) || 0,
+    3: parseFloat(document.getElementById('w-sk-3').value) || 0,
+    4: parseFloat(document.getElementById('w-sk-4').value) || 0,
+  };
+  // Hours per day
+  const newHours = parseFloat(document.getElementById('s-hours-day').value);
+  if (newHours >= 1 && newHours <= 24) TIME_IN_DAY = newHours;
+  updateCapacityStat();
+  const newCount = parseInt(document.getElementById('s-call-count').value);
+  if (newCount >= 1 && newCount <= 200) callCount = newCount;
+
+  // Techs — rebuild cal columns if count changed
+  if (sEditTechs.length > 0) {
+    const oldCount = techs.length;
+    const newCount = sEditTechs.length;
+    techs = sEditTechs.map(t => ({...t})).sort((a,b) => b.skill_level - a.skill_level);
+    // Rebuild cal with new tech count (drop existing jobs cleanly)
+    cal = buildCal();
+    overflow = []; queueJobs = []; allJobs = [];
+  }
+
+  initWeekendBlocked();
+  buildTable();
+  renderAllCells();
+  renderTechs();
+  renderOverflow();
+  clearIncoming();
+  document.getElementById('jobs').innerHTML = '<div class="empty-state">Press "Fill Calendar" to begin receiving calls</div>';
+  setTicker('Settings applied — press Run Schedule to fill');
+  document.getElementById('progressWrap').classList.remove('visible');
+  document.getElementById('fillButton').disabled = false;
+  document.getElementById('pauseButton').classList.remove('visible','paused');
+  bindAllDrop();
+  closeSettings();
+}
+
+function updateCapacityStat() {
+  const el = document.getElementById('capacityStat');
+  if (el) el.textContent = `${TIME_IN_DAY} hrs/day`;
+}
+
+// ═══════════════════════════════════════════════════════════════════
 // INIT
 // ═══════════════════════════════════════════════════════════════════
 initWeekendBlocked();
@@ -1965,6 +3446,141 @@ buildTable();
 renderAllCells();
 renderTechs();
 bindAllDrop();
+updateCapacityStat();
+
+// Auto-collapse sidebar on mobile
+if (window.innerWidth <= 768) {
+  const sidebar = document.getElementById('sidebar');
+  const toggle  = document.getElementById('sidebarToggle');
+  const main    = document.getElementById('mainContent');
+  sidebar.classList.add('collapsed');
+  toggle.classList.add('collapsed');
+  toggle.innerHTML = '&#10095;';
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// SIDEBAR
+// ═══════════════════════════════════════════════════════════════════
+function toggleSidebar() {
+  const sidebar = document.getElementById('sidebar');
+  const main    = document.getElementById('mainContent');
+  const toggle  = document.getElementById('sidebarToggle');
+  const isMobile = window.innerWidth <= 768;
+  const collapsed = sidebar.classList.toggle('collapsed');
+
+  if (!isMobile) {
+    main.classList.toggle('expanded', collapsed);
+  }
+  toggle.classList.toggle('collapsed', collapsed);
+  toggle.innerHTML = collapsed ? '&#10095;' : '&#10094;';
+
+  // On mobile, update toggle button position
+  if (isMobile) {
+    toggle.style.left = collapsed ? '8px' : '288px';
+  }
+}
+
+function toggleSbSection(id) {
+  const section = document.getElementById(id);
+  section.classList.toggle('open');
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// DAY ROUTE MAP
+// ═══════════════════════════════════════════════════════════════════
+const TECH_COLORS = [
+  '#C0152A','#2563eb','#16a34a','#d97706','#7c3aed',
+  '#0891b2','#be185d','#65a30d','#ea580c','#6366f1',
+  '#0d9488','#b45309'
+];
+
+let _mapLeaflet = null;
+
+function openDayMap(k) {
+  document.getElementById('mapModalDay').textContent = DAYS[k];
+  document.getElementById('mapModalOverlay').classList.add('open');
+  setTimeout(() => renderDayMap(k), 80);
+}
+
+function closeMapModal() {
+  document.getElementById('mapModalOverlay').classList.remove('open');
+  if (_mapLeaflet) { _mapLeaflet.remove(); _mapLeaflet = null; }
+}
+function closeMapModalOutside(e) { if (e.target.id === 'mapModalOverlay') closeMapModal(); }
+
+function renderDayMap(k) {
+  if (_mapLeaflet) { _mapLeaflet.remove(); _mapLeaflet = null; }
+  const container = document.getElementById('mapContainer');
+  container.innerHTML = '';
+
+  const routes = [];
+  techs.forEach((t, j) => {
+    const jobs = cal[k][j];
+    if (!jobs.length) return;
+    routes.push({ tech: t, jobs, color: TECH_COLORS[j % TECH_COLORS.length] });
+  });
+
+  const legend = document.getElementById('mapModalLegend');
+  if (routes.length === 0) {
+    legend.innerHTML = '<span style="font-size:11px;color:var(--text-muted)">No jobs scheduled for this day.</span>';
+  } else {
+    legend.innerHTML = routes.map(r => `
+      <div class="map-legend-item">
+        <div class="map-legend-dot" style="background:${r.color}"></div>
+        ${r.tech.key} (${skillName(r.tech.skill_level)})
+      </div>`).join('');
+  }
+
+  _mapLeaflet = L.map(container, { zoomControl: true }).setView([27.08, -82.35], 9);
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '© OpenStreetMap contributors', maxZoom: 19
+  }).addTo(_mapLeaflet);
+
+  if (routes.length === 0) return;
+
+  const allLatLngs = [];
+
+  // Place all markers
+  routes.forEach(({ tech, jobs, color }) => {
+    jobs.forEach((job, idx) => {
+      const ll = [job.location.lat, job.location.lng];
+      allLatLngs.push(ll);
+      const icon = L.divIcon({
+        html: `<div style="background:${color};color:#fff;border-radius:50%;width:24px;height:24px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;border:2px solid #fff;box-shadow:0 1px 4px rgba(0,0,0,0.35)">${idx+1}</div>`,
+        className: '', iconSize: [24,24], iconAnchor: [12,12]
+      });
+      L.marker(ll, { icon })
+        .addTo(_mapLeaflet)
+        .bindPopup(`<strong>${job.key}</strong><br>${job.location.addr}<br>${fmtHours(job.time)} · ${skillName(job.skill_level)}<br><em>${tech.key}</em>`);
+    });
+  });
+
+  if (allLatLngs.length) _mapLeaflet.fitBounds(L.latLngBounds(allLatLngs), { padding: [50,50] });
+
+  // Draw straight lines connecting each tech's stops in order
+  routes.forEach(({ jobs, color }) => {
+    if (jobs.length < 2) return;
+    const pts = jobs.map(j => [j.location.lat, j.location.lng]);
+    L.polyline(pts, { color, weight: 3.5, opacity: 0.85 }).addTo(_mapLeaflet);
+  });
+}
 </script>
+<!-- ══════════════════════════════════════════
+     DAY ROUTE MAP MODAL
+══════════════════════════════════════════ -->
+<div class="map-modal-overlay" id="mapModalOverlay" onclick="closeMapModalOutside(event)">
+  <div class="map-modal">
+    <div class="map-modal-header">
+      <div class="map-modal-title" id="mapModalTitle">Routes — <span id="mapModalDay">Mon</span></div>
+      <button class="btn btn-secondary" style="padding:6px 14px;font-size:11px" onclick="closeMapModal()">✕ Close</button>
+    </div>
+    <div class="map-modal-legend" id="mapModalLegend"></div>
+    <div id="mapContainer"></div>
+  </div>
+</div>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+
 </body>
 </html>
