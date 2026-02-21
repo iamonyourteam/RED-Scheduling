@@ -682,6 +682,9 @@ h1 span { color: var(--red); }
 .time-bar { height:3px; border-radius:2px; margin-top:3px; opacity:0.5; }
 .lock-badge { display:inline-flex; align-items:center; color:var(--text-muted); opacity:0.6; flex-shrink:0; }
 .asap-badge { display:inline-flex; align-items:center; font-size:8px; font-weight:800; letter-spacing:0.07em; color:var(--amber); border:1px solid var(--amber); border-radius:3px; padding:1px 4px; flex-shrink:0; opacity:0.9; }
+.badge-teal  { font-size:8px; font-weight:800; color:var(--teal); background:rgba(26,150,136,0.1); border:1px solid rgba(26,150,136,0.25); border-radius:4px; padding:1px 5px; margin-left:4px; }
+.badge-amber { font-size:8px; font-weight:800; color:var(--amber); background:rgba(217,119,6,0.1); border:1px solid rgba(217,119,6,0.3); border-radius:4px; padding:1px 5px; margin-left:4px; }
+.map-num-marker { border-radius:50%; width:24px; height:24px; display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:800; border:2px solid #fff; box-shadow:0 1px 4px rgba(0,0,0,0.35); color:#fff; }
 .cal-job.asap { border-left-style: dashed; }
 
 /* Window dividers */
@@ -927,6 +930,10 @@ h1 span { color: var(--red); }
 .sum-stat-card.teal::before { background: var(--teal); }
 .sum-stat-card.amber::before{ background: var(--amber); }
 .sum-stat-card.blue::before { background: var(--blue); }
+.sum-card-insight { display:flex; align-items:center; gap:5px; margin-top:8px; padding-top:8px; border-top:1px solid var(--border); font-size:10px; font-weight:600; }
+.sum-card-insight.good { color: var(--teal); }
+.sum-card-insight.warn { color: var(--amber); }
+.sum-card-insight.bad  { color: var(--red); }
 .sum-stat-val { font-size: 26px; font-weight: 900; color: var(--text); line-height: 1; }
 .sum-stat-unit { font-size: 12px; font-weight: 700; color: var(--text-muted); margin-left: 2px; }
 .sum-stat-label { font-size: 9px; font-weight: 800; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.08em; margin-top: 5px; }
@@ -1012,16 +1019,17 @@ h1 span { color: var(--red); }
   .sidebar { width: 280px !important; transform: translateX(-100%); z-index: 200; }
   .sidebar:not(.collapsed) { transform: translateX(0); }
   .sidebar.collapsed { transform: translateX(-100%); width: 280px !important; }
-  .main-content { margin-left: 0 !important; width: 100% !important; }
+  .main-content { margin-left: 0 !important; width: 100% !important; padding: 0 !important; }
   .sidebar-toggle {
-    top: 56px; left: 8px; width: 28px; height: 40px;
-    border-radius: 8px; border: 1px solid var(--border); z-index: 52;
+    top: 56px; left: 4px; width: 28px; height: 40px;
+    border-radius: 8px; border: 1px solid var(--border); z-index: 201;
+    position: fixed;
   }
-  .sidebar-toggle:not(.collapsed) { left: 288px; }
-  .sidebar-toggle.collapsed { left: 8px; }
+  .sidebar-toggle:not(.collapsed) { left: 284px; }
+  .sidebar-toggle.collapsed { left: 4px; }
 
   /* PAGE */
-  .page-content { padding: 0.6rem; }
+  .page-content { padding: 0.4rem 0; }
 
   /* HEADER */
   .header { flex-direction: column; gap: 0.5rem; margin-bottom: 0.75rem; }
@@ -1947,6 +1955,24 @@ h1 span { color: var(--red); }
 </div>
 
 <script>
+// ─── DOM HELPERS ────────────────────────────────────────────────────
+const $  = id => document.getElementById(id);
+const openModal  = id => $(id).classList.add('open');
+const closeModal = id => $(id).classList.remove('open');
+
+// ─── SVG ICON LIBRARY ───────────────────────────────────────────────
+const SVG = {
+  pin:      (s=10,c='currentColor') => `<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" stroke="${c}" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>`,
+  block:    (s=14,c='#C0152A')      => `<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" stroke="${c}" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg>`,
+  check:    (s=14,c='#1a9688')      => `<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" stroke="${c}" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>`,
+  lock:     ()                       => `<svg width="9" height="11" viewBox="0 0 10 12" fill="none"><rect x="2" y="5" width="6" height="6" rx="1.2" stroke="currentColor" stroke-width="1.4"/><path d="M3.5 5V3.5a1.5 1.5 0 013 0V5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>`,
+  arrow:    ()                       => `<svg width="12" height="12" viewBox="0 0 16 16" fill="none"><path d="M2 8h10M9 5l3 3-3 3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
+  alert:    (s=13,c='currentColor')  => `<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" stroke="${c}" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>`,
+  clock:    (s=13,c='currentColor')  => `<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" stroke="${c}" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>`,
+  star:     (s=13,c='currentColor')  => `<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" stroke="${c}" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>`,
+  calIcon:  (s=13,c='currentColor')  => `<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" stroke="${c}" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>`,
+};
+
 // ═══════════════════════════════════════════════════════════════════
 // CONSTANTS & DATA
 // ═══════════════════════════════════════════════════════════════════
@@ -2046,8 +2072,18 @@ function driveMinsGeo(locA, locB) {
   return Math.round(miles * 1.35 / 28 * 60);
 }
 
-const CALL_FIRST = ['James','Maria','Tyler','Sofia','Devon','Priya','Marcus','Elena','Jordan','Camille','Eli','Nadia','Rory','Leila','Owen','Zoe','Felix','Hazel','Tobias','Amara','Samuel','Ingrid','Omar','Yuki','Rosa','Darius','Imogen','Rafael','Sienna','Astrid'];
-const CALL_LAST  = ['Johnson','Martinez','Patel','Williams','Chen','Rivera','Thompson','Okafor','Brooks','Nakamura','Walsh','Sinclair','Dupont','Haddad','Gallagher','Stanton','Adeyemi','Wolff','Petrov','Archer','Reyes','Maddox','Cruz','Whitfield','Park','Shaw','Lima','Cole','Grant','Diallo'];
+const CALL_FIRST = [
+  'James','Maria','Tyler','Sofia','Devon','Priya','Marcus','Elena',
+  'Jordan','Camille','Eli','Nadia','Rory','Leila','Owen','Zoe',
+  'Felix','Hazel','Tobias','Amara','Samuel','Ingrid','Omar','Yuki',
+  'Rosa','Darius','Imogen','Rafael','Sienna','Astrid',
+];
+const CALL_LAST = [
+  'Johnson','Martinez','Patel','Williams','Chen','Rivera','Thompson',
+  'Okafor','Brooks','Nakamura','Walsh','Sinclair','Dupont','Haddad',
+  'Gallagher','Stanton','Adeyemi','Wolff','Petrov','Archer','Reyes',
+  'Maddox','Cruz','Whitfield','Park','Shaw','Lima','Cole','Grant','Diallo',
+];
 
 function generateJobs(count=30) {
   const usedNames = new Set();
@@ -2218,10 +2254,10 @@ function buildTable() {
   DAYS.forEach((day, k) => {
     hr += `<th class="cal-header-cell day-col-header" id="dayhdr-${k}">
       <span class="day-col-name">${day}</span>
-      <button class="map-day-btn" onclick="openDayMap(${k})" title="View routes for ${day}"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg> Map</button>
+      <button class="map-day-btn" onclick="openDayMap(${k})" title="View routes for ${day}">${SVG.pin(10)} Map</button>
     </th>`;
   });
-  document.getElementById('calHead').innerHTML = hr + '</tr>';
+  $('calHead').innerHTML = hr + '</tr>';
 
   // BODY — one row per tech
   let body = '';
@@ -2233,7 +2269,7 @@ function buildTable() {
       const avail = getAvail(k, j);
       const cls = p >= 100 ? 'full' : p >= 75 ? 'warn' : '';
       const blocked = avail.mode === 'blocked';
-      const icon = blocked ? '<span class="blocked-icon" style="margin-right:3px"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#C0152A" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg></span>' : '';
+      const icon = blocked ? `<span class="blocked-icon" style="margin-right:3px">${SVG.block(10)}</span>` : '';
       return `<div class="tech-day-row${blocked ? ' day-blocked' : ''}" id="trow-${k}-${j}">
         <div class="tech-day-track"><div class="tech-day-fill ${cls}" id="tbar-${k}-${j}" style="width:${p}%"></div></div>
         <span class="tech-day-pct" id="tpct-${k}-${j}">${blocked ? 'OFF' : p + '%'}</span>
@@ -2253,7 +2289,7 @@ function buildTable() {
     });
     body += '</tr>';
   });
-  document.getElementById('calBody').innerHTML = body;
+  $('calBody').innerHTML = body;
   bindCellDrop();
 }
 
@@ -2276,7 +2312,7 @@ function driveBlockHTML(fromJob, toJob) {
   const PX_PER_HOUR = 44;
   const h = Math.max(20, Math.round((mins / 60) * PX_PER_HOUR));
   return `<div class="drive-block" style="min-height:${h}px">
-    <div class="drive-icon"><svg width="12" height="12" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2 8h10M9 5l3 3-3 3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    <div class="drive-icon">${SVG.arrow()}</div>
     <div class="drive-label">${mins} min transit</div>
     <div class="drive-bar-track"><div class="drive-bar-fill" style="width:${w}%"></div></div>
   </div>`;
@@ -2317,9 +2353,7 @@ function cardHTML(job, justPlaced=false) {
   const lockBadge = job._asap
     ? `<span class="asap-badge" title="ASAP — can be rescheduled">ASAP</span>`
     : locked
-      ? `<span class="lock-badge" title="Confirmed — customer notified">
-          <svg width="9" height="11" viewBox="0 0 10 12" fill="none"><rect x="2" y="5" width="6" height="6" rx="1.2" stroke="currentColor" stroke-width="1.4"/><path d="M3.5 5V3.5a1.5 1.5 0 013 0V5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
-         </span>`
+      ? `<span class="lock-badge" title="Confirmed — customer notified">${SVG.lock()}</span>`
       : '';
   const PX_PER_HOUR = 44;
   const minH = job.time < 3 ? 52 : job.time < 7 ? 88 : 176;
@@ -2343,7 +2377,7 @@ function renderCell(k, j, lastKey=null) {
   cell.classList.remove('limited');
 
   if (avail.mode === 'blocked') {
-    cell.innerHTML = '<div class="blocked-banner"><span class="blocked-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#C0152A" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg></span><span class="blocked-banner-text">Day Off</span></div>';
+    cell.innerHTML = `<div class="blocked-banner"><span class="blocked-icon">${SVG.block()}</span><span class="blocked-banner-text">Day Off</span></div>`;
     return;
   }
 
@@ -2371,8 +2405,8 @@ function renderAllCells() {
 }
 
 function renderQueue(removedKey=null) {
-  const el = document.getElementById('jobs');
-  document.getElementById('queueCount').textContent = queueJobs.length ? `${queueJobs.length} waiting` : '';
+  const el = $('jobs');
+  $('queueCount').textContent = queueJobs.length ? `${queueJobs.length} waiting` : '';
 
   if (!queueJobs.length && !removedKey) {
     // Only show empty state if there are genuinely no chips left AND no ongoing removal
@@ -2420,8 +2454,8 @@ function renderQueue(removedKey=null) {
 }
 
 function renderOverflow() {
-  const el = document.getElementById('overflowPanel');
-  document.getElementById('overflowCount').textContent = `${overflow.length} carry over`;
+  const el = $('overflowPanel');
+  $('overflowCount').textContent = `${overflow.length} carry over`;
   if (!overflow.length) {
     el.innerHTML = '<div class="empty-state">All calls scheduled this week</div>';
     return;
@@ -2437,9 +2471,9 @@ function renderOverflow() {
 }
 
 function renderTechs() {
-  const el = document.getElementById('techsPanel');
-  document.getElementById('techPanelCount').textContent = `${techs.length} active`;
-  const tsc = document.getElementById('techStatCount');
+  const el = $('techsPanel');
+  $('techPanelCount').textContent = `${techs.length} active`;
+  const tsc = $('techStatCount');
   if (tsc) tsc.textContent = techs.length;
   el.innerHTML = techs.map((t, idx) => {
     const sl = t.skill_level;
@@ -2449,10 +2483,7 @@ function renderTechs() {
       return `<button class="avail-day-btn ${blocked ? 'is-blocked' : ''}"
         onclick="toggleAvail(${k},${idx})" title="${blocked ? 'Click to restore' : 'Click to block'}">
         <span class="day-label">${day}</span>
-        <span class="day-status">${blocked
-          ? '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#C0152A" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg>'
-          : '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#1a9688" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>'
-        }</span>
+        <span class="day-status">${blocked ? SVG.block() : SVG.check()}</span>
       </button>`;
     }).join('');
     return `<div class="tech-avail-row">
@@ -2581,7 +2612,7 @@ function rankPlacements(job) {
 // FILL ANIMATION  (queue ticker / phone ring effect)
 // ═══════════════════════════════════════════════════════════════════
 function setTicker(html) {
-  document.getElementById('tickerText').innerHTML = html;
+  $('tickerText').innerHTML = html;
 }
 
 function chipHTML(job, isCurrent) {
@@ -2594,8 +2625,8 @@ function chipHTML(job, isCurrent) {
 }
 
 function showIncoming(currentJob, nextJob) {
-  document.getElementById('incomingSlot').innerHTML = chipHTML(currentJob, true);
-  const nextSlot = document.getElementById('nextSlot');
+  $('incomingSlot').innerHTML = chipHTML(currentJob, true);
+  const nextSlot = $('nextSlot');
   if (nextJob) {
     nextSlot.innerHTML = chipHTML(nextJob, false);
   } else {
@@ -2603,17 +2634,17 @@ function showIncoming(currentJob, nextJob) {
       <span class="chip-name" style="color:var(--text-muted)">&#8212; No more calls &#8212;</span>
     </div>`;
   }
-  document.getElementById('phoneIcon').classList.add('ringing');
+  $('phoneIcon').classList.add('ringing');
 }
 
 function clearIncoming() {
-  document.getElementById('incomingSlot').innerHTML = `<div class="incoming-chip incoming-empty">
+  $('incomingSlot').innerHTML = `<div class="incoming-chip incoming-empty">
     <span class="chip-name" style="color:var(--text-muted)">&#8212; Waiting for call &#8212;</span>
   </div>`;
-  document.getElementById('nextSlot').innerHTML = `<div class="incoming-chip incoming-empty next-chip">
+  $('nextSlot').innerHTML = `<div class="incoming-chip incoming-empty next-chip">
     <span class="chip-name" style="color:var(--text-muted)">&#8212;</span>
   </div>`;
-  document.getElementById('phoneIcon').classList.remove('ringing');
+  $('phoneIcon').classList.remove('ringing');
 }
 
 async function fillCalendar() {
@@ -2626,11 +2657,11 @@ async function fillCalendar() {
   stopIdlePreview();
   isFilling = true; isPaused = false; speedMultiplier = 1;
 
-  const fillBtn = document.getElementById('fillButton');
+  const fillBtn = $('fillButton');
   fillBtn.innerHTML = '&#9193; Fast';
   fillBtn.classList.add('btn-fastforward');
   fillBtn.disabled = false;
-  const pauseBtn = document.getElementById('pauseButton');
+  const pauseBtn = $('pauseButton');
   pauseBtn.classList.add('visible');
   pauseBtn.classList.remove('paused');
   pauseBtn.innerHTML = '&#9208; Pause';
@@ -2644,7 +2675,7 @@ async function fillCalendar() {
 
   // Render initial queue (all chips at once)
   el_init: {
-    const el = document.getElementById('jobs');
+    const el = $('jobs');
     el.innerHTML = '';
     queueJobs.forEach(job => {
       const sl = job.skill_level;
@@ -2656,7 +2687,7 @@ async function fillCalendar() {
         <span class="chip-meta">${job.location.addr} &middot; ${fmtHours(job.time)} &middot; ${skillName(sl)}</span>`;
       el.appendChild(div);
     });
-    document.getElementById('queueCount').textContent = `${queueJobs.length} waiting`;
+    $('queueCount').textContent = `${queueJobs.length} waiting`;
     bindQueueDrag();
   }
   buildTable();
@@ -2664,9 +2695,9 @@ async function fillCalendar() {
   renderTechs();
   renderOverflow();
 
-  const pw = document.getElementById('progressWrap');
-  const pf = document.getElementById('progressFill');
-  const pl = document.getElementById('progressLabel');
+  const pw = $('progressWrap');
+  const pf = $('progressFill');
+  const pl = $('progressLabel');
   pw.classList.add('visible');
   pf.style.width='0%';
 
@@ -2689,7 +2720,7 @@ async function fillCalendar() {
     // Smoothly remove from queue (chip shrinks in-place)
     queueJobs = queueJobs.filter(j=>j.key!==job.key);
     renderQueue(job.key);  // pass removed key for smooth exit
-    document.getElementById('queueCount').textContent = queueJobs.length ? `${queueJobs.length} waiting` : '';
+    $('queueCount').textContent = queueJobs.length ? `${queueJobs.length} waiting` : '';
 
     const res = scheduleOne(job);
     if (res.ok) {
@@ -2717,7 +2748,7 @@ async function fillCalendar() {
   pauseBtn.classList.remove('visible');
   isFilling = false;
   speedMultiplier = 1;
-  const fb = document.getElementById('fillButton');
+  const fb = $('fillButton');
   fb.innerHTML = '&#9654; Run Schedule';
   fb.classList.remove('btn-fastforward');
   fb.disabled = false;
@@ -2728,7 +2759,7 @@ async function fillCalendar() {
 }
 
 function toggleFastForward() {
-  const fillBtn = document.getElementById('fillButton');
+  const fillBtn = $('fillButton');
   if (speedMultiplier === 1) {
     speedMultiplier = 100;
     fillBtn.innerHTML = '&#9654; Normal';
@@ -2741,14 +2772,14 @@ function toggleFastForward() {
 }
 // ═══════════════════════════════════════════════════════════════════
 function togglePause() {
-  const btn = document.getElementById('pauseButton');
+  const btn = $('pauseButton');
   if (!isPaused) {
     isPaused = true;
     btn.classList.add('paused');
     btn.innerHTML = '&#9654; Resume';
-    document.getElementById('progressLabel').textContent = 'Paused';
+    $('progressLabel').textContent = 'Paused';
     setTicker('&#9208; Paused &mdash; click Resume to continue');
-    document.getElementById('phoneIcon').classList.remove('ringing');
+    $('phoneIcon').classList.remove('ringing');
   } else {
     isPaused = false;
     btn.classList.remove('paused');
@@ -2767,15 +2798,15 @@ function resetAll() {
   techs=clone(DEFAULT_TECHS); cal=buildCal(); overflow=[]; queueJobs=[]; allJobs=[]; techAvail={};
   initWeekendBlocked();
   buildTable(); renderAllCells(); renderTechs(); renderOverflow(); clearIncoming();
-  document.getElementById('jobs').innerHTML='';
-  document.getElementById('queueCount').textContent='';
-  document.getElementById('progressWrap').classList.remove('visible');
-  document.getElementById('progressFill').style.width='0%';
-  document.getElementById('fillButton').disabled=false;
-  document.getElementById('fillButton').innerHTML='&#9654; Run Schedule';
-  document.getElementById('fillButton').classList.remove('btn-fastforward');
+  $('jobs').innerHTML='';
+  $('queueCount').textContent='';
+  $('progressWrap').classList.remove('visible');
+  $('progressFill').style.width='0%';
+  $('fillButton').disabled=false;
+  $('fillButton').innerHTML='&#9654; Run Schedule';
+  $('fillButton').classList.remove('btn-fastforward');
   speedMultiplier = 1;
-  document.getElementById('pauseButton').classList.remove('visible','paused');
+  $('pauseButton').classList.remove('visible','paused');
   clearSuggestions();
   setTimeout(startIdlePreview, 400);
 }
@@ -2785,27 +2816,27 @@ function resetAll() {
 // ═══════════════════════════════════════════════════════════════════
 function openTechModal() {
   selectedTechSkill=null;
-  document.getElementById('techNameInput').value='';
+  $('techNameInput').value='';
   document.querySelectorAll('#techSkillPicker .skill-opt').forEach(b=>b.classList.remove('selected'));
-  document.getElementById('nameError').classList.remove('show');
-  document.getElementById('skillError').classList.remove('show');
-  document.getElementById('techModalOverlay').classList.add('open');
-  setTimeout(()=>document.getElementById('techNameInput').focus(),80);
+  $('nameError').classList.remove('show');
+  $('skillError').classList.remove('show');
+  openModal('techModalOverlay');
+  setTimeout(()=>$('techNameInput').focus(),80);
 }
-function closeTechModal()       { document.getElementById('techModalOverlay').classList.remove('open'); }
+function closeTechModal()       { closeModal('techModalOverlay'); }
 function closeTechModalOutside(e){ if(e.target.id==='techModalOverlay') closeTechModal(); }
 function selectTechSkill(n) {
   selectedTechSkill=n;
   document.querySelectorAll('#techSkillPicker .skill-opt').forEach(b=>b.classList.toggle('selected',+b.dataset.skill===n));
-  document.getElementById('skillError').classList.remove('show');
+  $('skillError').classList.remove('show');
 }
 function addTechnician() {
-  const name=document.getElementById('techNameInput').value.trim();
+  const name=$('techNameInput').value.trim();
   let ok=true;
-  if(!name){document.getElementById('nameError').classList.add('show');ok=false;}
-  else document.getElementById('nameError').classList.remove('show');
-  if(!selectedTechSkill){document.getElementById('skillError').classList.add('show');ok=false;}
-  else document.getElementById('skillError').classList.remove('show');
+  if(!name){$('nameError').classList.add('show');ok=false;}
+  else $('nameError').classList.remove('show');
+  if(!selectedTechSkill){$('skillError').classList.add('show');ok=false;}
+  else $('skillError').classList.remove('show');
   if(!ok) return;
   techs.push({key:name,skill_level:selectedTechSkill});
   for(let k=0;k<DAYS.length;k++) cal[k].push([]);
@@ -2833,46 +2864,46 @@ function randomCallDefaults() {
 function openCallModal() {
   selectedCallSkill=null;
   const d = randomCallDefaults();
-  document.getElementById('callNameInput').value = d.name;
-  document.getElementById('callLocInput').value  = d.loc.addr;
-  document.getElementById('callTimeInput').value = d.dur;
+  $('callNameInput').value = d.name;
+  $('callLocInput').value  = d.loc.addr;
+  $('callTimeInput').value = d.dur;
   selectedCallSkill = d.skill;
   document.querySelectorAll('#callSkillPicker .skill-opt').forEach(b=>{
     b.classList.toggle('selected', +b.dataset.skill === d.skill);
   });
   ['callNameError','callLocError','callTimeError','callSkillError'].forEach(id=>document.getElementById(id).classList.remove('show'));
-  document.getElementById('suggestionBox').style.display='none';
-  document.getElementById('callModalOverlay').classList.add('open');
+  $('suggestionBox').style.display='none';
+  openModal('callModalOverlay');
   clearSuggestions();
-  setTimeout(()=>document.getElementById('callNameInput').focus(),80);
+  setTimeout(()=>$('callNameInput').focus(),80);
 }
 function closeCallModal() {
-  document.getElementById('callModalOverlay').classList.remove('open');
+  closeModal('callModalOverlay');
   clearSuggestions();
 }
 function closeCallModalOutside(e){ if(e.target.id==='callModalOverlay') closeCallModal(); }
 function selectCallSkill(n) {
   selectedCallSkill=n;
   document.querySelectorAll('#callSkillPicker .skill-opt').forEach(b=>b.classList.toggle('selected',+b.dataset.skill===n));
-  document.getElementById('callSkillError').classList.remove('show');
+  $('callSkillError').classList.remove('show');
 }
 
 function validateCallForm() {
-  const name = document.getElementById('callNameInput').value.trim();
-  const addrText = document.getElementById('callLocInput').value.trim();
-  const time = parseFloat(document.getElementById('callTimeInput').value);
+  const name = $('callNameInput').value.trim();
+  const addrText = $('callLocInput').value.trim();
+  const time = parseFloat($('callTimeInput').value);
   let ok=true;
-  if(!name){document.getElementById('callNameError').classList.add('show');ok=false;}
-  else document.getElementById('callNameError').classList.remove('show');
+  if(!name){$('callNameError').classList.add('show');ok=false;}
+  else $('callNameError').classList.remove('show');
   // Match address to pool (case-insensitive partial match, else first entry)
   const matchedAddr = SARASOTA_ADDRESSES.find(a => a.addr.toLowerCase().includes(addrText.toLowerCase()))
     || SARASOTA_ADDRESSES[0];
-  if(!addrText){document.getElementById('callLocError').classList.add('show');ok=false;}
-  else document.getElementById('callLocError').classList.remove('show');
-  if(isNaN(time)||time<0.5||time>8){document.getElementById('callTimeError').classList.add('show');ok=false;}
-  else document.getElementById('callTimeError').classList.remove('show');
-  if(!selectedCallSkill){document.getElementById('callSkillError').classList.add('show');ok=false;}
-  else document.getElementById('callSkillError').classList.remove('show');
+  if(!addrText){$('callLocError').classList.add('show');ok=false;}
+  else $('callLocError').classList.remove('show');
+  if(isNaN(time)||time<0.5||time>8){$('callTimeError').classList.add('show');ok=false;}
+  else $('callTimeError').classList.remove('show');
+  if(!selectedCallSkill){$('callSkillError').classList.add('show');ok=false;}
+  else $('callSkillError').classList.remove('show');
   if(!ok) return null;
   return {
     key: name, location: matchedAddr, skill_level: selectedCallSkill, time: time
@@ -2898,8 +2929,8 @@ function suggestPlacement() {
   clearSuggestions();
   const ranked = rankPlacements(job);
   if (!ranked.length) {
-    document.getElementById('suggestionBox').style.display='block';
-    document.getElementById('suggestionBox').innerHTML='<div class="sugg-title">No Suggestions</div><div style="font-size:11px;color:var(--text-muted)">No technicians available with required skill.</div>';
+    $('suggestionBox').style.display='block';
+    $('suggestionBox').innerHTML='<div class="sugg-title">No Suggestions</div><div style="font-size:11px;color:var(--text-muted)">No technicians available with required skill.</div>';
     return;
   }
 
@@ -2933,7 +2964,7 @@ function suggestPlacement() {
     </div>`;
   }).join('');
 
-  const box = document.getElementById('suggestionBox');
+  const box = $('suggestionBox');
   box.style.display='block';
   box.innerHTML=`<div class="sugg-title">&#128161; Suggested Placements</div><div class="sugg-list">${listHTML}</div>
     <div style="font-size:9px;color:var(--text-muted);margin-top:0.75rem">Click a suggestion to place the job immediately, or add to queue manually.</div>`;
@@ -2985,16 +3016,16 @@ function clearSuggestions() {
 function showOverbookModal(job, k, j, currentUsed) {
   const newTotal = currentUsed + job.time;
   const over = newTotal - TIME_IN_DAY;
-  document.getElementById('overbookInfo').innerHTML =
+  $('overbookInfo').innerHTML =
     `<strong>${techs[j].key}</strong> on <strong>${DAYS[k]}</strong> currently has
      <strong>${fmtHours(currentUsed)}</strong> scheduled (${Math.round((currentUsed/TIME_IN_DAY)*100)}% capacity).<br><br>
      Adding <strong>${job.key}</strong> (${fmtHours(job.time)}) would bring the total to
      <strong>${fmtHours(newTotal)}</strong> &mdash; <strong style="color:var(--amber)">${fmtHours(over)} over the ${TIME_IN_DAY}h daily limit</strong>.`;
-  document.getElementById('overbookModalOverlay').classList.add('open');
+  openModal('overbookModalOverlay');
 }
-function cancelOverbook()  { document.getElementById('overbookModalOverlay').classList.remove('open'); overbookCallback=null; }
+function cancelOverbook()  { closeModal('overbookModalOverlay'); overbookCallback=null; }
 function confirmOverbook() {
-  document.getElementById('overbookModalOverlay').classList.remove('open');
+  closeModal('overbookModalOverlay');
   if (overbookCallback) { overbookCallback(); overbookCallback=null; }
 }
 
@@ -3004,14 +3035,14 @@ let _detailJob = null, _detailK = -1, _detailJ = -1;
 function openJobDetail(job, k, j) {
   _detailJob = job; _detailK = k; _detailJ = j;
 
-  const titleEl = document.getElementById('jobDetailTitle');
+  const titleEl = $('jobDetailTitle');
   if (job._asap) {
     titleEl.innerHTML = `<span class="asap-badge" style="font-size:13px;padding:2px 7px">ASAP</span> <span>${job.key}</span>`;
   } else {
     titleEl.innerHTML = `Job <span>${job.key}</span>`;
   }
 
-  document.getElementById('jobDetailBody').innerHTML = `
+  $('jobDetailBody').innerHTML = `
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:12px;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:12px;margin-bottom:1rem">
       <div><span style="color:var(--text-muted);font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.05em">Duration</span><br><strong>${fmtHours(job.time)}</strong></div>
       <div><span style="color:var(--text-muted);font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.05em">Skill</span><br><strong>${skillName(job.skill_level)}</strong></div>
@@ -3050,13 +3081,13 @@ function openJobDetail(job, k, j) {
     driveMin: driveMinsGeo(entry.job.location, _detailJob.location)
   })).sort((a, b) => a.driveMin - b.driveMin);
 
-  const suggestSection = document.getElementById('asapSuggestSection');
-  const noneSection    = document.getElementById('asapNoneSection');
+  const suggestSection = $('asapSuggestSection');
+  const noneSection    = $('asapNoneSection');
 
   if (withDrive.length > 0) {
     suggestSection.style.display = '';
     noneSection.style.display = 'none';
-    document.getElementById('asapSuggestList').innerHTML = withDrive.map((entry, idx) => {
+    $('asapSuggestList').innerHTML = withDrive.map((entry, idx) => {
       const { job: c, fromDay, fromTech, driveMin } = entry;
       const isLong = driveMin > 25;
       const isMed  = driveMin > 12 && !isLong;
@@ -3064,15 +3095,15 @@ function openJobDetail(job, k, j) {
       const driveLabel = driveMin < 1 ? '<1 min' : `${driveMin} min`;
       const warning = isLong
         ? `<div style="display:flex;align-items:center;gap:4px;font-size:9px;color:var(--red);font-weight:700;margin-top:3px">
-            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+            ${SVG.alert(10)}
             Long drive — consider a closer option
            </div>` : '';
       const bestBadge = idx === 0
-        ? `<span style="font-size:8px;font-weight:800;color:var(--teal);background:rgba(26,150,136,0.1);border:1px solid rgba(26,150,136,0.25);border-radius:4px;padding:1px 5px;margin-left:4px">CLOSEST</span>`
+        ? `<span class="badge-teal">CLOSEST</span>`
         : '';
       const isNextWeek = entry.source === 'nextweek';
       const sourceLabel = isNextWeek
-        ? `<span style="font-size:8px;font-weight:800;color:var(--amber);background:rgba(217,119,6,0.1);border:1px solid rgba(217,119,6,0.3);border-radius:4px;padding:1px 5px;margin-left:4px">NEXT WEEK</span>`
+        ? `<span class="badge-amber">NEXT WEEK</span>`
         : `<span style="font-size:9px;color:var(--text-muted)">· currently ${DAYS[entry.fromDay]}</span>`;
       return `
       <div style="display:flex;align-items:center;gap:8px;background:var(--surface);border:1px solid ${isLong ? 'var(--red-border)' : 'var(--border)'};border-radius:6px;padding:8px 10px">
@@ -3082,7 +3113,7 @@ function openJobDetail(job, k, j) {
           </div>
           <div style="font-size:9px;color:var(--text-muted);margin-top:1px">${fmtHours(c.time)} · ${skillName(c.skill_level)}</div>
           <div style="display:flex;align-items:center;gap:4px;margin-top:3px">
-            <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="${driveColor}" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            ${SVG.pin(9, driveColor)}
             <span style="font-size:9px;font-weight:700;color:${driveColor}">${driveLabel} away</span>
           </div>
           ${warning}
@@ -3095,17 +3126,17 @@ function openJobDetail(job, k, j) {
   } else {
     suggestSection.style.display = 'none';
     noneSection.style.display = '';
-    document.getElementById('asapNoneSection').textContent =
+    $('asapNoneSection').textContent =
       _detailK === 0
         ? 'This is the earliest day — no ASAP jobs can move earlier.'
         : 'No ASAP jobs are scheduled later in the week that could take this slot.';
   }
 
-  document.getElementById('jobDetailOverlay').classList.add('open');
+  openModal('jobDetailOverlay');
 }
 
 function closeJobDetail() {
-  document.getElementById('jobDetailOverlay').classList.remove('open');
+  closeModal('jobDetailOverlay');
   _detailJob = null; _detailK = -1; _detailJ = -1;
 }
 function closeJobDetailOutside(e) { if (e.target.id === 'jobDetailOverlay') closeJobDetail(); }
@@ -3206,15 +3237,15 @@ function showSkillWarnModal(job, k, j) {
   if (alsoFull) {
     extra = `<br><br><strong style="color:var(--amber)">Note:</strong> This slot is also over capacity by ${fmtHours((used+job.time)-TIME_IN_DAY)}.`;
   }
-  document.getElementById('skillWarnInfo').innerHTML =
+  $('skillWarnInfo').innerHTML =
     `<strong>${techs[j].key}</strong> has <strong>${skillName(techSkill)}</strong> certification, but this job requires <strong>${skillName(jobSkill)}</strong>.
      <strong>${job.key}</strong> requires <strong>Skill Level ${jobSkill}</strong>.
      This technician is <strong style="color:var(--red)">${jobSkill - techSkill} level(s) below</strong> the required certification.${extra}`;
-  document.getElementById('skillWarnModalOverlay').classList.add('open');
+  openModal('skillWarnModalOverlay');
 }
-function cancelSkillWarn()  { document.getElementById('skillWarnModalOverlay').classList.remove('open'); skillWarnCallback=null; }
+function cancelSkillWarn()  { closeModal('skillWarnModalOverlay'); skillWarnCallback=null; }
 function confirmSkillWarn() {
-  document.getElementById('skillWarnModalOverlay').classList.remove('open');
+  closeModal('skillWarnModalOverlay');
   if (skillWarnCallback) { skillWarnCallback(); skillWarnCallback=null; }
 }
 
@@ -3471,10 +3502,10 @@ function bindCellDrop() {
 }
 
 function bindQueueDropZone() {
-  const el=document.getElementById('jobs');
+  const el=$('jobs');
   const fresh=el.cloneNode(true);
   el.parentNode.replaceChild(fresh,el);
-  const zone=document.getElementById('jobs');
+  const zone=$('jobs');
   zone.addEventListener('dragover',e=>{e.preventDefault();zone.classList.add('drop-target');});
   zone.addEventListener('dragleave',()=>zone.classList.remove('drop-target'));
   zone.addEventListener('drop',e=>{
@@ -3488,10 +3519,10 @@ function bindQueueDropZone() {
 }
 
 function bindOverflowDropZone() {
-  const el=document.getElementById('overflowPanel');
+  const el=$('overflowPanel');
   const fresh=el.cloneNode(true);
   el.parentNode.replaceChild(fresh,el);
-  const zone=document.getElementById('overflowPanel');
+  const zone=$('overflowPanel');
   zone.addEventListener('dragover',e=>{e.preventDefault();zone.classList.add('drop-target');});
   zone.addEventListener('dragleave',()=>zone.classList.remove('drop-target'));
   zone.addEventListener('drop',e=>{
@@ -3518,30 +3549,30 @@ let sSkillSel  = null;
 
 function openSettings() {
   // Sync inputs from current state
-  document.getElementById('w-dur-1').value = durWeights[1];
-  document.getElementById('w-dur-2').value = durWeights[2];
-  document.getElementById('w-dur-3').value = durWeights[3];
-  document.getElementById('w-dur-4').value = durWeights[4];
-  document.getElementById('w-dur-6').value = durWeights[6];
-  document.getElementById('w-sk-1').value  = skillWeights[1];
-  document.getElementById('w-sk-2').value  = skillWeights[2];
-  document.getElementById('w-sk-3').value  = skillWeights[3];
-  document.getElementById('w-sk-4').value  = skillWeights[4];
-  document.getElementById('s-hours-day').value   = TIME_IN_DAY;
-  document.getElementById('s-hours-current').textContent = `${TIME_IN_DAY}h`;
-  document.getElementById('s-call-count').value  = callCount;
+  $('w-dur-1').value = durWeights[1];
+  $('w-dur-2').value = durWeights[2];
+  $('w-dur-3').value = durWeights[3];
+  $('w-dur-4').value = durWeights[4];
+  $('w-dur-6').value = durWeights[6];
+  $('w-sk-1').value  = skillWeights[1];
+  $('w-sk-2').value  = skillWeights[2];
+  $('w-sk-3').value  = skillWeights[3];
+  $('w-sk-4').value  = skillWeights[4];
+  $('s-hours-day').value   = TIME_IN_DAY;
+  $('s-hours-current').textContent = `${TIME_IN_DAY}h`;
+  $('s-call-count').value  = callCount;
   sEditTechs = techs.map(t => ({...t}));
   sSkillSel  = null;
-  document.getElementById('s-tech-name').value = '';
+  $('s-tech-name').value = '';
   document.querySelectorAll('#s-tech-skill-picker .skill-opt').forEach(b => b.classList.remove('selected'));
-  document.getElementById('s-tech-error').textContent = '';
+  $('s-tech-error').textContent = '';
   switchSettingsTab('duration');
   updateDurTotal();
   updateSkTotal();
   renderSTechList();
-  document.getElementById('settingsModalOverlay').classList.add('open');
+  openModal('settingsModalOverlay');
 }
-function closeSettings() { document.getElementById('settingsModalOverlay').classList.remove('open'); }
+function closeSettings() { closeModal('settingsModalOverlay'); }
 function closeSettingsOutside(e) { if (e.target.id === 'settingsModalOverlay') closeSettings(); }
 
 function switchSettingsTab(tab) {
@@ -3554,14 +3585,14 @@ function switchSettingsTab(tab) {
 function updateDurTotal() {
   const ids = ['w-dur-1','w-dur-2','w-dur-3','w-dur-4','w-dur-6'];
   const total = ids.reduce((s,id) => s + (parseFloat(document.getElementById(id).value)||0), 0);
-  const el = document.getElementById('dur-total');
+  const el = $('dur-total');
   el.textContent = `Total: ${Math.round(total)}%`;
   el.className = 'weight-total ' + (Math.abs(total - 100) < 0.5 ? 'ok' : 'warn');
 }
 function updateSkTotal() {
   const ids = ['w-sk-1','w-sk-2','w-sk-3','w-sk-4'];
   const total = ids.reduce((s,id) => s + (parseFloat(document.getElementById(id).value)||0), 0);
-  const el = document.getElementById('sk-total');
+  const el = $('sk-total');
   el.textContent = `Total: ${Math.round(total)}%`;
   el.className = 'weight-total ' + (Math.abs(total - 100) < 0.5 ? 'ok' : 'warn');
 }
@@ -3572,7 +3603,7 @@ function updateSkTotal() {
 });
 
 function renderSTechList() {
-  const el = document.getElementById('s-tech-list');
+  const el = $('s-tech-list');
   if (!sEditTechs.length) { el.innerHTML = '<div style="font-size:11px;color:var(--text-muted);padding:4px 0">No technicians — add one below.</div>'; return; }
   el.innerHTML = sEditTechs.map((t, i) => `
     <div class="s-tech-row">
@@ -3591,13 +3622,13 @@ function sSelectSkill(n) {
   document.querySelectorAll('#s-tech-skill-picker .skill-opt').forEach(b => b.classList.toggle('selected', +b.dataset.skill === n));
 }
 function sAddTech() {
-  const name = document.getElementById('s-tech-name').value.trim();
-  const errEl = document.getElementById('s-tech-error');
+  const name = $('s-tech-name').value.trim();
+  const errEl = $('s-tech-error');
   if (!name)      { errEl.textContent = 'Enter a name.'; errEl.classList.add('show'); return; }
   if (!sSkillSel) { errEl.textContent = 'Select a skill level.'; errEl.classList.add('show'); return; }
   errEl.textContent = ''; errEl.classList.remove('show');
   sEditTechs.push({ key: name, skill_level: sSkillSel });
-  document.getElementById('s-tech-name').value = '';
+  $('s-tech-name').value = '';
   sSkillSel = null;
   document.querySelectorAll('#s-tech-skill-picker .skill-opt').forEach(b => b.classList.remove('selected'));
   renderSTechList();
@@ -3606,24 +3637,24 @@ function sAddTech() {
 function applySettings() {
   // Duration weights
   durWeights = {
-    1: parseFloat(document.getElementById('w-dur-1').value) || 0,
-    2: parseFloat(document.getElementById('w-dur-2').value) || 0,
-    3: parseFloat(document.getElementById('w-dur-3').value) || 0,
-    4: parseFloat(document.getElementById('w-dur-4').value) || 0,
-    6: parseFloat(document.getElementById('w-dur-6').value) || 0,
+    1: parseFloat($('w-dur-1').value) || 0,
+    2: parseFloat($('w-dur-2').value) || 0,
+    3: parseFloat($('w-dur-3').value) || 0,
+    4: parseFloat($('w-dur-4').value) || 0,
+    6: parseFloat($('w-dur-6').value) || 0,
   };
   // Skill weights
   skillWeights = {
-    1: parseFloat(document.getElementById('w-sk-1').value) || 0,
-    2: parseFloat(document.getElementById('w-sk-2').value) || 0,
-    3: parseFloat(document.getElementById('w-sk-3').value) || 0,
-    4: parseFloat(document.getElementById('w-sk-4').value) || 0,
+    1: parseFloat($('w-sk-1').value) || 0,
+    2: parseFloat($('w-sk-2').value) || 0,
+    3: parseFloat($('w-sk-3').value) || 0,
+    4: parseFloat($('w-sk-4').value) || 0,
   };
   // Hours per day
-  const newHours = parseFloat(document.getElementById('s-hours-day').value);
+  const newHours = parseFloat($('s-hours-day').value);
   if (newHours >= 1 && newHours <= 24) TIME_IN_DAY = newHours;
   updateCapacityStat();
-  const newCount = parseInt(document.getElementById('s-call-count').value);
+  const newCount = parseInt($('s-call-count').value);
   if (newCount >= 1 && newCount <= 200) callCount = newCount;
 
   // Techs — rebuild cal columns if count changed
@@ -3642,17 +3673,17 @@ function applySettings() {
   renderTechs();
   renderOverflow();
   clearIncoming();
-  document.getElementById('jobs').innerHTML = '<div class="empty-state">Press "Run Schedule" to begin receiving calls</div>';
+  $('jobs').innerHTML = '<div class="empty-state">Press "Run Schedule" to begin receiving calls</div>';
   setTicker('Settings applied — press Run Schedule to fill');
-  document.getElementById('progressWrap').classList.remove('visible');
-  document.getElementById('fillButton').disabled = false;
-  document.getElementById('pauseButton').classList.remove('visible','paused');
+  $('progressWrap').classList.remove('visible');
+  $('fillButton').disabled = false;
+  $('pauseButton').classList.remove('visible','paused');
   bindAllDrop();
   closeSettings();
 }
 
 function updateCapacityStat() {
-  const el = document.getElementById('capacityStat');
+  const el = $('capacityStat');
   if (el) el.textContent = `${TIME_IN_DAY} hrs/day`;
 }
 
@@ -3668,8 +3699,8 @@ updateCapacityStat();
 
 // Auto-collapse sidebar on mobile
 if (window.innerWidth <= 768) {
-  const sidebar = document.getElementById('sidebar');
-  const toggle  = document.getElementById('sidebarToggle');
+  const sidebar = $('sidebar');
+  const toggle  = $('sidebarToggle');
   sidebar.classList.add('collapsed');
   toggle.classList.add('collapsed');
   toggle.innerHTML = '&#10095;';
@@ -3710,7 +3741,7 @@ function startIdlePreview() {
 
     // Animate NOW HANDLING
     const sl = job.skill_level;
-    document.getElementById('incomingSlot').innerHTML = `
+    $('incomingSlot').innerHTML = `
       <div class="incoming-chip">
         <span class="chip-name">${job.key}</span>
         <span class="chip-meta">${fmtHours(job.time)} &middot; ${skillName(sl)}</span>
@@ -3718,16 +3749,16 @@ function startIdlePreview() {
 
     // Show UP NEXT
     const nsl = nextJob.skill_level;
-    document.getElementById('nextSlot').innerHTML = `
+    $('nextSlot').innerHTML = `
       <div class="incoming-chip next-chip">
         <span class="chip-name">${nextJob.key}</span>
         <span class="chip-meta">${fmtHours(nextJob.time)} &middot; ${skillName(nsl)}</span>
       </div>`;
 
-    document.getElementById('phoneIcon').classList.add('ringing');
+    $('phoneIcon').classList.add('ringing');
 
     // Add to visual queue (no scheduling) — prepend so newest is at front
-    const queueEl = document.getElementById('jobs');
+    const queueEl = $('jobs');
     // Keep max 14 chips visible
     const existing = queueEl.querySelectorAll('.job-chip');
     if (existing.length >= 14) existing[existing.length - 1].remove();
@@ -3745,7 +3776,7 @@ function startIdlePreview() {
     }
 
     // Update queue count label
-    document.getElementById('queueCount').textContent = `${queueEl.querySelectorAll('.job-chip').length} waiting`;
+    $('queueCount').textContent = `${queueEl.querySelectorAll('.job-chip').length} waiting`;
 
     _idleTimer = setTimeout(showNextIdleCall, 1800 + Math.random() * 1200);
   }
@@ -3758,16 +3789,16 @@ function startIdlePreview() {
 function stopIdlePreview() {
   _idleRunning = false;
   if (_idleTimer) { clearTimeout(_idleTimer); _idleTimer = null; }
-  document.getElementById('phoneIcon').classList.remove('ringing');
+  $('phoneIcon').classList.remove('ringing');
 }
 
 // Start idle preview on load
 startIdlePreview();
 
 function toggleSidebar() {
-  const sidebar = document.getElementById('sidebar');
-  const main    = document.getElementById('mainContent');
-  const toggle  = document.getElementById('sidebarToggle');
+  const sidebar = $('sidebar');
+  const main    = $('mainContent');
+  const toggle  = $('sidebarToggle');
   const isMobile = window.innerWidth <= 768;
   const collapsed = sidebar.classList.toggle('collapsed');
   if (!isMobile) main.classList.toggle('expanded', collapsed);
@@ -3793,20 +3824,20 @@ const TECH_COLORS = [
 let _mapLeaflet = null;
 
 function openDayMap(k) {
-  document.getElementById('mapModalDay').textContent = DAYS[k];
-  document.getElementById('mapModalOverlay').classList.add('open');
+  $('mapModalDay').textContent = DAYS[k];
+  openModal('mapModalOverlay');
   setTimeout(() => renderDayMap(k), 80);
 }
 
 function closeMapModal() {
-  document.getElementById('mapModalOverlay').classList.remove('open');
+  closeModal('mapModalOverlay');
   if (_mapLeaflet) { _mapLeaflet.remove(); _mapLeaflet = null; }
 }
 function closeMapModalOutside(e) { if (e.target.id === 'mapModalOverlay') closeMapModal(); }
 
 function renderDayMap(k) {
   if (_mapLeaflet) { _mapLeaflet.remove(); _mapLeaflet = null; }
-  const container = document.getElementById('mapContainer');
+  const container = $('mapContainer');
   container.innerHTML = '';
 
   const routes = [];
@@ -3816,7 +3847,7 @@ function renderDayMap(k) {
     routes.push({ tech: t, jobs, color: TECH_COLORS[j % TECH_COLORS.length] });
   });
 
-  const legend = document.getElementById('mapModalLegend');
+  const legend = $('mapModalLegend');
   if (routes.length === 0) {
     legend.innerHTML = '<span style="font-size:11px;color:var(--text-muted)">No jobs scheduled for this day.</span>';
   } else {
@@ -3842,7 +3873,7 @@ function renderDayMap(k) {
       const ll = [job.location.lat, job.location.lng];
       allLatLngs.push(ll);
       const icon = L.divIcon({
-        html: `<div style="background:${color};color:#fff;border-radius:50%;width:24px;height:24px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;border:2px solid #fff;box-shadow:0 1px 4px rgba(0,0,0,0.35)">${idx+1}</div>`,
+        html: `<div class="map-num-marker" style="background:${color}">${idx+1}</div>`,
         className: '', iconSize: [24,24], iconAnchor: [12,12]
       });
       L.marker(ll, { icon })
@@ -3863,7 +3894,7 @@ function renderDayMap(k) {
 // ═══════════════════════════════════════════════════════════════════
 // SCHEDULE SUMMARY INFOGRAPHIC
 // ═══════════════════════════════════════════════════════════════════
-function closeSummary() { document.getElementById('summaryOverlay').classList.remove('open'); }
+function closeSummary() { closeModal('summaryOverlay'); }
 function closeSummaryOutside(e) { if (e.target.id === 'summaryOverlay') closeSummary(); }
 
 function showScheduleSummary() {
@@ -3908,7 +3939,7 @@ function showScheduleSummary() {
     totalJobHours  += ts.jobHours;
     totalWorkHours += ts.jobHours + ts.driveMin / 60;
     if (ts.days > 0) {
-      activeDays++;
+      activeDays += ts.days;  // count actual working days across all techs
       if (ts.util > maxUtil) { maxUtil = ts.util; bestTech  = ts.name; }
       if (ts.util < minUtil) { minUtil = ts.util; worstTech = ts.name; }
     }
@@ -3923,6 +3954,7 @@ function showScheduleSummary() {
     ? (techStats.filter(ts => ts.days > 0).reduce((s, ts) => s + ts.jobHours + ts.driveMin / 60, 0) / activeTechCount).toFixed(1)
     : '0';
   const avgDrivePerDay     = activeDays ? Math.round(totalDriveMins / activeDays) : 0;
+  const avgDrivePerWeek    = activeTechCount ? Math.round(totalDriveMins / activeTechCount) : 0;
   const avgJobHoursPerDay  = activeDays ? (totalJobHours  / activeDays).toFixed(1) : '0';
   const avgWorkHoursPerDay = activeDays ? (totalWorkHours / activeDays).toFixed(1) : '0';
   const avgDriveLeg        = driveLegs  ? Math.round(driveLegSum / driveLegs) : 0;
@@ -3978,15 +4010,13 @@ function showScheduleSummary() {
     insights.push({ cls:'warn', icon:'alert', text:`<strong>Uneven workload</strong> — ${worstTech} underloaded vs ${bestTech}` });
 
   // ── SVG helpers ───────────────────────────────────────────────
-  const iconCheck = `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>`;
-  const iconAlert = `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>`;
-  const iconClock = `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>`;
-  const iconMap   = `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>`;
-  const iconStar  = `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>`;
   function getIcon(name) {
-    if (name === 'check') return iconCheck;
-    if (name === 'clock') return iconClock;
-    return iconAlert;
+    if (name === 'check') return SVG.check(13);
+    if (name === 'clock') return SVG.clock(13);
+    if (name === 'alert') return SVG.alert(13);
+    if (name === 'map')   return SVG.pin(13);
+    if (name === 'star')  return SVG.star(13);
+    return SVG.alert(13);
   }
 
   // ── Skill mix ───────────────────────────────────────────────────
@@ -4001,8 +4031,8 @@ function showScheduleSummary() {
   const ringColor = placedPct >= 90 ? '#16a34a' : placedPct >= 75 ? '#d97706' : '#C0152A';
 
   // ── Render ────────────────────────────────────────────────────
-  const body = document.getElementById('summaryBody');
-  document.getElementById('sumSubtitle').textContent =
+  const body = $('summaryBody');
+  $('sumSubtitle').textContent =
     `${placed} of ${totalCalls} calls placed · ${DAYS.length}-day window · ${techs.length} technicians`;
 
   body.innerHTML = `
@@ -4033,33 +4063,39 @@ function showScheduleSummary() {
       <div class="sum-stat-card red">
         <div><span class="sum-stat-val">${avgDriveLeg}</span><span class="sum-stat-unit">min</span></div>
         <div class="sum-stat-label">Avg drive leg between stops</div>
-        <div class="sum-stat-sub">${avgDrivePerDay} min total drive per tech-day</div>
+        <div class="sum-stat-sub">${avgDrivePerWeek} min avg drive per tech per week</div>
+        <div class="sum-card-insight ${insights.find(i=>i.icon==='check'&&i.text.includes('routing'))||insights.find(i=>i.text.includes('leg'))?((avgDriveLeg<=12)?'good':(avgDriveLeg<=22)?'warn':'bad'):'good'}">
+          ${getIcon((avgDriveLeg<=12)?'check':(avgDriveLeg<=22)?'clock':'alert')}
+          <span>${(avgDriveLeg<=12)?'Tight routing':(avgDriveLeg<=22)?'Moderate legs':'Long legs'}</span>
+        </div>
       </div>
       <div class="sum-stat-card teal">
         <div><span class="sum-stat-val">${avgWeeklyJobHours}</span><span class="sum-stat-unit">hrs</span></div>
         <div class="sum-stat-label">Avg job hours per tech per week</div>
         <div class="sum-stat-sub">${avgJobHoursPerDay} hrs/day · ${avgWeeklyWorkHours} incl. drive</div>
+        <div class="sum-card-insight ${(maxUtil-minUtil)<25?'good':'warn'}">
+          ${getIcon((maxUtil-minUtil)<25?'check':'alert')}
+          <span>${(maxUtil-minUtil)<25?'Balanced workload':'Uneven workload'}</span>
+        </div>
       </div>
       <div class="sum-stat-card amber">
         <div><span class="sum-stat-val">${driveRatio}</span><span class="sum-stat-unit">%</span></div>
         <div class="sum-stat-label">Time spent driving</div>
         <div class="sum-stat-sub">${(totalDriveMins/60).toFixed(1)} hrs total drive</div>
+        <div class="sum-card-insight ${driveRatio<=20?'good':driveRatio<=35?'warn':'bad'}">
+          ${getIcon(driveRatio<=20?'check':driveRatio<=35?'clock':'alert')}
+          <span>${driveRatio<=20?'Highly productive':driveRatio<=35?'Room to improve':'High drive ratio'}</span>
+        </div>
       </div>
       <div class="sum-stat-card blue">
         <div><span class="sum-stat-val">${overflowCnt}</span></div>
         <div class="sum-stat-label">Carry over to next week</div>
         <div class="sum-stat-sub">${placed} placed of ${totalCalls}</div>
+        <div class="sum-card-insight ${overflowCnt===0?'good':overflowCnt<=5?'warn':'bad'}">
+          ${getIcon(overflowCnt===0?'check':overflowCnt<=5?'alert':'alert')}
+          <span>${overflowCnt===0?'All calls scheduled':overflowCnt<=5?'Minor carry-over':'Significant carry-over'}</span>
+        </div>
       </div>
-    </div>
-
-    <!-- Insights -->
-    <div class="sum-section-title">Key Insights</div>
-    <div class="sum-insights" style="margin-bottom:16px">
-      ${insights.map(ins => `
-        <div class="sum-insight ${ins.cls}">
-          ${getIcon(ins.icon)}
-          <span>${ins.text}</span>
-        </div>`).join('')}
     </div>
 
     <!-- Jobs per day bar chart -->
@@ -4136,7 +4172,7 @@ function showScheduleSummary() {
     </div>
   `;
 
-  document.getElementById('summaryOverlay').classList.add('open');
+  openModal('summaryOverlay');
 }
 </script>
 <!-- ══════════════════════════════════════════
