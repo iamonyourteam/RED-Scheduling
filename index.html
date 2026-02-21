@@ -361,7 +361,8 @@ h1 span { color: var(--red); }
   overflow: hidden; position: relative;
 }
 .ticker-dot { width:7px;height:7px;border-radius:50%;background:var(--red);flex-shrink:0; animation: pulse 2s infinite; }
-.ticker-text { color: var(--text-dim); font-weight: 500; }
+.ticker-text { color: var(--text-dim); font-weight: 500; transition: opacity 0.25s ease; }
+.ticker-text.fading { opacity: 0; }
 .ticker-text .highlight { color: var(--red); font-weight: 700; }
 .incoming-animation {
   display: flex; align-items: stretch; gap: 0;
@@ -1020,6 +1021,7 @@ h1 span { color: var(--red); }
   .sidebar:not(.collapsed) { transform: translateX(0); }
   .sidebar.collapsed { transform: translateX(-100%); width: 280px !important; }
   .main-content { margin-left: 0 !important; width: 100% !important; padding: 0 !important; }
+  .wrapper { padding: 0 !important; }
   .sidebar-toggle {
     top: 56px; left: 4px; width: 28px; height: 40px;
     border-radius: 8px; border: 1px solid var(--border); z-index: 201;
@@ -1667,7 +1669,6 @@ h1 span { color: var(--red); }
         <div class="ticker-dot"></div>
         <span class="ticker-text" id="tickerText">Awaiting calls &mdash; press Run Schedule to begin</span>
       </div>
-      <!-- Always-visible Now Handling / Up Next panel -->
       <div class="incoming-animation" id="incomingAnimation">
         <div class="incoming-col">
           <span class="incoming-label">NOW HANDLING</span>
@@ -2611,8 +2612,17 @@ function rankPlacements(job) {
 // ═══════════════════════════════════════════════════════════════════
 // FILL ANIMATION  (queue ticker / phone ring effect)
 // ═══════════════════════════════════════════════════════════════════
+let _tickerTimer = null;
 function setTicker(html) {
-  $('tickerText').innerHTML = html;
+  const el = $('tickerText');
+  // Cancel any pending update
+  if (_tickerTimer) { clearTimeout(_tickerTimer); _tickerTimer = null; }
+  el.classList.add('fading');
+  _tickerTimer = setTimeout(() => {
+    el.innerHTML = html;
+    el.classList.remove('fading');
+    _tickerTimer = null;
+  }, 200);
 }
 
 function chipHTML(job, isCurrent) {
@@ -2719,7 +2729,7 @@ async function fillCalendar() {
 
     // Smoothly remove from queue (chip shrinks in-place)
     queueJobs = queueJobs.filter(j=>j.key!==job.key);
-    renderQueue(job.key);  // pass removed key for smooth exit
+    renderQueue(job.key);
     $('queueCount').textContent = queueJobs.length ? `${queueJobs.length} waiting` : '';
 
     const res = scheduleOne(job);
@@ -3701,9 +3711,12 @@ updateCapacityStat();
 if (window.innerWidth <= 768) {
   const sidebar = $('sidebar');
   const toggle  = $('sidebarToggle');
+  const main    = $('mainContent');
   sidebar.classList.add('collapsed');
   toggle.classList.add('collapsed');
   toggle.innerHTML = '&#10095;';
+  main.classList.add('expanded');
+  toggle.style.left = '8px';
 }
 
 // ═══════════════════════════════════════════════════════════════════
@@ -3757,9 +3770,8 @@ function startIdlePreview() {
 
     $('phoneIcon').classList.add('ringing');
 
-    // Add to visual queue (no scheduling) — prepend so newest is at front
+    // Add to visual queue — prepend so newest is at front
     const queueEl = $('jobs');
-    // Keep max 14 chips visible
     const existing = queueEl.querySelectorAll('.job-chip');
     if (existing.length >= 14) existing[existing.length - 1].remove();
     const chip = document.createElement('div');
@@ -3775,9 +3787,7 @@ function startIdlePreview() {
       tickerIdx++;
     }
 
-    // Update queue count label
     $('queueCount').textContent = `${queueEl.querySelectorAll('.job-chip').length} waiting`;
-
     _idleTimer = setTimeout(showNextIdleCall, 1800 + Math.random() * 1200);
   }
 
