@@ -858,6 +858,121 @@ h1 span { color: var(--red); }
 .sugg-item.best .sugg-score { color:var(--red); }
 .best-badge { font-size:8px; background:var(--red); color:#fff; padding:1px 7px; border-radius:10px; font-weight:700; margin-left:4px; }
 
+/* ── CREATE CALL MODAL (new) ── */
+.call-modal-new { max-width: 620px !important; width: 620px !important; padding: 0 !important; overflow: hidden; display: flex; flex-direction: column; max-height: 92vh; }
+.call-modal-header { display: flex; align-items: center; gap: 12px; padding: 16px 20px 14px; border-bottom: 1px solid var(--border); flex-shrink: 0; }
+.call-modal-icon { font-size: 22px; line-height: 1; }
+.call-modal-close { margin-left: auto; background: none; border: none; font-size: 16px; color: var(--text-muted); cursor: pointer; padding: 4px 8px; border-radius: 6px; }
+.call-modal-close:hover { background: var(--surface2); color: var(--text); }
+.call-modal-body { overflow-y: auto; flex: 1; padding: 4px 0 0; }
+
+.call-section { padding: 16px 20px; border-bottom: 1px solid var(--border); }
+.call-section:last-child { border-bottom: none; }
+.call-section-title { font-size: 11px; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-dim); margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+.call-section-num { background: var(--red); color: #fff; font-size: 9px; font-weight: 900; width: 18px; height: 18px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; }
+
+/* Contact rows */
+.contact-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 10px; padding: 12px; background: var(--surface2); border-radius: 10px; border: 1px solid var(--border); position: relative; }
+.contact-row.primary-contact { border-color: rgba(192,21,42,0.2); background: var(--red-bg); }
+.contact-row-label { grid-column: 1/-1; font-size: 9px; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; color: var(--red); margin-bottom: 4px; }
+.contact-row.additional .contact-row-label { color: var(--text-muted); }
+.contact-remove { position: absolute; top: 8px; right: 8px; background: none; border: none; font-size: 13px; color: var(--text-muted); cursor: pointer; padding: 2px 5px; border-radius: 4px; }
+.contact-remove:hover { background: var(--border); color: var(--red); }
+.btn-add-contact { margin-left: auto; font-size: 10px; font-weight: 700; color: var(--teal); background: none; border: 1.5px solid var(--teal); border-radius: 20px; padding: 3px 10px; cursor: pointer; letter-spacing: 0.04em; }
+.btn-add-contact:hover { background: var(--teal); color: #fff; }
+
+/* Property type toggle */
+.toggle-pill-group { display: flex; gap: 8px; }
+.toggle-pill { padding: 7px 16px; border-radius: 20px; border: 1.5px solid var(--border-mid); background: var(--surface2); font-size: 12px; font-weight: 600; color: var(--text-muted); cursor: pointer; transition: all 0.15s; }
+.toggle-pill.selected { background: var(--red-bg); border-color: var(--red); color: var(--red); }
+
+/* Pool base structure cards */
+.pool-structure-grid { display: grid; grid-template-columns: repeat(5,1fr); gap: 8px; margin-bottom: 4px; }
+.pool-card { display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 10px 6px; border-radius: 10px; border: 1.5px solid var(--border-mid); background: var(--surface2); cursor: pointer; transition: all 0.15s; text-align: center; font-family: var(--font); }
+.pool-card:hover { border-color: var(--red); background: var(--red-bg); }
+.pool-card.selected { border-color: var(--red); background: var(--red-bg); box-shadow: 0 0 0 3px rgba(192,21,42,0.12); }
+.pool-card-icon { font-size: 20px; line-height: 1; }
+.pool-card-name { font-size: 10px; font-weight: 700; color: var(--text-dim); line-height: 1.2; }
+.pool-card.selected .pool-card-name { color: var(--red); }
+.pool-card-price { font-size: 11px; font-weight: 800; color: var(--teal); }
+
+/* Extra feature cards */
+.extras-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 6px; }
+.extra-card { display: flex; align-items: center; gap: 7px; padding: 8px 10px; border-radius: 8px; border: 1.5px solid var(--border); background: var(--surface2); cursor: pointer; transition: all 0.15s; text-align: left; font-family: var(--font); }
+.extra-card:hover { border-color: var(--teal); background: rgba(26,150,136,0.06); }
+.extra-card.selected { border-color: var(--teal); background: rgba(26,150,136,0.1); }
+.extra-icon { font-size: 14px; flex-shrink: 0; }
+.extra-name { font-size: 10px; font-weight: 600; color: var(--text-dim); flex: 1; line-height: 1.2; }
+.extra-card.selected .extra-name { color: var(--teal); }
+.extra-price { font-size: 10px; font-weight: 700; color: var(--teal); flex-shrink: 0; }
+
+/* Placeholder ghost card for grid alignment */
+.jc-placeholder { opacity: 0 !important; pointer-events: none !important; }
+
+/* ── JOB CLASSIFICATION CARDS (pool-card visual style) ── */
+.jc-group { margin-bottom: 14px; }
+.jc-group:last-child { margin-bottom: 0; }
+.jc-group-label {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 9px; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--text-muted); margin-bottom: 8px; padding-bottom: 5px;
+  border-bottom: 1px solid var(--border);
+}
+.jc-group-tag {
+  font-size: 9px; font-weight: 900; letter-spacing: 0.06em;
+  padding: 2px 7px; border-radius: 4px;
+}
+.jc-group-tag.rpl  { background: rgba(192,21,42,0.1);  color: var(--red);  border: 1px solid rgba(192,21,42,0.25); }
+.jc-group-tag.sc   { background: rgba(26,150,136,0.1); color: var(--teal); border: 1px solid rgba(26,150,136,0.25); }
+.jc-group-tag.cpl  { background: rgba(37,99,235,0.1);  color: var(--blue); border: 1px solid rgba(37,99,235,0.25); }
+
+.jc-grid { display: grid; grid-template-columns: repeat(5,1fr); gap: 8px; }
+.jc-grid.jc-grid-2 { grid-template-columns: repeat(2,1fr); }
+.jc-grid.jc-grid-3 { grid-template-columns: repeat(3,1fr); }
+
+.jc-card {
+  display: flex; flex-direction: column; align-items: center; gap: 4px;
+  padding: 10px 6px; border-radius: 10px;
+  border: 1.5px solid var(--border-mid); background: var(--surface2);
+  cursor: pointer; transition: all 0.15s; text-align: center;
+  font-family: var(--font);
+}
+.jc-card:hover  { border-color: var(--red); background: var(--red-bg); }
+.jc-card.selected { border-color: var(--red); background: var(--red-bg); box-shadow: 0 0 0 3px rgba(192,21,42,0.12); }
+
+.jc-card-icon { font-size: 20px; line-height: 1; }
+.jc-card-code { font-size: 11px; font-weight: 900; color: var(--text); line-height: 1.2; }
+.jc-card.selected .jc-card-code { color: var(--red); }
+.jc-card-name { font-size: 9px; font-weight: 600; color: var(--text-muted); line-height: 1.2; }
+.jc-card.selected .jc-card-name { color: var(--red); opacity: 0.85; }
+.jc-card-hours { font-size: 10px; font-weight: 800; color: var(--teal); }
+
+.skill-1-bg { background: rgba(37,99,235,0.1);   color: var(--skill1); border: 1px solid rgba(37,99,235,0.2); }
+.skill-2-bg { background: rgba(124,58,237,0.1);  color: var(--skill2); border: 1px solid rgba(124,58,237,0.2); }
+.skill-3-bg { background: rgba(217,119,6,0.1);   color: var(--skill3); border: 1px solid rgba(217,119,6,0.2); }
+.skill-4-bg { background: rgba(192,21,42,0.1);   color: var(--skill4); border: 1px solid rgba(192,21,42,0.2); }
+
+/* Price footer */
+.call-price-footer { display: flex; align-items: center; gap: 12px; padding: 10px 20px; background: var(--surface2); border-top: 1px solid var(--border); flex-shrink: 0; flex-wrap: wrap; }
+.call-price-breakdown { flex: 1; display: flex; flex-wrap: wrap; gap: 6px; font-size: 11px; color: var(--text-muted); min-width: 0; }
+.price-tag { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 2px 8px; font-weight: 600; color: var(--text-dim); white-space: nowrap; }
+.price-tag.base { border-color: rgba(192,21,42,0.25); color: var(--red); }
+.price-tag.extra { border-color: rgba(26,150,136,0.25); color: var(--teal); }
+.call-price-total { display: flex; flex-direction: column; align-items: flex-end; flex-shrink: 0; }
+.call-price-num { font-size: 24px; font-weight: 900; color: var(--text); line-height: 1; }
+
+/* Confirmation summary */
+.confirm-section { margin-bottom: 14px; }
+.confirm-section-title { font-size: 10px; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 6px; padding-bottom: 4px; border-bottom: 1px solid var(--border); }
+.confirm-row { display: flex; justify-content: space-between; gap: 8px; padding: 3px 0; }
+.confirm-label { color: var(--text-muted); font-weight: 500; }
+.confirm-val { font-weight: 700; color: var(--text-dim); text-align: right; }
+.confirm-price-row { display: flex; justify-content: space-between; padding: 8px 12px; background: var(--red-bg); border-radius: 8px; border: 1px solid rgba(192,21,42,0.2); margin-top: 8px; }
+.confirm-price-label { font-weight: 700; color: var(--red); }
+.confirm-price-val { font-size: 20px; font-weight: 900; color: var(--red); }
+.confirm-extras-list { display: flex; flex-wrap: wrap; gap: 4px; }
+.confirm-extra-chip { background: rgba(26,150,136,0.1); border: 1px solid rgba(26,150,136,0.25); border-radius: 10px; padding: 2px 8px; font-size: 10px; font-weight: 600; color: var(--teal); }
+
 /* ── OVERBOOKING CONFIRM MODAL ── */
 .overbook-modal .modal-title span { color:var(--amber); }
 .overbook-info {
@@ -1117,6 +1232,14 @@ h1 span { color: var(--red); }
   .settings-panel { padding: 1rem !important; }
   .bottom-grid { grid-template-columns: 1fr; }
   .form-row { grid-template-columns: 1fr; }
+  /* New call modal mobile */
+  .call-modal-new { width: 100% !important; max-width: 100% !important; border-radius: 16px 16px 0 0 !important; max-height: 92vh; }
+  .jc-grid { grid-template-columns: repeat(3,1fr); }
+  .jc-grid.jc-grid-2 { grid-template-columns: repeat(2,1fr); }
+  .jc-grid.jc-grid-3 { grid-template-columns: repeat(3,1fr); }
+  .pool-structure-grid { grid-template-columns: repeat(3,1fr); }
+  .extras-grid { grid-template-columns: repeat(2,1fr); }
+  .contact-row { grid-template-columns: 1fr; }
 }
 
 /* Extra small ≤ 390px — squeeze even tighter */
@@ -1770,28 +1893,226 @@ h1 span { color: var(--red); }
      CREATE CALL MODAL
 ══════════════════════════════════════════ -->
 <div class="modal-overlay" id="callModalOverlay" onclick="closeCallModalOutside(event)">
-  <div class="modal wide">
-    <div class="modal-title green">Create <span>New Call</span></div>
-    <div class="form-row">
-      <div class="form-group">
-        <label class="form-label" for="callNameInput">Job Name / ID</label>
-        <input class="form-input" id="callNameInput" type="text" placeholder="e.g. Sarah Johnson" autocomplete="off">
-        <div class="form-error" id="callNameError">Please enter a job name.</div>
+  <div class="modal wide call-modal-new">
+
+    <!-- Header -->
+    <div class="call-modal-header">
+      <div class="call-modal-icon">💧</div>
+      <div>
+        <div class="modal-title green" style="margin:0 0 2px;">New <span>Leak Detection Call</span></div>
+        <div style="font-size:11px;color:var(--text-muted)">Complete all sections — price &amp; duration auto-calculated</div>
       </div>
-      <div class="form-group">
-        <label class="form-label" for="callLocInput">Address (Sarasota)</label>
-        <input class="form-input" id="callLocInput" type="text" placeholder="e.g. 1800 Main St, Sarasota" autocomplete="off">
-        <div class="form-error" id="callLocError">Enter a Sarasota address.</div>
-      </div>
+      <button class="call-modal-close" onclick="closeCallModal()">✕</button>
     </div>
-    <div class="form-row">
-      <div class="form-group">
-        <label class="form-label" for="callTimeInput">Duration (hours)</label>
-        <input class="form-input" id="callTimeInput" type="number" min="0.5" max="8" step="0.5" placeholder="e.g. 3.5" autocomplete="off">
-        <div class="form-error" id="callTimeError">Enter 0.5–8 hours.</div>
+
+    <div class="call-modal-body">
+
+      <!-- ── SECTION 1: CONTACTS ── -->
+      <div class="call-section">
+        <div class="call-section-title">
+          <span class="call-section-num">1</span>
+          Customer Contacts
+          <button class="btn-add-contact" onclick="addContactRow()">+ Add Contact</button>
+        </div>
+        <div id="contactsContainer">
+          <!-- Primary contact inserted by JS -->
+        </div>
+        <div class="form-error" id="contactError" style="margin-top:4px;">At least one contact with a name is required.</div>
       </div>
-      <div class="form-group">
-        <label class="form-label">Required Skill Level</label>
+
+      <!-- ── SECTION 2: SERVICE ADDRESS ── -->
+      <div class="call-section">
+        <div class="call-section-title"><span class="call-section-num">2</span> Service Address</div>
+        <div class="form-row">
+          <div class="form-group" style="flex:2">
+            <label class="form-label">Street Address</label>
+            <input class="form-input" id="callLocInput" type="text" placeholder="e.g. 1800 Osprey Ave, Sarasota" autocomplete="off">
+            <div class="form-error" id="callLocError">Please enter an address.</div>
+          </div>
+          <div class="form-group" style="flex:1">
+            <label class="form-label">Water Loss / Day</label>
+            <div style="position:relative">
+              <input class="form-input" id="callWaterLoss" type="number" min="0" step="0.1" placeholder="e.g. 1.5" style="padding-right:52px" autocomplete="off">
+              <span style="position:absolute;right:10px;top:50%;transform:translateY(-50%);font-size:11px;color:var(--text-muted);pointer-events:none">in/day</span>
+            </div>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Property Type</label>
+            <div class="toggle-pill-group" id="propertyTypePicker">
+              <button class="toggle-pill selected" data-val="Residential" onclick="selectPropertyType('Residential')">🏠 Residential</button>
+              <button class="toggle-pill" data-val="Commercial" onclick="selectPropertyType('Commercial')">🏢 Commercial</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── SECTION 3: JOB CLASSIFICATION + POOL CONFIG ── -->
+      <div class="call-section">
+        <div class="call-section-title"><span class="call-section-num">3</span> Job Classification</div>
+
+        <!-- RESIDENTIAL groups (shown when Residential selected) -->
+        <div id="jcResidential">
+          <!-- RPL -->
+          <div class="jc-group">
+            <div class="jc-group-label"><span class="jc-group-tag rpl">RPL</span> Residential Pool Leak Detections</div>
+            <div class="jc-grid">
+              <button class="jc-card" data-code="CFU" data-hours="1" data-skill="1" onclick="selectJobClass(this)">
+                <span class="jc-card-icon">🤝</span>
+                <span class="jc-card-code">CFU</span>
+                <span class="jc-card-name">Follow-Up</span>
+                <span class="jc-card-hours">1 hr</span>
+              </button>
+              <button class="jc-card" data-code="PL1" data-hours="3" data-skill="2" onclick="selectJobClass(this)">
+                <span class="jc-card-icon">🏊</span>
+                <span class="jc-card-code">PL1</span>
+                <span class="jc-card-name">Class I</span>
+                <span class="jc-card-hours">3 hrs</span>
+              </button>
+              <button class="jc-card" data-code="PL2" data-hours="5" data-skill="2" onclick="selectJobClass(this)">
+                <span class="jc-card-icon">🛁</span>
+                <span class="jc-card-code">PL2</span>
+                <span class="jc-card-name">Class II</span>
+                <span class="jc-card-hours">5 hrs</span>
+              </button>
+              <button class="jc-card" data-code="PL3" data-hours="8" data-skill="4" onclick="selectJobClass(this)">
+                <span class="jc-card-icon">⚙️</span>
+                <span class="jc-card-code">PL3</span>
+                <span class="jc-card-name">Class III</span>
+                <span class="jc-card-hours">8 hrs</span>
+              </button>
+              <button class="jc-card jc-placeholder" aria-hidden="true"></button>
+            </div>
+          </div>
+          <!-- SC -->
+          <div class="jc-group">
+            <div class="jc-group-label"><span class="jc-group-tag sc">SC</span> Service Calls</div>
+            <div class="jc-grid jc-grid-2">
+              <button class="jc-card" data-code="SC" data-hours="2" data-skill="2" onclick="selectJobClass(this)">
+                <span class="jc-card-icon">🔧</span>
+                <span class="jc-card-code">SC</span>
+                <span class="jc-card-name">Service Call</span>
+                <span class="jc-card-hours">2 hrs</span>
+              </button>
+              <button class="jc-card jc-placeholder" aria-hidden="true"></button>
+            </div>
+          </div>
+        </div>
+
+        <!-- COMMERCIAL groups (shown when Commercial selected) -->
+        <div id="jcCommercial" style="display:none">
+          <!-- CSC -->
+          <div class="jc-group">
+            <div class="jc-group-label"><span class="jc-group-tag sc">CSC</span> Commercial Service Calls</div>
+            <div class="jc-grid jc-grid-2">
+              <button class="jc-card" data-code="CSC" data-hours="3" data-skill="3" onclick="selectJobClass(this)">
+                <span class="jc-card-icon">🏢</span>
+                <span class="jc-card-code">CSC</span>
+                <span class="jc-card-name">Commercial Service</span>
+                <span class="jc-card-hours">3 hrs</span>
+              </button>
+              <button class="jc-card jc-placeholder" aria-hidden="true"></button>
+            </div>
+          </div>
+          <!-- CPL -->
+          <div class="jc-group">
+            <div class="jc-group-label"><span class="jc-group-tag cpl">CPL</span> Commercial Leak Detections</div>
+            <div class="jc-grid jc-grid-3">
+              <button class="jc-card" data-code="CPL1" data-hours="4" data-skill="3" onclick="selectJobClass(this)">
+                <span class="jc-card-icon">🏗️</span>
+                <span class="jc-card-code">CPL1</span>
+                <span class="jc-card-name">Commercial 1</span>
+                <span class="jc-card-hours">4 hrs</span>
+              </button>
+              <button class="jc-card" data-code="CPL2" data-hours="6" data-skill="3" onclick="selectJobClass(this)">
+                <span class="jc-card-icon">🏬</span>
+                <span class="jc-card-code">CPL2</span>
+                <span class="jc-card-name">Commercial 2</span>
+                <span class="jc-card-hours">6 hrs</span>
+              </button>
+              <button class="jc-card" data-code="CPL3" data-hours="9" data-skill="4" onclick="selectJobClass(this)">
+                <span class="jc-card-icon">🏟️</span>
+                <span class="jc-card-code">CPL3</span>
+                <span class="jc-card-name">Commercial 3</span>
+                <span class="jc-card-hours">9 hrs</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-error" id="baseStructureError" style="margin-top:4px">Please select a job classification.</div>
+
+        <!-- POOL STRUCTURE + EXTRAS — revealed after a class is picked -->
+        <div id="poolConfigReveal" style="display:none;margin-top:16px">
+          <div style="height:1px;background:var(--border);margin-bottom:16px"></div>
+
+          <label class="form-label" style="margin-bottom:8px">Pool / Spa Structure <span style="color:var(--text-muted);font-weight:400">(select one — for pricing)</span></label>
+          <div class="pool-structure-grid" id="baseStructurePicker">
+            <button class="pool-card" data-val="Pool" data-price="225" onclick="selectBase(this)">
+              <span class="pool-card-icon">🏊</span>
+              <span class="pool-card-name">Pool</span>
+              <span class="pool-card-price">$225</span>
+            </button>
+            <button class="pool-card" data-val="Fiberglass Pool" data-price="250" onclick="selectBase(this)">
+              <span class="pool-card-icon">🔷</span>
+              <span class="pool-card-name">Fiberglass Pool</span>
+              <span class="pool-card-price">$250</span>
+            </button>
+            <button class="pool-card" data-val="Pool/Spa" data-price="275" onclick="selectBase(this)">
+              <span class="pool-card-icon">🛁</span>
+              <span class="pool-card-name">Pool / Spa</span>
+              <span class="pool-card-price">$275</span>
+            </button>
+            <button class="pool-card" data-val="Fiberglass Pool/Spa" data-price="300" onclick="selectBase(this)">
+              <span class="pool-card-icon">💎</span>
+              <span class="pool-card-name">Fiberglass Pool/Spa</span>
+              <span class="pool-card-price">$300</span>
+            </button>
+            <button class="pool-card" data-val="Spa" data-price="175" onclick="selectBase(this)">
+              <span class="pool-card-icon">♨️</span>
+              <span class="pool-card-name">Spa Only</span>
+              <span class="pool-card-price">$175</span>
+            </button>
+          </div>
+
+          <label class="form-label" style="margin:16px 0 8px">Extra Features <span style="color:var(--text-muted);font-weight:400">(select all that apply)</span></label>
+          <div class="extras-grid" id="extrasPicker">
+            <button class="extra-card" data-val="Sheer Descent" data-price="50" onclick="toggleExtra(this)">
+              <span class="extra-icon">🌊</span><span class="extra-name">Sheer Descent</span><span class="extra-price">+$50</span>
+            </button>
+            <button class="extra-card" data-val="Popups" data-price="40" onclick="toggleExtra(this)">
+              <span class="extra-icon">⬆️</span><span class="extra-name">Popups</span><span class="extra-price">+$40</span>
+            </button>
+            <button class="extra-card" data-val="Pre-Cast Fountain" data-price="60" onclick="toggleExtra(this)">
+              <span class="extra-icon">⛲</span><span class="extra-name">Pre-Cast Fountain</span><span class="extra-price">+$60</span>
+            </button>
+            <button class="extra-card" data-val="Deck Fountain" data-price="55" onclick="toggleExtra(this)">
+              <span class="extra-icon">💦</span><span class="extra-name">Deck Fountain</span><span class="extra-price">+$55</span>
+            </button>
+            <button class="extra-card" data-val="Waterfall" data-price="65" onclick="toggleExtra(this)">
+              <span class="extra-icon">🏔️</span><span class="extra-name">Waterfall</span><span class="extra-price">+$65</span>
+            </button>
+            <button class="extra-card" data-val="Rock Fountain" data-price="65" onclick="toggleExtra(this)">
+              <span class="extra-icon">🪨</span><span class="extra-name">Rock Fountain</span><span class="extra-price">+$65</span>
+            </button>
+            <button class="extra-card" data-val="Trough" data-price="45" onclick="toggleExtra(this)">
+              <span class="extra-icon">🔲</span><span class="extra-name">Trough</span><span class="extra-price">+$45</span>
+            </button>
+            <button class="extra-card" data-val="Floor Returns" data-price="50" onclick="toggleExtra(this)">
+              <span class="extra-icon">🔄</span><span class="extra-name">Floor Returns</span><span class="extra-price">+$50</span>
+            </button>
+            <button class="extra-card" data-val="Attached Body w/ Bubbler" data-price="75" onclick="toggleExtra(this)">
+              <span class="extra-icon">🫧</span><span class="extra-name">Attached Body w/ Bubbler</span><span class="extra-price">+$75</span>
+            </button>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- ── SECTION 4: SKILL (auto-set, override allowed) ── -->
+      <div class="call-section">
+        <div class="call-section-title"><span class="call-section-num">4</span> Required Tech Level <span style="color:var(--text-muted);font-weight:400;font-size:10px;margin-left:4px">— auto-set from class, override if needed</span></div>
         <div class="skill-picker" id="callSkillPicker">
           <button class="skill-opt" data-skill="1" onclick="selectCallSkill(1)">New</button>
           <button class="skill-opt" data-skill="2" onclick="selectCallSkill(2)">Specialist</button>
@@ -1800,16 +2121,52 @@ h1 span { color: var(--red); }
         </div>
         <div class="form-error" id="callSkillError">Please select a skill level.</div>
       </div>
+
+      <!-- ── NOTES ── -->
+      <div class="call-section">
+        <div class="call-section-title"><span class="call-section-num">5</span> Notes <span style="color:var(--text-muted);font-weight:400;font-size:11px">(optional)</span></div>
+        <textarea class="form-input" id="callNotes" rows="3" placeholder="Gate code, access instructions, customer concerns…" style="resize:vertical;font-family:inherit;font-size:12px;line-height:1.5"></textarea>
+      </div>
+
+    </div><!-- /call-modal-body -->
+
+    <!-- ── PRICE FOOTER ── -->
+    <div class="call-price-footer">
+      <div class="call-price-breakdown" id="callPriceBreakdown">
+        <span class="price-item-label">Select a job classification above</span>
+      </div>
+      <div class="call-price-total">
+        <span style="font-size:11px;color:var(--text-muted);font-weight:600;letter-spacing:0.05em">TOTAL</span>
+        <span class="call-price-num" id="callPriceTotal">—</span>
+        <span style="font-size:10px;color:var(--text-muted)" id="callDurationLabel"></span>
+      </div>
     </div>
 
-    <div class="modal-actions" style="margin-top:0.5rem;">
+    <div class="modal-actions" style="padding:12px 20px 16px;border-top:1px solid var(--border)">
       <button class="btn btn-secondary" onclick="closeCallModal()">Cancel</button>
-      <button class="btn btn-secondary" onclick="suggestPlacement()" style="color:var(--red);border-color:var(--red);">&#128161; Suggest Slot</button>
-      <button class="btn btn-call" onclick="addCallToQueue()">&#10003; Add to Queue</button>
+      <button class="btn btn-call" onclick="reviewCall()">Review &amp; Confirm →</button>
     </div>
 
-    <!-- Suggestion results appear here -->
-    <div class="suggestion-box" id="suggestionBox" style="display:none;"></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     CALL CONFIRMATION MODAL
+══════════════════════════════════════════ -->
+<div class="modal-overlay" id="callConfirmOverlay" onclick="if(event.target.id==='callConfirmOverlay')closeCallConfirm()">
+  <div class="modal wide" style="max-width:520px">
+    <div class="call-modal-header" style="border-bottom:1px solid var(--border);padding-bottom:14px;margin-bottom:0">
+      <div class="call-modal-icon">✅</div>
+      <div>
+        <div class="modal-title green" style="margin:0 0 2px">Confirm <span>New Call</span></div>
+        <div style="font-size:11px;color:var(--text-muted)">Review details before adding to queue</div>
+      </div>
+    </div>
+    <div id="callConfirmBody" style="padding:16px 20px;max-height:60vh;overflow-y:auto;font-size:12px;line-height:1.7"></div>
+    <div class="modal-actions" style="padding:12px 20px 16px;border-top:1px solid var(--border)">
+      <button class="btn btn-secondary" onclick="closeCallConfirm()">← Edit</button>
+      <button class="btn btn-call" onclick="confirmAndAddCall()">💧 Add to Queue</button>
+    </div>
   </div>
 </div>
 
@@ -2871,65 +3228,338 @@ function randomCallDefaults() {
   return { name:`${first} ${last}`, loc, dur: weightedDuration(), skill: weightedSkill() };
 }
 
-function openCallModal() {
-  selectedCallSkill=null;
-  const d = randomCallDefaults();
-  $('callNameInput').value = d.name;
-  $('callLocInput').value  = d.loc.addr;
-  $('callTimeInput').value = d.dur;
-  selectedCallSkill = d.skill;
-  document.querySelectorAll('#callSkillPicker .skill-opt').forEach(b=>{
-    b.classList.toggle('selected', +b.dataset.skill === d.skill);
+// ── CREATE CALL MODAL ─────────────────────────────────────────────
+let _callContacts = [];
+let _selectedJobClass = null;   // { code, hours, skill, name, group }
+let _selectedBase = null;
+let _selectedExtras = [];
+let _selectedPropertyType = 'Residential';
+let _pendingCallJob = null;
+
+const JOB_CLASSES = {
+  CFU:  { code:'CFU',  hours:1, skill:1, name:'Complimentary Follow-Up',  group:'RPL' },
+  PL1:  { code:'PL1',  hours:3, skill:2, name:'PL Class I',               group:'RPL' },
+  PL2:  { code:'PL2',  hours:5, skill:2, name:'PL Class II',              group:'RPL' },
+  PL3:  { code:'PL3',  hours:8, skill:4, name:'PL Class III',             group:'RPL' },
+  SC:   { code:'SC',   hours:2, skill:2, name:'Service Call',             group:'SC'  },
+  CSC:  { code:'CSC',  hours:3, skill:3, name:'Commercial Service Call',  group:'SC'  },
+  CPL1: { code:'CPL1', hours:4, skill:3, name:'Commercial Class 1',       group:'CPL' },
+  CPL2: { code:'CPL2', hours:6, skill:3, name:'Commercial Class 2',       group:'CPL' },
+  CPL3: { code:'CPL3', hours:9, skill:4, name:'Commercial Class 3',       group:'CPL' },
+};
+const GROUP_LABELS = { RPL:'Residential Pool Leak', SC:'Service Call', CPL:'Commercial Pool Leak' };
+
+const BASE_PRICES = {
+  'Pool':225, 'Fiberglass Pool':250, 'Pool/Spa':275, 'Fiberglass Pool/Spa':300, 'Spa':175
+};
+
+function selectPropertyType(val) {
+  _selectedPropertyType = val;
+  document.querySelectorAll('#propertyTypePicker .toggle-pill').forEach(b =>
+    b.classList.toggle('selected', b.dataset.val === val));
+
+  // Show/hide classification groups
+  $('jcResidential').style.display  = val === 'Residential' ? '' : 'none';
+  $('jcCommercial').style.display   = val === 'Commercial'  ? '' : 'none';
+
+  // Clear any selected class card and hide pool config
+  document.querySelectorAll('.jc-card').forEach(b => b.classList.remove('selected'));
+  _selectedJobClass = null;
+  _selectedBase = null;
+  _selectedExtras = [];
+  $('poolConfigReveal').style.display = 'none';
+  document.querySelectorAll('#baseStructurePicker .pool-card').forEach(b => b.classList.remove('selected'));
+  document.querySelectorAll('#extrasPicker .extra-card').forEach(b => b.classList.remove('selected'));
+  resetPriceFooter();
+}
+
+function selectJobClass(btn) {
+  document.querySelectorAll('.jc-card:not(.jc-placeholder)').forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+  const code = btn.dataset.code;
+  _selectedJobClass = JOB_CLASSES[code];
+  $('baseStructureError').classList.remove('show');
+
+  // Auto-set skill
+  selectCallSkill(_selectedJobClass.skill);
+
+  // Reveal pool structure + extras
+  $('poolConfigReveal').style.display = '';
+
+  updatePriceFooter();
+}
+
+function selectBase(btn) {
+  document.querySelectorAll('#baseStructurePicker .pool-card').forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+  _selectedBase = btn.dataset.val;
+  updatePriceFooter();
+}
+
+function toggleExtra(btn) {
+  const val = btn.dataset.val;
+  if (btn.classList.contains('selected')) {
+    btn.classList.remove('selected');
+    _selectedExtras = _selectedExtras.filter(v => v !== val);
+  } else {
+    btn.classList.add('selected');
+    _selectedExtras.push(val);
+  }
+  updatePriceFooter();
+}
+
+function calcCallPrice() {
+  const base   = _selectedBase ? (BASE_PRICES[_selectedBase] || 0) : 0;
+  const extras = _selectedExtras.reduce((s, v) => {
+    const btn = document.querySelector(`#extrasPicker [data-val="${v}"]`);
+    return s + (btn ? parseInt(btn.dataset.price) : 0);
+  }, 0);
+  return { base, extras, total: base + extras };
+}
+
+function resetPriceFooter() {
+  const bd = $('callPriceBreakdown');
+  if (bd) bd.innerHTML = '<span class="price-item-label">Select a job classification above</span>';
+  const pt = $('callPriceTotal'); if (pt) pt.textContent = '—';
+  const dl = $('callDurationLabel'); if (dl) dl.textContent = '';
+}
+
+function updatePriceFooter() {
+  if (!_selectedJobClass) { resetPriceFooter(); return; }
+  const { base, extras, total } = calcCallPrice();
+  const bd = $('callPriceBreakdown');
+  const skillNames = ['','New','Specialist','Pro','Expert'];
+
+  // Job class tag
+  let html = `<span class="price-tag base">${_selectedJobClass.code} · ${_selectedJobClass.hours}h</span>`;
+  html += `<span class="price-tag base" style="border-color:rgba(124,58,237,0.3);color:var(--skill${_selectedJobClass.skill})">${skillNames[_selectedJobClass.skill]}</span>`;
+
+  // Structure + extras pricing tags
+  if (_selectedBase) {
+    html += `<span class="price-tag extra" style="border-color:rgba(192,21,42,0.25);color:var(--red)">${_selectedBase} $${base}</span>`;
+  }
+  _selectedExtras.forEach(v => {
+    const btn = document.querySelector(`#extrasPicker [data-val="${v}"]`);
+    if (btn) html += `<span class="price-tag extra">${v} +$${btn.dataset.price}</span>`;
   });
-  ['callNameError','callLocError','callTimeError','callSkillError'].forEach(id=>document.getElementById(id).classList.remove('show'));
-  $('suggestionBox').style.display='none';
+
+  bd.innerHTML = html;
+  $('callPriceTotal').textContent = total > 0 ? `$${total}` : '—';
+  $('callDurationLabel').textContent = `· ${_selectedJobClass.hours}h visit`;
+}
+
+function buildContactRow(idx, isPrimary) {
+  const label = isPrimary ? 'Primary Contact' : `Additional Contact ${idx}`;
+  const removeBtn = isPrimary ? '' : `<button class="contact-remove" onclick="removeContact(${idx})" title="Remove">✕</button>`;
+  return `<div class="contact-row ${isPrimary ? 'primary-contact' : 'additional'}" id="contact-row-${idx}">
+    ${removeBtn}
+    <div class="contact-row-label">${label}</div>
+    <div class="form-group" style="margin:0">
+      <label class="form-label">First Name</label>
+      <input class="form-input" id="contact-first-${idx}" type="text" placeholder="Jane" autocomplete="off">
+    </div>
+    <div class="form-group" style="margin:0">
+      <label class="form-label">Last Name</label>
+      <input class="form-input" id="contact-last-${idx}" type="text" placeholder="Smith" autocomplete="off">
+    </div>
+    <div class="form-group" style="margin:0">
+      <label class="form-label">Phone</label>
+      <input class="form-input" id="contact-phone-${idx}" type="tel" placeholder="(941) 555-0100" autocomplete="off">
+    </div>
+    <div class="form-group" style="margin:0">
+      <label class="form-label">Email</label>
+      <input class="form-input" id="contact-email-${idx}" type="email" placeholder="jane@email.com" autocomplete="off">
+    </div>
+  </div>`;
+}
+
+function addContactRow() {
+  const idx = _callContacts.length;
+  _callContacts.push(idx);
+  const container = $('contactsContainer');
+  const div = document.createElement('div');
+  div.innerHTML = buildContactRow(idx, false);
+  container.appendChild(div.firstElementChild);
+}
+
+function removeContact(idx) {
+  const row = $(`contact-row-${idx}`);
+  if (row) row.remove();
+  _callContacts = _callContacts.filter(i => i !== idx);
+}
+
+function openCallModal() {
+  selectedCallSkill = null;
+  _selectedJobClass = null;
+  _selectedBase = null;
+  _selectedExtras = [];
+  _selectedPropertyType = 'Residential';
+  _callContacts = [0];
+
+  // Reset contacts
+  $('contactsContainer').innerHTML = '';
+  const div = document.createElement('div');
+  div.innerHTML = buildContactRow(0, true);
+  $('contactsContainer').appendChild(div.firstElementChild);
+
+  // Reset property type → Residential
+  document.querySelectorAll('#propertyTypePicker .toggle-pill').forEach(b =>
+    b.classList.toggle('selected', b.dataset.val === 'Residential'));
+  $('jcResidential').style.display = '';
+  $('jcCommercial').style.display  = 'none';
+
+  // Reset classification cards
+  document.querySelectorAll('.jc-card').forEach(b => b.classList.remove('selected'));
+  document.querySelectorAll('#callSkillPicker .skill-opt').forEach(b => b.classList.remove('selected'));
+
+  // Reset pool config reveal
+  $('poolConfigReveal').style.display = 'none';
+  document.querySelectorAll('#baseStructurePicker .pool-card').forEach(b => b.classList.remove('selected'));
+  document.querySelectorAll('#extrasPicker .extra-card').forEach(b => b.classList.remove('selected'));
+
+  // Clear errors
+  ['contactError','callLocError','baseStructureError','callSkillError'].forEach(id => {
+    const el = $(id); if(el) el.classList.remove('show');
+  });
+
+  resetPriceFooter();
+
+  // Pre-fill address & water loss
+  const d = randomCallDefaults();
+  $('callLocInput').value = d.loc.addr;
+  $('callWaterLoss').value = (Math.random() * 2 + 0.3).toFixed(1);
+  $('callNotes').value = '';
+
   openModal('callModalOverlay');
-  clearSuggestions();
-  setTimeout(()=>$('callNameInput').focus(),80);
+  setTimeout(() => document.getElementById('contact-first-0')?.focus(), 80);
 }
-function closeCallModal() {
-  closeModal('callModalOverlay');
-  clearSuggestions();
-}
-function closeCallModalOutside(e){ if(e.target.id==='callModalOverlay') closeCallModal(); }
+
+function closeCallModal() { closeModal('callModalOverlay'); }
+function closeCallModalOutside(e) { if (e.target.id === 'callModalOverlay') closeCallModal(); }
+
 function selectCallSkill(n) {
-  selectedCallSkill=n;
-  document.querySelectorAll('#callSkillPicker .skill-opt').forEach(b=>b.classList.toggle('selected',+b.dataset.skill===n));
+  selectedCallSkill = n;
+  document.querySelectorAll('#callSkillPicker .skill-opt').forEach(b =>
+    b.classList.toggle('selected', +b.dataset.skill === n));
   $('callSkillError').classList.remove('show');
 }
 
-function validateCallForm() {
-  const name = $('callNameInput').value.trim();
-  const addrText = $('callLocInput').value.trim();
-  const time = parseFloat($('callTimeInput').value);
-  let ok=true;
-  if(!name){$('callNameError').classList.add('show');ok=false;}
-  else $('callNameError').classList.remove('show');
-  // Match address to pool (case-insensitive partial match, else first entry)
-  const matchedAddr = SARASOTA_ADDRESSES.find(a => a.addr.toLowerCase().includes(addrText.toLowerCase()))
-    || SARASOTA_ADDRESSES[0];
-  if(!addrText){$('callLocError').classList.add('show');ok=false;}
+function reviewCall() {
+  let ok = true;
+  const firstName = ($('contact-first-0')?.value || '').trim();
+  const lastName  = ($('contact-last-0')?.value  || '').trim();
+  if (!firstName && !lastName) { $('contactError').classList.add('show'); ok = false; }
+  else $('contactError').classList.remove('show');
+
+  const addr = $('callLocInput').value.trim();
+  if (!addr) { $('callLocError').classList.add('show'); ok = false; }
   else $('callLocError').classList.remove('show');
-  if(isNaN(time)||time<0.5||time>8){$('callTimeError').classList.add('show');ok=false;}
-  else $('callTimeError').classList.remove('show');
-  if(!selectedCallSkill){$('callSkillError').classList.add('show');ok=false;}
+
+  if (!_selectedJobClass) { $('baseStructureError').classList.add('show'); ok = false; }
+  else $('baseStructureError').classList.remove('show');
+
+  if (!selectedCallSkill) { $('callSkillError').classList.add('show'); ok = false; }
   else $('callSkillError').classList.remove('show');
-  if(!ok) return null;
-  return {
-    key: name, location: matchedAddr, skill_level: selectedCallSkill, time: time
+
+  if (!ok) return;
+
+  const contacts = [];
+  document.querySelectorAll('.contact-row').forEach((row, i) => {
+    const idx = row.id.replace('contact-row-','');
+    const fn = ($(`contact-first-${idx}`)?.value || '').trim();
+    const ln = ($(`contact-last-${idx}`)?.value  || '').trim();
+    const ph = ($(`contact-phone-${idx}`)?.value || '').trim();
+    const em = ($(`contact-email-${idx}`)?.value || '').trim();
+    if (fn || ln) contacts.push({ first:fn, last:ln, phone:ph, email:em, primary: i===0 });
+  });
+
+  const { base, extras: extrasTotal, total } = calcCallPrice();
+  const dur = _selectedJobClass.hours;
+  const matchedAddr = SARASOTA_ADDRESSES.find(a =>
+    a.addr.toLowerCase().includes(addr.toLowerCase())) || SARASOTA_ADDRESSES[0];
+  const waterLoss = parseFloat($('callWaterLoss').value) || null;
+  const notes = $('callNotes').value.trim();
+  const primaryName = contacts[0] ? `${contacts[0].first} ${contacts[0].last}`.trim() : addr;
+  const skillNames = ['','New','Specialist','Pro','Expert'];
+
+  _pendingCallJob = {
+    key: primaryName || addr,
+    location: matchedAddr,
+    skill_level: selectedCallSkill,
+    time: dur,
+    price: total,
+    jobCode: _selectedJobClass.code,
+    jobClassName: _selectedJobClass.name,
+    jobGroup: GROUP_LABELS[_selectedJobClass.group] || _selectedJobClass.group,
+    contacts,
+    propertyType: _selectedPropertyType,
+    baseStructure: _selectedBase,
+    extras: [..._selectedExtras],
+    waterLoss,
+    notes
   };
+
+  let contactHtml = contacts.map((c, i) => `
+    <div class="confirm-row">
+      <span class="confirm-label">${i===0?'Primary':'Additional'}</span>
+      <span class="confirm-val">${c.first} ${c.last}${c.phone?' · '+c.phone:''}${c.email?' · '+c.email:''}</span>
+    </div>`).join('');
+
+  let extrasHtml = _selectedExtras.length
+    ? `<div class="confirm-extras-list">${_selectedExtras.map(e=>`<span class="confirm-extra-chip">${e}</span>`).join('')}</div>`
+    : '<span style="color:var(--text-muted)">None</span>';
+
+  $('callConfirmBody').innerHTML = `
+    <div class="confirm-section">
+      <div class="confirm-section-title">👤 Contacts</div>
+      ${contactHtml}
+    </div>
+    <div class="confirm-section">
+      <div class="confirm-section-title">📍 Service Details</div>
+      <div class="confirm-row"><span class="confirm-label">Address</span><span class="confirm-val">${matchedAddr.addr}</span></div>
+      <div class="confirm-row"><span class="confirm-label">Property</span><span class="confirm-val">${_selectedPropertyType}</span></div>
+      ${waterLoss?`<div class="confirm-row"><span class="confirm-label">Water Loss</span><span class="confirm-val">${waterLoss} in/day</span></div>`:''}
+    </div>
+    <div class="confirm-section">
+      <div class="confirm-section-title">💧 Job Classification</div>
+      <div class="confirm-row"><span class="confirm-label">Class</span><span class="confirm-val">${_selectedJobClass.code} — ${_selectedJobClass.name}</span></div>
+      <div class="confirm-row"><span class="confirm-label">Duration</span><span class="confirm-val">${dur}h scheduled</span></div>
+      <div class="confirm-row"><span class="confirm-label">Required Tech</span><span class="confirm-val">${skillNames[selectedCallSkill]}</span></div>
+    </div>
+    <div class="confirm-section">
+      <div class="confirm-section-title">🏊 Pool Configuration</div>
+      <div class="confirm-row"><span class="confirm-label">Structure</span><span class="confirm-val">${_selectedBase || '<span style="color:var(--text-muted)">Not specified</span>'}</span></div>
+      <div class="confirm-row"><span class="confirm-label">Extras</span><span class="confirm-val">${extrasHtml}</span></div>
+      ${notes?`<div class="confirm-row"><span class="confirm-label">Notes</span><span class="confirm-val">${notes}</span></div>`:''}
+    </div>
+    <div class="confirm-price-row">
+      <span class="confirm-price-label">💧 ${_selectedJobClass.code} · ${dur}h visit</span>
+      <span class="confirm-price-val">${total > 0 ? '$'+total : 'TBD'}</span>
+    </div>`;
+
+  closeCallModal();
+  openModal('callConfirmOverlay');
 }
 
-function addCallToQueue() {
-  const job = validateCallForm();
-  if (!job) return;
+function closeCallConfirm() {
+  closeModal('callConfirmOverlay');
+  openModal('callModalOverlay');
+}
+
+function confirmAndAddCall() {
+  if (!_pendingCallJob) return;
   customJobCounter++;
+  const job = _pendingCallJob;
   queueJobs.push(job);
   allJobs.push(job);
   renderQueue();
-  setTicker(`&#128222; Custom call <span class="highlight">${job.key}</span> added to queue`);
-  closeCallModal();
+  setTicker(`&#128222; <span class="highlight">${job.jobCode}</span> — ${job.key} added · ${job.time}h${job.price?' · $'+job.price:''}`);
+  closeModal('callConfirmOverlay');
+  _pendingCallJob = null;
 }
+
+function validateCallForm() { return null; }
+function addCallToQueue() { reviewCall(); }
 
 // ── Suggest Placement ─────────────────────────────────────────────
 function suggestPlacement() {
