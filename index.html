@@ -1009,9 +1009,10 @@ h1 span { color: var(--red); }
     box-shadow: 4px 0 24px rgba(0,0,0,0.18);
     transition: transform 0.25s cubic-bezier(0.4,0,0.2,1);
   }
+  .sidebar { width: 280px !important; transform: translateX(-100%); z-index: 200; }
   .sidebar:not(.collapsed) { transform: translateX(0); }
   .sidebar.collapsed { transform: translateX(-100%); width: 280px !important; }
-  .main-content { margin-left: 0 !important; }
+  .main-content { margin-left: 0 !important; width: 100% !important; }
   .sidebar-toggle {
     top: 56px; left: 8px; width: 28px; height: 40px;
     border-radius: 8px; border: 1px solid var(--border); z-index: 52;
