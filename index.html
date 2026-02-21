@@ -784,10 +784,10 @@ h1 span { color: var(--red); }
 .modal-overlay.open { display:flex; }
 .modal {
   background:var(--surface); border:1px solid var(--border);
-  border-radius:12px; padding:2rem; width:420px; max-width:95vw;
+  border-radius:12px; padding:2rem; width:780px; max-width:95vw;
   animation:modalIn 0.2s ease; box-shadow:0 20px 60px rgba(0,0,0,0.2);
 }
-.modal.wide { width:520px; }
+.modal.wide { width:780px; }
 @keyframes modalIn { from{opacity:0;transform:scale(0.95) translateY(10px);}to{opacity:1;transform:scale(1) translateY(0);} }
 .modal-title { font-size:20px; font-weight:900; margin-bottom:1.5rem; color:var(--text); }
 .modal-title span { color:var(--red); }
@@ -861,7 +861,7 @@ h1 span { color: var(--red); }
 /* ── CREATE CALL MODAL (new) ── */
 .call-modal-new { max-width: 620px !important; width: 620px !important; padding: 0 !important; overflow: hidden; display: flex; flex-direction: column; max-height: 92vh; }
 .call-modal-header { display: flex; align-items: center; gap: 12px; padding: 16px 20px 14px; border-bottom: 1px solid var(--border); flex-shrink: 0; }
-.call-modal-icon { font-size: 22px; line-height: 1; }
+.call-modal-icon { display:flex; align-items:center; justify-content:center; flex-shrink:0; }
 .call-modal-close { margin-left: auto; background: none; border: none; font-size: 16px; color: var(--text-muted); cursor: pointer; padding: 4px 8px; border-radius: 6px; }
 .call-modal-close:hover { background: var(--surface2); color: var(--text); }
 .call-modal-body { overflow-y: auto; flex: 1; padding: 4px 0 0; }
@@ -891,7 +891,8 @@ h1 span { color: var(--red); }
 .pool-card { display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 10px 6px; border-radius: 10px; border: 1.5px solid var(--border-mid); background: var(--surface2); cursor: pointer; transition: all 0.15s; text-align: center; font-family: var(--font); }
 .pool-card:hover { border-color: var(--red); background: var(--red-bg); }
 .pool-card.selected { border-color: var(--red); background: var(--red-bg); box-shadow: 0 0 0 3px rgba(192,21,42,0.12); }
-.pool-card-icon { font-size: 20px; line-height: 1; }
+.pool-card-icon { display:flex; align-items:center; justify-content:center; width:32px; height:32px; background:var(--surface); border-radius:8px; border:1px solid var(--border); color:var(--text-muted); margin-bottom:4px; flex-shrink:0; }
+.pool-card.selected .pool-card-icon { background:rgba(192,21,42,0.06); border-color:rgba(192,21,42,0.2); color:var(--red); }
 .pool-card-name { font-size: 10px; font-weight: 700; color: var(--text-dim); line-height: 1.2; }
 .pool-card.selected .pool-card-name { color: var(--red); }
 .pool-card-price { font-size: 11px; font-weight: 800; color: var(--teal); }
@@ -901,13 +902,20 @@ h1 span { color: var(--red); }
 .extra-card { display: flex; align-items: center; gap: 7px; padding: 8px 10px; border-radius: 8px; border: 1.5px solid var(--border); background: var(--surface2); cursor: pointer; transition: all 0.15s; text-align: left; font-family: var(--font); }
 .extra-card:hover { border-color: var(--teal); background: rgba(26,150,136,0.06); }
 .extra-card.selected { border-color: var(--teal); background: rgba(26,150,136,0.1); }
-.extra-icon { font-size: 14px; flex-shrink: 0; }
+.extra-icon { display:flex; align-items:center; justify-content:center; width:22px; height:22px; flex-shrink:0; color:var(--text-muted); }
+.extra-card.selected .extra-icon { color:var(--red); }
 .extra-name { font-size: 10px; font-weight: 600; color: var(--text-dim); flex: 1; line-height: 1.2; }
 .extra-card.selected .extra-name { color: var(--teal); }
 .extra-price { font-size: 10px; font-weight: 700; color: var(--teal); flex-shrink: 0; }
 
 /* Placeholder ghost card for grid alignment */
 .jc-placeholder { opacity: 0 !important; pointer-events: none !important; }
+/* Auto-suggested class card */
+.jc-card.suggested { border-color: var(--teal); box-shadow: 0 0 0 3px rgba(26,150,136,0.15); }
+.jc-card.suggested .jc-card-code { color: var(--teal); }
+.jc-card.suggested .jc-card-name { color: var(--teal); opacity: 0.85; }
+.jc-card.suggested:not(.selected) { background: var(--teal-bg); }
+.jc-sugg-badge { font-size: 7px; font-weight: 900; letter-spacing: 0.06em; background: var(--teal); color: #fff; padding: 1px 5px; border-radius: 8px; margin-top: 1px; }
 
 /* ── JOB CLASSIFICATION CARDS (pool-card visual style) ── */
 .jc-group { margin-bottom: 14px; }
@@ -940,7 +948,9 @@ h1 span { color: var(--red); }
 .jc-card:hover  { border-color: var(--red); background: var(--red-bg); }
 .jc-card.selected { border-color: var(--red); background: var(--red-bg); box-shadow: 0 0 0 3px rgba(192,21,42,0.12); }
 
-.jc-card-icon { font-size: 20px; line-height: 1; }
+.jc-card-icon { display:flex; align-items:center; justify-content:center; width:28px; height:28px; background:var(--surface); border-radius:7px; border:1px solid var(--border); color:var(--text-muted); margin-bottom:3px; }
+.jc-card.selected .jc-card-icon { background:rgba(192,21,42,0.06); border-color:rgba(192,21,42,0.2); color:var(--red); }
+.jc-card.suggested .jc-card-icon { color:var(--teal); border-color:rgba(26,150,136,0.3); background:rgba(26,150,136,0.06); }
 .jc-card-code { font-size: 11px; font-weight: 900; color: var(--text); line-height: 1.2; }
 .jc-card.selected .jc-card-code { color: var(--red); }
 .jc-card-name { font-size: 9px; font-weight: 600; color: var(--text-muted); line-height: 1.2; }
@@ -963,7 +973,7 @@ h1 span { color: var(--red); }
 
 /* Confirmation summary */
 .confirm-section { margin-bottom: 14px; }
-.confirm-section-title { font-size: 10px; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 6px; padding-bottom: 4px; border-bottom: 1px solid var(--border); }
+.confirm-section-title { font-size: 10px; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 6px; padding-bottom: 4px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 5px; }
 .confirm-row { display: flex; justify-content: space-between; gap: 8px; padding: 3px 0; }
 .confirm-label { color: var(--text-muted); font-weight: 500; }
 .confirm-val { font-weight: 700; color: var(--text-dim); text-align: right; }
@@ -972,6 +982,93 @@ h1 span { color: var(--red); }
 .confirm-price-val { font-size: 20px; font-weight: 900; color: var(--red); }
 .confirm-extras-list { display: flex; flex-wrap: wrap; gap: 4px; }
 .confirm-extra-chip { background: rgba(26,150,136,0.1); border: 1px solid rgba(26,150,136,0.25); border-radius: 10px; padding: 2px 8px; font-size: 10px; font-weight: 600; color: var(--teal); }
+
+/* ── Pool Partner Picker ── */
+.partner-picker-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 7px; }
+.partner-card {
+  display: flex; flex-direction: column; gap: 2px; padding: 9px 10px;
+  border-radius: 9px; border: 1.5px solid var(--border-mid); background: var(--surface2);
+  cursor: pointer; text-align: left; font-family: var(--font); transition: all 0.15s;
+}
+.partner-card:hover { border-color: var(--teal); background: var(--teal-bg); }
+.partner-card.selected { border-color: var(--teal); background: var(--teal-bg); }
+.partner-card.selected .partner-name { color: var(--teal); }
+.partner-name { font-size: 11px; font-weight: 700; color: var(--text); line-height: 1.3; }
+.partner-phone { font-size: 9.5px; color: var(--text-muted); font-weight: 500; }
+@media (max-width: 600px) { .partner-picker-grid { grid-template-columns: repeat(2, 1fr); } }
+/* ── Custom Tooltips ───────────────────────────────────────────── */
+[data-tip] { position: relative; }
+[data-tip]::after {
+  content: attr(data-tip);
+  position: absolute; bottom: calc(100% + 7px); left: 50%;
+  transform: translateX(-50%) translateY(4px);
+  background: #1a1a2e; color: #fff; font-size: 10px; font-weight: 600;
+  white-space: nowrap; padding: 5px 9px; border-radius: 6px;
+  pointer-events: none; opacity: 0;
+  transition: opacity 0.15s, transform 0.15s;
+  z-index: 9999; letter-spacing: 0.02em; line-height: 1.3;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+}
+[data-tip]::before {
+  content: '';
+  position: absolute; bottom: calc(100% + 2px); left: 50%;
+  transform: translateX(-50%) translateY(4px);
+  border: 5px solid transparent; border-top-color: #1a1a2e;
+  pointer-events: none; opacity: 0;
+  transition: opacity 0.15s, transform 0.15s;
+  z-index: 9999;
+}
+[data-tip]:hover::after, [data-tip]:hover::before {
+  opacity: 1; transform: translateX(-50%) translateY(0);
+}
+[data-tip][data-tip-pos="bottom"]::after {
+  bottom: auto; top: calc(100% + 7px);
+  transform: translateX(-50%) translateY(-4px);
+}
+[data-tip][data-tip-pos="bottom"]::before {
+  bottom: auto; top: calc(100% + 2px);
+  transform: translateX(-50%) translateY(-4px);
+  border-top-color: transparent; border-bottom-color: #1a1a2e;
+}
+[data-tip][data-tip-pos="bottom"]:hover::after,
+[data-tip][data-tip-pos="bottom"]:hover::before {
+  transform: translateX(-50%) translateY(0);
+}
+[data-tip][data-tip-pos="left"]::after {
+  bottom: 50%; left: auto; right: calc(100% + 7px);
+  transform: translateY(50%) translateX(4px);
+  white-space: normal; width: 160px; text-align: center;
+}
+[data-tip][data-tip-pos="left"]::before {
+  bottom: 50%; left: auto; right: calc(100% + 2px);
+  transform: translateY(50%) translateX(4px);
+  border-top-color: transparent; border-left-color: #1a1a2e;
+}
+[data-tip][data-tip-pos="left"]:hover::after,
+[data-tip][data-tip-pos="left"]:hover::before { transform: translateY(50%) translateX(0); }
+
+.confirm-sugg-section { padding: 12px 0 4px; }
+#callConfirmSlots:empty { display: none; }
+.confirm-sugg-title { font-size: 10px; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; color: var(--teal); margin-bottom: 4px; }
+.confirm-sugg-hint { font-size: 9px; font-weight: 500; color: var(--text-muted); letter-spacing: 0; text-transform: none; }
+.confirm-sugg-note { font-size: 11px; color: var(--text-muted); margin-top: 6px; line-height: 1.5; }
+.confirm-sugg-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; margin-top: 10px; }
+.confirm-sugg-card {
+  display: flex; flex-direction: column; gap: 3px; padding: 10px 9px;
+  border-radius: 10px; border: 1.5px solid var(--border-mid); background: var(--surface2);
+  cursor: pointer; transition: all 0.15s; text-align: left; font-family: var(--font);
+}
+.confirm-sugg-card:hover { border-color: var(--teal); background: var(--teal-bg); }
+.confirm-sugg-card.best { border-color: rgba(192,21,42,0.35); background: var(--red-bg); }
+.confirm-sugg-card.best:hover { border-color: var(--red); }
+.confirm-sugg-card-top { display: flex; align-items: center; justify-content: space-between; gap: 4px; margin-bottom: 2px; }
+.confirm-sugg-day { font-size: 12px; font-weight: 900; color: var(--text); }
+.confirm-sugg-card.best .confirm-sugg-day { color: var(--red); }
+.confirm-sugg-rank { font-size: 9px; font-weight: 700; color: var(--text-muted); }
+.confirm-sugg-tech { font-size: 10px; font-weight: 700; color: var(--text-dim); line-height: 1.2; }
+.confirm-sugg-meta { font-size: 8.5px; color: var(--text-muted); line-height: 1.4; }
+.confirm-sugg-cap { font-size: 9px; font-weight: 700; color: var(--teal); margin-top: 2px; }
+.confirm-sugg-card.best .confirm-sugg-cap { color: var(--red); }
 
 /* ── OVERBOOKING CONFIRM MODAL ── */
 .overbook-modal .modal-title span { color:var(--amber); }
@@ -1266,7 +1363,7 @@ h1 span { color: var(--red); }
 <div class="app-layout">
 
 <!-- SIDEBAR TOGGLE -->
-<button class="sidebar-toggle" id="sidebarToggle" onclick="toggleSidebar()" title="Toggle guide">&#10094;</button>
+<button class="sidebar-toggle" id="sidebarToggle" onclick="toggleSidebar()" data-tip="Open dispatcher reference guide" data-tip-pos="bottom">&#10094;</button>
 
 <!-- FEATURE GUIDE SIDEBAR -->
 <aside class="sidebar" id="sidebar">
@@ -1817,12 +1914,11 @@ h1 span { color: var(--red); }
 
     <!-- Dispatch Controls -->
     <div class="calls-controls">
-      <button class="btn btn-primary" id="fillButton" onclick="fillCalendar()">▶ Run Schedule</button>
+      <button class="btn btn-primary" id="fillButton" onclick="fillCalendar()" data-tip="Auto-route all queued calls to techs by skill &amp; drive time" data-tip-pos="bottom">▶ Run Schedule</button>
       <button class="btn btn-pause" id="pauseButton" onclick="togglePause()">⏸ Pause</button>
-      <button class="btn btn-call" onclick="openCallModal()">📞 Create Call</button>
-      <button class="btn btn-add" onclick="openTechModal()">+ Add Tech</button>
-      <button class="btn btn-secondary" onclick="resetAll()">✕ Clear</button>
-      <button class="btn btn-secondary btn-settings" onclick="openSettings()" title="Settings">⚙</button>
+      <button class="btn btn-call" onclick="openCallModal()" data-tip="Manually dispatch a new call with full booking details" data-tip-pos="bottom">📞 Create Call</button>
+      <button class="btn btn-secondary" onclick="resetAll()" data-tip="Reset entire schedule and queue" data-tip-pos="bottom">✕ Clear</button>
+      <button class="btn btn-secondary btn-settings" onclick="openSettings()" data-tip="Scheduling settings &amp; tech management" data-tip-pos="bottom">⚙</button>
     </div>
     </div>
   </div>
@@ -1897,7 +1993,7 @@ h1 span { color: var(--red); }
 
     <!-- Header -->
     <div class="call-modal-header">
-      <div class="call-modal-icon">💧</div>
+      <div class="call-modal-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--teal)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.69l5.66 5.66a8 8 0 11-11.31 0z"/></svg></div>
       <div>
         <div class="modal-title green" style="margin:0 0 2px;">New <span>Leak Detection Call</span></div>
         <div style="font-size:11px;color:var(--text-muted)">Complete all sections — price &amp; duration auto-calculated</div>
@@ -1926,7 +2022,7 @@ h1 span { color: var(--red); }
         <div class="form-row">
           <div class="form-group" style="flex:2">
             <label class="form-label">Street Address</label>
-            <input class="form-input" id="callLocInput" type="text" placeholder="e.g. 1800 Osprey Ave, Sarasota" autocomplete="off">
+            <input class="form-input" id="callLocInput" type="text" placeholder="e.g. 1800 Osprey Ave, Sarasota" autocomplete="off" oninput="renderPartnerPicker(this.value)">
             <div class="form-error" id="callLocError">Please enter an address.</div>
           </div>
           <div class="form-group" style="flex:1">
@@ -1938,46 +2034,132 @@ h1 span { color: var(--red); }
           </div>
         </div>
         <div class="form-row">
-          <div class="form-group">
+          <div class="form-group" style="flex:1">
             <label class="form-label">Property Type</label>
             <div class="toggle-pill-group" id="propertyTypePicker">
               <button class="toggle-pill selected" data-val="Residential" onclick="selectPropertyType('Residential')">🏠 Residential</button>
               <button class="toggle-pill" data-val="Commercial" onclick="selectPropertyType('Commercial')">🏢 Commercial</button>
             </div>
           </div>
+          <div class="form-group" style="flex:1">
+            <label class="form-label">Call Type</label>
+            <div class="toggle-pill-group" id="callTypePicker">
+              <button class="toggle-pill selected" data-val="Leak Detection" onclick="selectCallType('Leak Detection')">💧 Leak Detection</button>
+              <button class="toggle-pill" data-val="Service Call" onclick="selectCallType('Service Call')">🔧 Service Call</button>
+            </div>
+          </div>
         </div>
       </div>
 
-      <!-- ── SECTION 3: JOB CLASSIFICATION + POOL CONFIG ── -->
+      <!-- ── SECTION 3: POOL PARTNER ── -->
       <div class="call-section">
-        <div class="call-section-title"><span class="call-section-num">3</span> Job Classification</div>
+        <div class="call-section-title">
+          <span class="call-section-num">3</span>
+          Pool Partner
+          <span id="partnerObtainBadge" style="display:inline-flex;align-items:center;font-size:9px;font-weight:700;background:rgba(245,158,11,0.12);color:var(--amber);border:1px solid rgba(245,158,11,0.3);border-radius:8px;padding:1px 8px;letter-spacing:0.05em;margin-left:8px">⚠ Please Obtain</span>
+        </div>
+        <div id="partnerPickerGrid" class="partner-picker-grid">
+          <!-- injected by JS -->
+        </div>
+      </div>
+
+      <!-- ── SECTION 4: POOL / SPA STRUCTURE (Leak Detection only) ── -->
+      <div class="call-section" id="poolStructureSection">
+        <div class="call-section-title"><span class="call-section-num">4</span> Pool / Spa Structure</div>
+
+        <label class="form-label" style="margin-bottom:8px">Base Structure <span style="color:var(--text-muted);font-weight:400">(select one)</span></label>
+        <div class="pool-structure-grid" id="baseStructurePicker">
+          <button class="pool-card" data-val="Pool" data-price="225" onclick="selectBase(this)">
+            <span class="pool-card-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12h20M2 17c2.5-2.5 5-3 7-3s4.5.5 7 3"/><path d="M7 12V8a5 5 0 0110 0v4"/></svg></span>
+            <span class="pool-card-name">Pool</span>
+            <span class="pool-card-price">$225</span>
+          </button>
+          <button class="pool-card" data-val="Fiberglass Pool" data-price="250" onclick="selectBase(this)">
+            <span class="pool-card-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 22 12 12 22 2 12"/><polygon points="12 6 18 12 12 18 6 12"/></svg></span>
+            <span class="pool-card-name">Fiberglass Pool</span>
+            <span class="pool-card-price">$250</span>
+          </button>
+          <button class="pool-card" data-val="Pool/Spa" data-price="275" onclick="selectBase(this)">
+            <span class="pool-card-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h16v4a4 4 0 01-4 4H8a4 4 0 01-4-4v-4z"/><path d="M6 12V6a2 2 0 012-2h1"/><path d="M4 20v1m16-1v1"/></svg></span>
+            <span class="pool-card-name">Pool / Spa</span>
+            <span class="pool-card-price">$275</span>
+          </button>
+          <button class="pool-card" data-val="Fiberglass Pool/Spa" data-price="300" onclick="selectBase(this)">
+            <span class="pool-card-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 22 9 18 20 6 20 2 9"/><line x1="2" y1="9" x2="22" y2="9"/><polyline points="6 9 12 2 18 9"/></svg></span>
+            <span class="pool-card-name">Fiberglass Pool/Spa</span>
+            <span class="pool-card-price">$300</span>
+          </button>
+          <button class="pool-card" data-val="Spa" data-price="175" onclick="selectBase(this)">
+            <span class="pool-card-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M8 21s0-4 4-4 4 4 4 4"/><path d="M8 9s0-4 4-4 4 4 4 4"/><path d="M3 17s0-3 3-3 3 3 3 3m6 0s0-3 3-3 3 3 3 3"/></svg></span>
+            <span class="pool-card-name">Spa Only</span>
+            <span class="pool-card-price">$175</span>
+          </button>
+        </div>
+
+        <label class="form-label" style="margin:16px 0 8px">Extra Features <span style="color:var(--text-muted);font-weight:400">(select all that apply)</span></label>
+        <div class="extras-grid" id="extrasPicker">
+          <button class="extra-card" data-val="Sheer Descent" data-price="50" onclick="toggleExtra(this)">
+            <span class="extra-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12c2-4 6-4 8 0s6 4 8 0"/><path d="M2 17c2-4 6-4 8 0s6 4 8 0"/></svg></span><span class="extra-name">Sheer Descent</span><span class="extra-price">+$50</span>
+          </button>
+          <button class="extra-card" data-val="Popups" data-price="40" onclick="toggleExtra(this)">
+            <span class="extra-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"/></svg></span><span class="extra-name">Popups</span><span class="extra-price">+$40</span>
+          </button>
+          <button class="extra-card" data-val="Pre-Cast Fountain" data-price="60" onclick="toggleExtra(this)">
+            <span class="extra-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v10"/><path d="M5 10c0-3.9 3.1-7 7-7s7 3.1 7 7"/><path d="M3 20h18"/><path d="M7 14c0 2.8 2.2 5 5 5s5-2.2 5-5"/></svg></span><span class="extra-name">Pre-Cast Fountain</span><span class="extra-price">+$60</span>
+          </button>
+          <button class="extra-card" data-val="Deck Fountain" data-price="55" onclick="toggleExtra(this)">
+            <span class="extra-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v6m-4-4l4 4 4-4"/><path d="M5 12c0 4 3 7 7 7s7-3 7-7"/></svg></span><span class="extra-name">Deck Fountain</span><span class="extra-price">+$55</span>
+          </button>
+          <button class="extra-card" data-val="Waterfall" data-price="65" onclick="toggleExtra(this)">
+            <span class="extra-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 20 12 4 22 20"/><polyline points="7 20 12 10 17 20"/></svg></span><span class="extra-name">Waterfall</span><span class="extra-price">+$65</span>
+          </button>
+          <button class="extra-card" data-val="Rock Fountain" data-price="65" onclick="toggleExtra(this)">
+            <span class="extra-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="14" rx="8" ry="5"/><path d="M7 11c1-3 3-5 5-5s4 2 5 5"/></svg></span><span class="extra-name">Rock Fountain</span><span class="extra-price">+$65</span>
+          </button>
+          <button class="extra-card" data-val="Trough" data-price="45" onclick="toggleExtra(this)">
+            <span class="extra-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><rect x="7" y="7" width="10" height="10" rx="1"/></svg></span><span class="extra-name">Trough</span><span class="extra-price">+$45</span>
+          </button>
+          <button class="extra-card" data-val="Floor Returns" data-price="50" onclick="toggleExtra(this)">
+            <span class="extra-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 2v6h-6"/><path d="M3 12a9 9 0 0115-6.7L21 8"/><path d="M3 22v-6h6"/><path d="M21 12a9 9 0 01-15 6.7L3 16"/></svg></span><span class="extra-name">Floor Returns</span><span class="extra-price">+$50</span>
+          </button>
+          <button class="extra-card" data-val="Attached Body w/ Bubbler" data-price="75" onclick="toggleExtra(this)">
+            <span class="extra-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><circle cx="6" cy="8" r="2"/><circle cx="18" cy="8" r="2"/><circle cx="9" cy="18" r="1.5"/><circle cx="15" cy="18" r="1.5"/></svg></span><span class="extra-name">Attached Body w/ Bubbler</span><span class="extra-price">+$75</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- ── SECTION 4: JOB CLASSIFICATION (auto-suggested from structure+extras) ── -->
+      <div class="call-section">
+        <div class="call-section-title">
+          <span class="call-section-num">5</span> Job Classification
+          <span id="jcAutoLabel" style="font-size:9px;font-weight:600;color:var(--teal);margin-left:6px;letter-spacing:0;text-transform:none;display:none">— auto-suggested from structure &amp; features</span>
+        </div>
 
         <!-- RESIDENTIAL groups (shown when Residential selected) -->
         <div id="jcResidential">
-          <!-- RPL -->
           <div class="jc-group">
             <div class="jc-group-label"><span class="jc-group-tag rpl">RPL</span> Residential Pool Leak Detections</div>
             <div class="jc-grid">
               <button class="jc-card" data-code="CFU" data-hours="1" data-skill="1" onclick="selectJobClass(this)">
-                <span class="jc-card-icon">🤝</span>
+                <span class="jc-card-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg></span>
                 <span class="jc-card-code">CFU</span>
                 <span class="jc-card-name">Follow-Up</span>
                 <span class="jc-card-hours">1 hr</span>
               </button>
               <button class="jc-card" data-code="PL1" data-hours="3" data-skill="2" onclick="selectJobClass(this)">
-                <span class="jc-card-icon">🏊</span>
+                <span class="jc-card-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12h20M2 17c2.5-2.5 5-3 7-3s4.5.5 7 3"/><path d="M7 12V9a5 5 0 0110 0v3"/></svg></span>
                 <span class="jc-card-code">PL1</span>
                 <span class="jc-card-name">Class I</span>
                 <span class="jc-card-hours">3 hrs</span>
               </button>
               <button class="jc-card" data-code="PL2" data-hours="5" data-skill="2" onclick="selectJobClass(this)">
-                <span class="jc-card-icon">🛁</span>
+                <span class="jc-card-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h16v3a4 4 0 01-4 4H8a4 4 0 01-4-4v-3z"/><path d="M6 12V7a2 2 0 012-2h1"/><path d="M4 19v1m16-1v1"/></svg></span>
                 <span class="jc-card-code">PL2</span>
                 <span class="jc-card-name">Class II</span>
                 <span class="jc-card-hours">5 hrs</span>
               </button>
               <button class="jc-card" data-code="PL3" data-hours="8" data-skill="4" onclick="selectJobClass(this)">
-                <span class="jc-card-icon">⚙️</span>
+                <span class="jc-card-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg></span>
                 <span class="jc-card-code">PL3</span>
                 <span class="jc-card-name">Class III</span>
                 <span class="jc-card-hours">8 hrs</span>
@@ -1985,12 +2167,11 @@ h1 span { color: var(--red); }
               <button class="jc-card jc-placeholder" aria-hidden="true"></button>
             </div>
           </div>
-          <!-- SC -->
           <div class="jc-group">
             <div class="jc-group-label"><span class="jc-group-tag sc">SC</span> Service Calls</div>
             <div class="jc-grid jc-grid-2">
               <button class="jc-card" data-code="SC" data-hours="2" data-skill="2" onclick="selectJobClass(this)">
-                <span class="jc-card-icon">🔧</span>
+                <span class="jc-card-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3-3a1 1 0 000-1.4l-1.6-1.6a1 1 0 00-1.4 0l-3 3z"/><path d="M5 20l9-9"/></svg></span>
                 <span class="jc-card-code">SC</span>
                 <span class="jc-card-name">Service Call</span>
                 <span class="jc-card-hours">2 hrs</span>
@@ -2000,14 +2181,13 @@ h1 span { color: var(--red); }
           </div>
         </div>
 
-        <!-- COMMERCIAL groups (shown when Commercial selected) -->
+        <!-- COMMERCIAL groups -->
         <div id="jcCommercial" style="display:none">
-          <!-- CSC -->
           <div class="jc-group">
             <div class="jc-group-label"><span class="jc-group-tag sc">CSC</span> Commercial Service Calls</div>
             <div class="jc-grid jc-grid-2">
               <button class="jc-card" data-code="CSC" data-hours="3" data-skill="3" onclick="selectJobClass(this)">
-                <span class="jc-card-icon">🏢</span>
+                <span class="jc-card-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="1"/><path d="M3 9h18M9 21V9"/></svg></span>
                 <span class="jc-card-code">CSC</span>
                 <span class="jc-card-name">Commercial Service</span>
                 <span class="jc-card-hours">3 hrs</span>
@@ -2015,24 +2195,23 @@ h1 span { color: var(--red); }
               <button class="jc-card jc-placeholder" aria-hidden="true"></button>
             </div>
           </div>
-          <!-- CPL -->
           <div class="jc-group">
             <div class="jc-group-label"><span class="jc-group-tag cpl">CPL</span> Commercial Leak Detections</div>
             <div class="jc-grid jc-grid-3">
               <button class="jc-card" data-code="CPL1" data-hours="4" data-skill="3" onclick="selectJobClass(this)">
-                <span class="jc-card-icon">🏗️</span>
+                <span class="jc-card-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 20h20"/><path d="M6 20V10l6-6 6 6v10"/><path d="M12 20v-6"/><rect x="9" y="14" width="6" height="6"/></svg></span>
                 <span class="jc-card-code">CPL1</span>
                 <span class="jc-card-name">Commercial 1</span>
                 <span class="jc-card-hours">4 hrs</span>
               </button>
               <button class="jc-card" data-code="CPL2" data-hours="6" data-skill="3" onclick="selectJobClass(this)">
-                <span class="jc-card-icon">🏬</span>
+                <span class="jc-card-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7h18v13H3z"/><path d="M3 7l2-4h14l2 4"/><path d="M9 20v-6h6v6"/><path d="M3 12h18"/></svg></span>
                 <span class="jc-card-code">CPL2</span>
                 <span class="jc-card-name">Commercial 2</span>
                 <span class="jc-card-hours">6 hrs</span>
               </button>
               <button class="jc-card" data-code="CPL3" data-hours="9" data-skill="4" onclick="selectJobClass(this)">
-                <span class="jc-card-icon">🏟️</span>
+                <span class="jc-card-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="11" rx="9" ry="5"/><path d="M3 11v5c0 2.8 4 5 9 5s9-2.2 9-5v-5"/><path d="M7 11v5m5-5v5m5-5v5"/></svg></span>
                 <span class="jc-card-code">CPL3</span>
                 <span class="jc-card-name">Commercial 3</span>
                 <span class="jc-card-hours">9 hrs</span>
@@ -2042,77 +2221,11 @@ h1 span { color: var(--red); }
         </div>
 
         <div class="form-error" id="baseStructureError" style="margin-top:4px">Please select a job classification.</div>
-
-        <!-- POOL STRUCTURE + EXTRAS — revealed after a class is picked -->
-        <div id="poolConfigReveal" style="display:none;margin-top:16px">
-          <div style="height:1px;background:var(--border);margin-bottom:16px"></div>
-
-          <label class="form-label" style="margin-bottom:8px">Pool / Spa Structure <span style="color:var(--text-muted);font-weight:400">(select one — for pricing)</span></label>
-          <div class="pool-structure-grid" id="baseStructurePicker">
-            <button class="pool-card" data-val="Pool" data-price="225" onclick="selectBase(this)">
-              <span class="pool-card-icon">🏊</span>
-              <span class="pool-card-name">Pool</span>
-              <span class="pool-card-price">$225</span>
-            </button>
-            <button class="pool-card" data-val="Fiberglass Pool" data-price="250" onclick="selectBase(this)">
-              <span class="pool-card-icon">🔷</span>
-              <span class="pool-card-name">Fiberglass Pool</span>
-              <span class="pool-card-price">$250</span>
-            </button>
-            <button class="pool-card" data-val="Pool/Spa" data-price="275" onclick="selectBase(this)">
-              <span class="pool-card-icon">🛁</span>
-              <span class="pool-card-name">Pool / Spa</span>
-              <span class="pool-card-price">$275</span>
-            </button>
-            <button class="pool-card" data-val="Fiberglass Pool/Spa" data-price="300" onclick="selectBase(this)">
-              <span class="pool-card-icon">💎</span>
-              <span class="pool-card-name">Fiberglass Pool/Spa</span>
-              <span class="pool-card-price">$300</span>
-            </button>
-            <button class="pool-card" data-val="Spa" data-price="175" onclick="selectBase(this)">
-              <span class="pool-card-icon">♨️</span>
-              <span class="pool-card-name">Spa Only</span>
-              <span class="pool-card-price">$175</span>
-            </button>
-          </div>
-
-          <label class="form-label" style="margin:16px 0 8px">Extra Features <span style="color:var(--text-muted);font-weight:400">(select all that apply)</span></label>
-          <div class="extras-grid" id="extrasPicker">
-            <button class="extra-card" data-val="Sheer Descent" data-price="50" onclick="toggleExtra(this)">
-              <span class="extra-icon">🌊</span><span class="extra-name">Sheer Descent</span><span class="extra-price">+$50</span>
-            </button>
-            <button class="extra-card" data-val="Popups" data-price="40" onclick="toggleExtra(this)">
-              <span class="extra-icon">⬆️</span><span class="extra-name">Popups</span><span class="extra-price">+$40</span>
-            </button>
-            <button class="extra-card" data-val="Pre-Cast Fountain" data-price="60" onclick="toggleExtra(this)">
-              <span class="extra-icon">⛲</span><span class="extra-name">Pre-Cast Fountain</span><span class="extra-price">+$60</span>
-            </button>
-            <button class="extra-card" data-val="Deck Fountain" data-price="55" onclick="toggleExtra(this)">
-              <span class="extra-icon">💦</span><span class="extra-name">Deck Fountain</span><span class="extra-price">+$55</span>
-            </button>
-            <button class="extra-card" data-val="Waterfall" data-price="65" onclick="toggleExtra(this)">
-              <span class="extra-icon">🏔️</span><span class="extra-name">Waterfall</span><span class="extra-price">+$65</span>
-            </button>
-            <button class="extra-card" data-val="Rock Fountain" data-price="65" onclick="toggleExtra(this)">
-              <span class="extra-icon">🪨</span><span class="extra-name">Rock Fountain</span><span class="extra-price">+$65</span>
-            </button>
-            <button class="extra-card" data-val="Trough" data-price="45" onclick="toggleExtra(this)">
-              <span class="extra-icon">🔲</span><span class="extra-name">Trough</span><span class="extra-price">+$45</span>
-            </button>
-            <button class="extra-card" data-val="Floor Returns" data-price="50" onclick="toggleExtra(this)">
-              <span class="extra-icon">🔄</span><span class="extra-name">Floor Returns</span><span class="extra-price">+$50</span>
-            </button>
-            <button class="extra-card" data-val="Attached Body w/ Bubbler" data-price="75" onclick="toggleExtra(this)">
-              <span class="extra-icon">🫧</span><span class="extra-name">Attached Body w/ Bubbler</span><span class="extra-price">+$75</span>
-            </button>
-          </div>
-        </div>
-
       </div>
 
-      <!-- ── SECTION 4: SKILL (auto-set, override allowed) ── -->
+      <!-- ── SECTION 5: TECH LEVEL ── -->
       <div class="call-section">
-        <div class="call-section-title"><span class="call-section-num">4</span> Required Tech Level <span style="color:var(--text-muted);font-weight:400;font-size:10px;margin-left:4px">— auto-set from class, override if needed</span></div>
+        <div class="call-section-title"><span class="call-section-num">6</span> Required Tech Level <span style="color:var(--text-muted);font-weight:400;font-size:10px;margin-left:4px">— auto-set from class, override if needed</span></div>
         <div class="skill-picker" id="callSkillPicker">
           <button class="skill-opt" data-skill="1" onclick="selectCallSkill(1)">New</button>
           <button class="skill-opt" data-skill="2" onclick="selectCallSkill(2)">Specialist</button>
@@ -2124,7 +2237,7 @@ h1 span { color: var(--red); }
 
       <!-- ── NOTES ── -->
       <div class="call-section">
-        <div class="call-section-title"><span class="call-section-num">5</span> Notes <span style="color:var(--text-muted);font-weight:400;font-size:11px">(optional)</span></div>
+        <div class="call-section-title"><span class="call-section-num">7</span> Notes <span style="color:var(--text-muted);font-weight:400;font-size:11px">(optional)</span></div>
         <textarea class="form-input" id="callNotes" rows="3" placeholder="Gate code, access instructions, customer concerns…" style="resize:vertical;font-family:inherit;font-size:12px;line-height:1.5"></textarea>
       </div>
 
@@ -2133,7 +2246,7 @@ h1 span { color: var(--red); }
     <!-- ── PRICE FOOTER ── -->
     <div class="call-price-footer">
       <div class="call-price-breakdown" id="callPriceBreakdown">
-        <span class="price-item-label">Select a job classification above</span>
+        <span class="price-item-label">Select a pool structure to calculate price</span>
       </div>
       <div class="call-price-total">
         <span style="font-size:11px;color:var(--text-muted);font-weight:600;letter-spacing:0.05em">TOTAL</span>
@@ -2154,15 +2267,16 @@ h1 span { color: var(--red); }
      CALL CONFIRMATION MODAL
 ══════════════════════════════════════════ -->
 <div class="modal-overlay" id="callConfirmOverlay" onclick="if(event.target.id==='callConfirmOverlay')closeCallConfirm()">
-  <div class="modal wide" style="max-width:520px">
+  <div class="modal wide" style="max-width:780px">
     <div class="call-modal-header" style="border-bottom:1px solid var(--border);padding-bottom:14px;margin-bottom:0">
-      <div class="call-modal-icon">✅</div>
+      <div class="call-modal-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--teal)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/><circle cx="12" cy="12" r="10"/></svg></div>
       <div>
         <div class="modal-title green" style="margin:0 0 2px">Confirm <span>New Call</span></div>
         <div style="font-size:11px;color:var(--text-muted)">Review details before adding to queue</div>
       </div>
     </div>
-    <div id="callConfirmBody" style="padding:16px 20px;max-height:60vh;overflow-y:auto;font-size:12px;line-height:1.7"></div>
+    <div id="callConfirmBody" style="padding:16px 20px;max-height:45vh;overflow-y:auto;font-size:12px;line-height:1.7"></div>
+    <div id="callConfirmSlots" style="padding:0 20px 4px;border-top:2px solid var(--border)"></div>
     <div class="modal-actions" style="padding:12px 20px 16px;border-top:1px solid var(--border)">
       <button class="btn btn-secondary" onclick="closeCallConfirm()">← Edit</button>
       <button class="btn btn-call" onclick="confirmAndAddCall()">💧 Add to Queue</button>
@@ -2215,7 +2329,7 @@ h1 span { color: var(--red); }
      JOB DETAIL MODAL
 ══════════════════════════════════════════ -->
 <div class="modal-overlay" id="jobDetailOverlay" onclick="closeJobDetailOutside(event)">
-  <div class="modal" style="max-width:420px">
+  <div class="modal" style="max-width:780px">
     <div class="modal-title" id="jobDetailTitle">Job <span>Details</span></div>
     <div id="jobDetailBody" style="margin-bottom:1.2rem"></div>
     <div id="asapSuggestSection" style="display:none">
@@ -2237,7 +2351,7 @@ h1 span { color: var(--red); }
      SETTINGS MODAL
 ══════════════════════════════════════════ -->
 <div class="modal-overlay" id="settingsModalOverlay" onclick="closeSettingsOutside(event)">
-  <div class="modal wide" style="max-width:560px">
+  <div class="modal wide" style="max-width:780px">
     <div class="modal-title" style="color:var(--text)">⚙ <span>Settings</span></div>
 
     <!-- TABS -->
@@ -2443,16 +2557,92 @@ const CALL_LAST = [
   'Maddox','Cruz','Whitfield','Park','Shaw','Lima','Cole','Grant','Diallo',
 ];
 
+const DEMO_PHONES = [
+  '(941) 555-0182','(941) 555-0247','(941) 555-0391','(941) 555-0158',
+  '(941) 555-0463','(941) 555-0274','(941) 555-0319','(941) 555-0537',
+];
+const DEMO_EMAILS = [
+  'jsmith@gmail.com','m.johnson@yahoo.com','contact@homemail.net',
+  'info@privateemail.com','homeowner@icloud.com','family@outlook.com',
+];
+
+// Pool partners keyed by service area — address city → partners available there
+// Each partner has a name, phone, and the area cities they cover
+const POOL_PARTNERS = [
+  { id:'pp1',  name:'Blue Wave Pool Service',       phone:'(941) 312-4400', areas:['Sarasota','Bradenton','Parrish'] },
+  { id:'pp2',  name:'Suncoast Pools & Spas',         phone:'(941) 748-2200', areas:['Bradenton','Parrish','Sarasota'] },
+  { id:'pp3',  name:'Gulf Coast Pool Care',           phone:'(941) 924-5500', areas:['Sarasota','Venice','North Port'] },
+  { id:'pp4',  name:'Paradise Pool & Spa',            phone:'(941) 493-7700', areas:['Venice','North Port','Sarasota'] },
+  { id:'pp5',  name:'Crystal Clear Pool Service',     phone:'(941) 629-1100', areas:['Port Charlotte','Punta Gorda','North Port'] },
+  { id:'pp6',  name:'Tropical Pool Pros',             phone:'(941) 637-8800', areas:['Punta Gorda','Port Charlotte'] },
+  { id:'pp7',  name:'Cape Coral Pool & Spa',          phone:'(239) 541-3300', areas:['Cape Coral','Punta Gorda'] },
+  { id:'pp8',  name:'Island Pool Management',         phone:'(239) 574-6600', areas:['Cape Coral'] },
+  { id:'pp9',  name:'Aqua Pro Pool Services',         phone:'(941) 378-9900', areas:['Sarasota','Bradenton'] },
+  { id:'pp10', name:'Shoreline Pool & Leak',          phone:'(941) 485-2020', areas:['Venice','Sarasota','North Port'] },
+  { id:'pp11', name:'Manatee Pool Care',               phone:'(941) 721-5500', areas:['Bradenton','Parrish'] },
+  { id:'pp12', name:'Premier Pool Solutions',          phone:'(941) 255-7700', areas:['North Port','Venice','Port Charlotte'] },
+];
+
+function getPartnersForAddress(addr) {
+  if (!addr) return [];
+  const lower = addr.toLowerCase();
+  // Extract city from address
+  const cityMatch = POOL_PARTNERS.flatMap(p => p.areas).find(city =>
+    lower.includes(city.toLowerCase())
+  );
+  if (!cityMatch) return POOL_PARTNERS; // no city match — show all
+  return POOL_PARTNERS.filter(p =>
+    p.areas.some(a => a.toLowerCase() === cityMatch.toLowerCase())
+  );
+}
+
+const JOB_CLASSES = {
+  CFU:  { code:'CFU',  hours:1, skill:1, name:'Complimentary Follow-Up',  group:'RPL' },
+  PL1:  { code:'PL1',  hours:3, skill:2, name:'PL Class I',               group:'RPL' },
+  PL2:  { code:'PL2',  hours:5, skill:2, name:'PL Class II',              group:'RPL' },
+  PL3:  { code:'PL3',  hours:8, skill:4, name:'PL Class III',             group:'RPL' },
+  SC:   { code:'SC',   hours:2, skill:2, name:'Service Call',             group:'SC'  },
+  CSC:  { code:'CSC',  hours:3, skill:3, name:'Commercial Service Call',  group:'SC'  },
+  CPL1: { code:'CPL1', hours:4, skill:3, name:'Commercial Class 1',       group:'CPL' },
+  CPL2: { code:'CPL2', hours:6, skill:3, name:'Commercial Class 2',       group:'CPL' },
+  CPL3: { code:'CPL3', hours:9, skill:4, name:'Commercial Class 3',       group:'CPL' },
+};
+const GROUP_LABELS = { RPL:'Residential Pool Leak', SC:'Service Call', CPL:'Commercial Pool Leak' };
+
+const BASE_PRICES = {
+  'Pool':225, 'Fiberglass Pool':250, 'Pool/Spa':275, 'Fiberglass Pool/Spa':300, 'Spa':175
+};
+const SERVICE_CALL_RATE = 100; // $ per hour
+
 function generateJobs(count=30) {
   const usedNames = new Set();
   const jobs = [];
 
-  // Shuffle address pool and cycle through it — no address used twice per batch
   const addrPool = SARASOTA_ADDRESSES.slice().sort(() => Math.random() - 0.5);
-  // If more jobs than addresses, extend with a second shuffle of the pool
   while (addrPool.length < count) {
     addrPool.push(...SARASOTA_ADDRESSES.slice().sort(() => Math.random() - 0.5));
   }
+
+  const JC_BY_SKILL = {
+    1: ['CFU'],
+    2: ['PL1','PL2','SC'],
+    3: ['PL2','CPL1','CPL2','CSC'],
+    4: ['PL3','CPL3'],
+  };
+  const BASES = ['Pool','Fiberglass Pool','Pool/Spa','Fiberglass Pool/Spa','Spa'];
+  const ALL_EXTRAS = ['Sheer Descent','Popups','Pre-Cast Fountain','Deck Fountain','Waterfall','Rock Fountain','Trough','Floor Returns','Attached Body w/ Bubbler'];
+  const EXTRA_PRICES = { 'Sheer Descent':50,'Popups':40,'Pre-Cast Fountain':60,'Deck Fountain':55,'Waterfall':65,'Rock Fountain':65,'Trough':45,'Floor Returns':50,'Attached Body w/ Bubbler':75 };
+  const NOTES_POOL = [
+    'Gate code: 4821. Call before arrival.',
+    'Dog in backyard — please ring doorbell first.',
+    'Customer will be home after 10am.',
+    'Access through side gate on right.',
+    'Pool pump was recently replaced.',
+    'Significant water loss reported overnight.',
+    'Customer suspects main drain issue.',
+    '','',' ',
+  ];
+
   let addrIdx = 0;
   for (let i = 0; i < count; i++) {
     let name;
@@ -2463,11 +2653,8 @@ function generateJobs(count=30) {
     } while (usedNames.has(name));
     usedNames.add(name);
 
-    const time = weightedDuration();
-
-    // Blend base skillWeights with a duration bias multiplier.
-    // Longer jobs softly boost higher skills without forcing them.
-    // Multipliers per skill per duration bucket:
+    const [fName, lName] = name.split(' ');
+    const time  = weightedDuration();
     const biasMap = {
       1: { 1:2.0, 2:1.2, 3:0.5, 4:0.2 },
       2: { 1:2.0, 2:1.2, 3:0.5, 4:0.2 },
@@ -2475,17 +2662,62 @@ function generateJobs(count=30) {
       4: { 1:0.8, 2:1.0, 3:1.2, 4:1.0 },
       6: { 1:0,   2:0.9, 3:1.5, 4:1.2 },
     };
-    const bias = biasMap[time];
+    const bias    = biasMap[time];
     const blended = {};
     for (const s of [1,2,3,4]) blended[s] = skillWeights[s] * bias[s];
-    const skill = weightedPick(blended);
+    const skill   = weightedPick(blended);
+
+    const loc       = addrPool[addrIdx++];
+    const isService = Math.random() < 0.2;
+    const isComm    = Math.random() < 0.15;
+
+    // Pick a realistic job code for skill/type
+    const codePool = isService
+      ? (isComm ? ['CSC'] : ['SC'])
+      : (isComm ? ['CPL1','CPL2','CPL3'] : JC_BY_SKILL[skill] || ['PL1']);
+    const jobCode = codePool[Math.floor(Math.random()*codePool.length)];
+    const jcData  = JOB_CLASSES[jobCode] || JOB_CLASSES['PL1'];
+
+    // Pool config (only for leak detection)
+    const base   = isService ? null : BASES[Math.floor(Math.random()*BASES.length)];
+    const nExtra = isService ? 0 : Math.floor(Math.random()*3);
+    const extras = isService ? [] : ALL_EXTRAS.slice().sort(()=>Math.random()-0.5).slice(0,nExtra);
+    const basePrice  = base ? (BASE_PRICES[base] || 0) : 0;
+    const extraPrice = extras.reduce((s,e) => s+(EXTRA_PRICES[e]||0), 0);
+    const price      = isService
+      ? jcData.hours * SERVICE_CALL_RATE
+      : basePrice + extraPrice;
+
+    // Pool partner from address area
+    const areaPartners = getPartnersForAddress(loc.addr);
+    const poolPartner  = areaPartners.length && Math.random() > 0.25
+      ? areaPartners[Math.floor(Math.random()*areaPartners.length)]
+      : null;
+
+    const phone = DEMO_PHONES[Math.floor(Math.random()*DEMO_PHONES.length)];
+    const email = `${fName.toLowerCase()}.${lName.toLowerCase()}@gmail.com`;
+    const waterLoss = isService ? null : parseFloat((Math.random()*2+0.2).toFixed(1));
+    const notes = NOTES_POOL[Math.floor(Math.random()*NOTES_POOL.length)].trim();
 
     jobs.push({
-      key: name,
-      location: addrPool[addrIdx++],
+      key:        name,
+      location:   loc,
       skill_level: skill,
       time,
-      _asap: Math.random() < 0.05
+      price,
+      _asap: Math.random() < 0.05,
+      // Full call card data
+      jobCode,
+      jobClassName:  jcData.name,
+      jobGroup:      GROUP_LABELS[jcData.group] || jcData.group,
+      callType:      isService ? 'Service Call' : 'Leak Detection',
+      propertyType:  isComm ? 'Commercial' : 'Residential',
+      contacts: [{ first:fName, last:lName, phone, email, primary:true }],
+      poolPartner,
+      baseStructure: base,
+      extras,
+      waterLoss,
+      notes,
     });
   }
   return jobs;
@@ -2612,7 +2844,7 @@ function buildTable() {
   DAYS.forEach((day, k) => {
     hr += `<th class="cal-header-cell day-col-header" id="dayhdr-${k}">
       <span class="day-col-name">${day}</span>
-      <button class="map-day-btn" onclick="openDayMap(${k})" title="View routes for ${day}">${SVG.pin(10)} Map</button>
+      <button class="map-day-btn" onclick="openDayMap(${k})" data-tip="View tech routes for ${day}" data-tip-pos="bottom">${SVG.pin(10)} Map</button>
     </th>`;
   });
   $('calHead').innerHTML = hr + '</tr>';
@@ -2709,9 +2941,9 @@ function cardHTML(job, justPlaced=false) {
   const locked = job._confirmed && !job._asap;
   const drag = locked ? 'false' : 'true';
   const lockBadge = job._asap
-    ? `<span class="asap-badge" title="ASAP — can be rescheduled">ASAP</span>`
+    ? `<span class="asap-badge" data-tip="Priority job — auto-moves to earliest available slot" data-tip-pos="bottom">ASAP</span>`
     : locked
-      ? `<span class="lock-badge" title="Confirmed — customer notified">${SVG.lock()}</span>`
+      ? `<span class="lock-badge" data-tip="Confirmed &amp; locked — drag disabled" data-tip-pos="bottom">${SVG.lock()}</span>`
       : '';
   const PX_PER_HOUR = 44;
   const minH = job.time < 3 ? 52 : job.time < 7 ? 88 : 176;
@@ -2839,7 +3071,7 @@ function renderTechs() {
     const dayBtns = DAYS.map((day, k) => {
       const blocked = getAvail(k, idx).mode === 'blocked';
       return `<button class="avail-day-btn ${blocked ? 'is-blocked' : ''}"
-        onclick="toggleAvail(${k},${idx})" title="${blocked ? 'Click to restore' : 'Click to block'}">
+        onclick="toggleAvail(${k},${idx})" data-tip="${blocked ? 'Restore this day' : 'Block day off'}" data-tip-pos="bottom">
         <span class="day-label">${day}</span>
         <span class="day-status">${blocked ? SVG.block() : SVG.check()}</span>
       </button>`;
@@ -2855,7 +3087,7 @@ function renderTechs() {
         </div>
       </div>
       <div class="tech-avail-days">${dayBtns}</div>
-      <button class="tech-delete" onclick="deleteTech(${idx})" title="Remove">&#215;</button>
+      <button class="tech-delete" onclick="deleteTech(${idx})" data-tip="Remove technician">&#215;</button>
     </div>`;
   }).join('');
 }
@@ -3015,13 +3247,18 @@ function clearIncoming() {
 }
 
 async function fillCalendar() {
-  // If already filling, toggle fast-forward mode
+  // Already running a real schedule run — toggle fast-forward
   if (isFilling) {
     toggleFastForward();
     return;
   }
-  // Stop idle preview and clear its chips from the queue
+
+  // Stop the queue-fill preview and use whatever jobs have built up
   stopIdlePreview();
+
+  // Use jobs that trickled in during preview; if none yet, generate a full set
+  const jobsToSchedule = _previewJobs.length > 0 ? [..._previewJobs] : generateJobs(callCount);
+
   isFilling = true; isPaused = false; speedMultiplier = 1;
 
   const fillBtn = $('fillButton');
@@ -3033,30 +3270,49 @@ async function fillCalendar() {
   pauseBtn.classList.remove('paused');
   pauseBtn.innerHTML = '&#9208; Pause';
 
-  cal = buildCal(); overflow = []; queueJobs = [];
-
-  // Generate random jobs — arrive and schedule in random order
-  const generatedJobs = generateJobs(callCount);
-  allJobs   = [...generatedJobs];
-  queueJobs = [...generatedJobs];
-
-  // Render initial queue (all chips at once)
-  el_init: {
-    const el = $('jobs');
-    el.innerHTML = '';
-    queueJobs.forEach(job => {
-      const sl = job.skill_level;
-      const div = document.createElement('div');
-      div.className = 'job-chip';
-      div.draggable = true;
-      div.dataset.key = job.key;
-      div.innerHTML = `<span class="chip-name">${job.key}</span>
-        <span class="chip-meta">${job.location.addr} &middot; ${fmtHours(job.time)} &middot; ${skillName(sl)}</span>`;
-      el.appendChild(div);
-    });
-    $('queueCount').textContent = `${queueJobs.length} waiting`;
-    bindQueueDrag();
+  // ── Snapshot any manually-placed (confirmed) jobs so they survive the reset ──
+  const pinnedJobs = []; // { job, k, j }
+  for (let k = 0; k < DAYS.length; k++) {
+    for (let j = 0; j < techs.length; j++) {
+      cal[k][j].forEach(job => {
+        if (job._confirmed && !job._asap) {
+          pinnedJobs.push({ job, k, j });
+        }
+      });
+    }
   }
+  const pinnedKeys = new Set(pinnedJobs.map(p => p.job.key));
+
+  // Fresh calendar — clear anything the preview may have touched
+  cal = buildCal(); overflow = [];
+
+  // Restore pinned jobs immediately into their original slots
+  pinnedJobs.forEach(({ job, k, j }) => {
+    cal[k][j].push(job);
+    cal[k][j].sort((a, b) => b.time - a.time);
+  });
+
+  // Remove pinned jobs from the schedule queue so they aren't re-routed
+  const filteredJobs = jobsToSchedule.filter(j => !pinnedKeys.has(j.key));
+
+  allJobs   = [...filteredJobs];
+  queueJobs = [...filteredJobs];
+
+  // Re-render the full queue (all chips at once, ordered)
+  const el = $('jobs');
+  el.innerHTML = '';
+  queueJobs.forEach(job => {
+    const sl = job.skill_level;
+    const div = document.createElement('div');
+    div.className = 'job-chip';
+    div.draggable = true;
+    div.dataset.key = job.key;
+    div.innerHTML = `<span class="chip-name">${job.key}</span>
+      <span class="chip-meta">${job.location.addr} &middot; ${fmtHours(job.time)} &middot; ${skillName(sl)}</span>`;
+    el.appendChild(div);
+  });
+  $('queueCount').textContent = `${queueJobs.length} waiting`;
+  bindQueueDrag();
   buildTable();
   renderAllCells();
   renderTechs();
@@ -3076,7 +3332,6 @@ async function fillCalendar() {
     const nextJob = allJobs[i + 1] || null;
     const remaining = allJobs.length - i - 1;
 
-    // ── "Phone ringing" effect ──
     setTicker(`<span class="highlight">&#128222; Incoming call</span> &mdash; ${job.key} &middot; ${skillName(job.skill_level)} &middot; ${fmtHours(job.time)} &middot; ${job.location.addr}`);
     showIncoming(job, nextJob);
     await sleep(175 + Math.random()*100);
@@ -3084,7 +3339,6 @@ async function fillCalendar() {
     setTicker(`&#9654; Scheduling <span class="highlight">${job.key}</span>&hellip; (${remaining} calls remaining)`);
     await sleep(90);
 
-    // Smoothly remove from queue (chip shrinks in-place)
     queueJobs = queueJobs.filter(j=>j.key!==job.key);
     renderQueue(job.key);
     $('queueCount').textContent = queueJobs.length ? `${queueJobs.length} waiting` : '';
@@ -3119,9 +3373,7 @@ async function fillCalendar() {
   fb.innerHTML = '&#9654; Run Schedule';
   fb.classList.remove('btn-fastforward');
   fb.disabled = false;
-  // schedule saved
   bindAllDrop();
-  // Show summary after a short delay
   setTimeout(showScheduleSummary, 600);
 }
 
@@ -3175,7 +3427,7 @@ function resetAll() {
   speedMultiplier = 1;
   $('pauseButton').classList.remove('visible','paused');
   clearSuggestions();
-  setTimeout(startIdlePreview, 400);
+  setTimeout(startAutoPreview, 400);
 }
 
 // ═══════════════════════════════════════════════════════════════════
@@ -3235,57 +3487,230 @@ let _selectedBase = null;
 let _selectedExtras = [];
 let _selectedPropertyType = 'Residential';
 let _pendingCallJob = null;
+let _selectedCallType = 'Leak Detection'; // 'Leak Detection' | 'Service Call'
+let _selectedPartner = null;   // { id, name, phone } or null
 
-const JOB_CLASSES = {
-  CFU:  { code:'CFU',  hours:1, skill:1, name:'Complimentary Follow-Up',  group:'RPL' },
-  PL1:  { code:'PL1',  hours:3, skill:2, name:'PL Class I',               group:'RPL' },
-  PL2:  { code:'PL2',  hours:5, skill:2, name:'PL Class II',              group:'RPL' },
-  PL3:  { code:'PL3',  hours:8, skill:4, name:'PL Class III',             group:'RPL' },
-  SC:   { code:'SC',   hours:2, skill:2, name:'Service Call',             group:'SC'  },
-  CSC:  { code:'CSC',  hours:3, skill:3, name:'Commercial Service Call',  group:'SC'  },
-  CPL1: { code:'CPL1', hours:4, skill:3, name:'Commercial Class 1',       group:'CPL' },
-  CPL2: { code:'CPL2', hours:6, skill:3, name:'Commercial Class 2',       group:'CPL' },
-  CPL3: { code:'CPL3', hours:9, skill:4, name:'Commercial Class 3',       group:'CPL' },
-};
-const GROUP_LABELS = { RPL:'Residential Pool Leak', SC:'Service Call', CPL:'Commercial Pool Leak' };
+function renderPartnerPicker(addr) {
+  const partners = getPartnersForAddress(addr);
+  const grid = $('partnerPickerGrid');
+  const badge = $('partnerObtainBadge');
+  if (!grid) return;
 
-const BASE_PRICES = {
-  'Pool':225, 'Fiberglass Pool':250, 'Pool/Spa':275, 'Fiberglass Pool/Spa':300, 'Spa':175
-};
+  if (partners.length === 0) {
+    grid.innerHTML = '<span style="font-size:11px;color:var(--text-muted)">No partners found for this area.</span>';
+    if (badge) badge.style.display = '';
+    _selectedPartner = null;
+    return;
+  }
+
+  grid.innerHTML = partners.map(p => `
+    <button class="partner-card${_selectedPartner?.id === p.id ? ' selected' : ''}"
+            onclick="selectPartner('${p.id}')" data-partner-id="${p.id}">
+      <span class="partner-name">${p.name}</span>
+      <span class="partner-phone">${p.phone}</span>
+    </button>`).join('');
+
+  // Show "Please Obtain" badge if no partner selected
+  if (badge) badge.style.display = _selectedPartner ? 'none' : '';
+}
+
+function selectPartner(id) {
+  _selectedPartner = POOL_PARTNERS.find(p => p.id === id) || null;
+  // Update card selection
+  document.querySelectorAll('.partner-card').forEach(b => {
+    b.classList.toggle('selected', b.dataset.partnerId === id);
+  });
+  const badge = $('partnerObtainBadge');
+  if (badge) badge.style.display = _selectedPartner ? 'none' : '';
+}
+
+
+function applyCallTypeUI() {
+  const isService = _selectedCallType === 'Service Call';
+  const isComm    = _selectedPropertyType === 'Commercial';
+
+  // Show/hide pool structure section
+  const poolSec = $('poolStructureSection');
+  if (poolSec) poolSec.style.display = isService ? 'none' : '';
+
+  // When switching to service call, clear structure/extras and reset them
+  if (isService) {
+    _selectedBase = null;
+    _selectedExtras = [];
+    document.querySelectorAll('#baseStructurePicker .pool-card').forEach(b => b.classList.remove('selected'));
+    document.querySelectorAll('#extrasPicker .extra-card').forEach(b => b.classList.remove('selected'));
+  }
+
+  // Show/hide classification groups based on both type and property
+  // Service call: show only SC (residential) or CSC (commercial)
+  // Leak detection: normal RPL / CPL groups
+  const jcRes  = $('jcResidential');
+  const jcComm = $('jcCommercial');
+
+  if (isService) {
+    // For service calls show the right group but dim/hide leak detection cards
+    if (!isComm) {
+      jcRes.style.display  = '';
+      jcComm.style.display = 'none';
+      // Hide RPL group, show only SC group
+      const groups = jcRes.querySelectorAll('.jc-group');
+      groups.forEach(g => {
+        const tag = g.querySelector('.jc-group-tag');
+        g.style.display = (tag && tag.classList.contains('rpl')) ? 'none' : '';
+      });
+    } else {
+      jcRes.style.display  = 'none';
+      jcComm.style.display = '';
+      // Hide CPL group, show only CSC
+      const groups = jcComm.querySelectorAll('.jc-group');
+      groups.forEach(g => {
+        const tag = g.querySelector('.jc-group-tag');
+        g.style.display = (tag && tag.classList.contains('cpl')) ? 'none' : '';
+      });
+    }
+    // Auto-select the service card
+    const code = isComm ? 'CSC' : 'SC';
+    document.querySelectorAll('.jc-card:not(.jc-placeholder)').forEach(b => b.classList.remove('selected'));
+    const btn = document.querySelector(`.jc-card[data-code="${code}"]`);
+    if (btn) {
+      btn.classList.add('selected');
+      _selectedJobClass = { ...JOB_CLASSES[code], _autoSelected: true };
+      selectCallSkill(_selectedJobClass.skill);
+      $('baseStructureError').classList.remove('show');
+    }
+  } else {
+    // Leak detection — show leak-specific groups only, hide service call groups
+    jcRes.style.display  = !isComm ? '' : 'none';
+    jcComm.style.display = isComm  ? '' : 'none';
+    // In residential leak detection: show RPL, hide SC
+    jcRes.querySelectorAll('.jc-group').forEach(g => {
+      const tag = g.querySelector('.jc-group-tag');
+      g.style.display = (tag && tag.classList.contains('sc')) ? 'none' : '';
+    });
+    // In commercial leak detection: show CPL, hide CSC
+    jcComm.querySelectorAll('.jc-group').forEach(g => {
+      const tag = g.querySelector('.jc-group-tag');
+      g.style.display = (tag && tag.classList.contains('sc')) ? 'none' : '';
+    });
+    // Re-run auto-suggest
+    autoSuggestClass();
+  }
+
+  resetPriceFooter();
+  updatePriceFooter();
+}
+
+function selectCallType(val) {
+  _selectedCallType = val;
+  document.querySelectorAll('#callTypePicker .toggle-pill').forEach(b =>
+    b.classList.toggle('selected', b.dataset.val === val));
+  // Clear previous class selection so applyCallTypeUI can auto-assign
+  document.querySelectorAll('.jc-card:not(.jc-placeholder)').forEach(b => b.classList.remove('selected', 'suggested'));
+  document.querySelectorAll('.jc-sugg-badge').forEach(el => el.remove());
+  _selectedJobClass = null;
+  applyCallTypeUI();
+}
+
+// ── Auto-classify from structure + extras ──────────────────────────
+//   CFU  = follow-up (no structure needed — dispatcher manually picks)
+//   PL1  = basic pool/spa, OR pool/spa + trough or popups only
+//   PL2  = pool/spa + trough OR popups OR 3-4 pump extras (Waterfall, Sheer Descent, etc.)
+//   PL3  = pool/spa + gutter/surge OR 5+ pump-type extras
+//   SC   = service-only (no structure selected)
+//   CPL1 = commercial + skimmers/1-10 gutters (small)
+//   CPL2 = commercial + 11-25 gutters (medium)
+//   CPL3 = commercial + 25+ gutters / large
+// We treat extra feature count as the pump-complexity proxy.
+
+function autoSuggestClass() {
+  const extras = _selectedExtras;
+  const base   = _selectedBase;
+  const isComm = _selectedPropertyType === 'Commercial';
+
+  // Clear any previous suggestion badge/highlight (keep selected state)
+  document.querySelectorAll('.jc-card:not(.jc-placeholder)').forEach(b => {
+    b.classList.remove('suggested');
+    b.querySelectorAll('.jc-sugg-badge').forEach(el => el.remove());
+  });
+
+  let suggestedCode = null;
+
+  if (!base) {
+    // Nothing picked yet — no suggestion
+    const lbl = $('jcAutoLabel'); if (lbl) lbl.style.display = 'none';
+    return;
+  }
+
+  const hasTrough  = extras.includes('Trough');
+  const hasPopups  = extras.includes('Popups');
+  const pumpExtras = extras.filter(e => ['Sheer Descent','Waterfall','Rock Fountain','Attached Body w/ Bubbler','Floor Returns','Pre-Cast Fountain','Deck Fountain'].includes(e));
+  const totalExtras = extras.length;
+
+  if (isComm) {
+    // Commercial — CPL1/2/3 based on complexity
+    if (totalExtras >= 3 || pumpExtras.length >= 3)      suggestedCode = 'CPL3';
+    else if (totalExtras >= 2 || pumpExtras.length >= 2) suggestedCode = 'CPL2';
+    else                                                  suggestedCode = 'CPL1';
+  } else {
+    // Residential
+    const hasSpa    = base.includes('Spa');
+    const hasCombo  = base.includes('/');
+    const pumpCount = pumpExtras.length + (hasTrough ? 0.5 : 0) + (hasPopups ? 0.5 : 0);
+
+    if (pumpCount >= 3 || totalExtras >= 4)               suggestedCode = 'PL3';
+    else if (pumpCount >= 1 || hasTrough || hasPopups)    suggestedCode = 'PL2';
+    else if (base && !hasTrough && !hasPopups && totalExtras === 0) suggestedCode = 'PL1';
+    else                                                  suggestedCode = 'PL1';
+  }
+
+  if (!suggestedCode) return;
+
+  // Highlight the suggested card
+  const btn = document.querySelector(`.jc-card[data-code="${suggestedCode}"]`);
+  if (!btn) return;
+
+  btn.classList.add('suggested');
+  // Add a small badge under the hours
+  const badge = document.createElement('span');
+  badge.className = 'jc-sugg-badge';
+  badge.textContent = 'SUGGESTED';
+  btn.appendChild(badge);
+
+  // Show the auto-label hint
+  const lbl = $('jcAutoLabel');
+  if (lbl) lbl.style.display = '';
+
+  // Auto-select only if dispatcher hasn't manually picked something different
+  if (!_selectedJobClass || _selectedJobClass._autoSelected) {
+    const code = suggestedCode;
+    document.querySelectorAll('.jc-card:not(.jc-placeholder)').forEach(b => b.classList.remove('selected'));
+    btn.classList.add('selected');
+    _selectedJobClass = { ...JOB_CLASSES[code], _autoSelected: true };
+    selectCallSkill(_selectedJobClass.skill);
+    $('baseStructureError').classList.remove('show');
+    updatePriceFooter();
+  }
+}
 
 function selectPropertyType(val) {
   _selectedPropertyType = val;
   document.querySelectorAll('#propertyTypePicker .toggle-pill').forEach(b =>
     b.classList.toggle('selected', b.dataset.val === val));
-
-  // Show/hide classification groups
-  $('jcResidential').style.display  = val === 'Residential' ? '' : 'none';
-  $('jcCommercial').style.display   = val === 'Commercial'  ? '' : 'none';
-
-  // Clear any selected class card and hide pool config
-  document.querySelectorAll('.jc-card').forEach(b => b.classList.remove('selected'));
+  // Clear selected class and re-apply UI
+  document.querySelectorAll('.jc-card:not(.jc-placeholder)').forEach(b => b.classList.remove('selected', 'suggested'));
+  document.querySelectorAll('.jc-sugg-badge').forEach(el => el.remove());
   _selectedJobClass = null;
-  _selectedBase = null;
-  _selectedExtras = [];
-  $('poolConfigReveal').style.display = 'none';
-  document.querySelectorAll('#baseStructurePicker .pool-card').forEach(b => b.classList.remove('selected'));
-  document.querySelectorAll('#extrasPicker .extra-card').forEach(b => b.classList.remove('selected'));
-  resetPriceFooter();
+  applyCallTypeUI();
 }
 
 function selectJobClass(btn) {
   document.querySelectorAll('.jc-card:not(.jc-placeholder)').forEach(b => b.classList.remove('selected'));
   btn.classList.add('selected');
   const code = btn.dataset.code;
-  _selectedJobClass = JOB_CLASSES[code];
+  // Mark as manually selected (suppress auto-override)
+  _selectedJobClass = { ...JOB_CLASSES[code], _autoSelected: false };
   $('baseStructureError').classList.remove('show');
-
-  // Auto-set skill
   selectCallSkill(_selectedJobClass.skill);
-
-  // Reveal pool structure + extras
-  $('poolConfigReveal').style.display = '';
-
   updatePriceFooter();
 }
 
@@ -3294,6 +3719,7 @@ function selectBase(btn) {
   btn.classList.add('selected');
   _selectedBase = btn.dataset.val;
   updatePriceFooter();
+  autoSuggestClass();
 }
 
 function toggleExtra(btn) {
@@ -3306,9 +3732,16 @@ function toggleExtra(btn) {
     _selectedExtras.push(val);
   }
   updatePriceFooter();
+  autoSuggestClass();
 }
 
 function calcCallPrice() {
+  const isService = _selectedCallType === 'Service Call';
+  if (isService) {
+    const hrs   = _selectedJobClass ? _selectedJobClass.hours : 0;
+    const total = hrs * SERVICE_CALL_RATE;
+    return { base: total, extras: 0, total };
+  }
   const base   = _selectedBase ? (BASE_PRICES[_selectedBase] || 0) : 0;
   const extras = _selectedExtras.reduce((s, v) => {
     const btn = document.querySelector(`#extrasPicker [data-val="${v}"]`);
@@ -3319,29 +3752,34 @@ function calcCallPrice() {
 
 function resetPriceFooter() {
   const bd = $('callPriceBreakdown');
-  if (bd) bd.innerHTML = '<span class="price-item-label">Select a job classification above</span>';
+  const isService = _selectedCallType === 'Service Call';
+  if (bd) bd.innerHTML = `<span class="price-item-label">${isService ? 'Select tech level to calculate price' : 'Select a pool structure to calculate price'}</span>`;
   const pt = $('callPriceTotal'); if (pt) pt.textContent = '—';
   const dl = $('callDurationLabel'); if (dl) dl.textContent = '';
 }
 
 function updatePriceFooter() {
   if (!_selectedJobClass) { resetPriceFooter(); return; }
+  const isService = _selectedCallType === 'Service Call';
   const { base, extras, total } = calcCallPrice();
   const bd = $('callPriceBreakdown');
   const skillNames = ['','New','Specialist','Pro','Expert'];
 
-  // Job class tag
   let html = `<span class="price-tag base">${_selectedJobClass.code} · ${_selectedJobClass.hours}h</span>`;
   html += `<span class="price-tag base" style="border-color:rgba(124,58,237,0.3);color:var(--skill${_selectedJobClass.skill})">${skillNames[_selectedJobClass.skill]}</span>`;
 
-  // Structure + extras pricing tags
-  if (_selectedBase) {
-    html += `<span class="price-tag extra" style="border-color:rgba(192,21,42,0.25);color:var(--red)">${_selectedBase} $${base}</span>`;
+  if (isService) {
+    // Show rate × hours
+    html += `<span class="price-tag extra" style="border-color:rgba(192,21,42,0.25);color:var(--red)">$${SERVICE_CALL_RATE}/hr × ${_selectedJobClass.hours}h</span>`;
+  } else {
+    if (_selectedBase) {
+      html += `<span class="price-tag extra" style="border-color:rgba(192,21,42,0.25);color:var(--red)">${_selectedBase} $${base}</span>`;
+    }
+    _selectedExtras.forEach(v => {
+      const btn = document.querySelector(`#extrasPicker [data-val="${v}"]`);
+      if (btn) html += `<span class="price-tag extra">${v} +$${btn.dataset.price}</span>`;
+    });
   }
-  _selectedExtras.forEach(v => {
-    const btn = document.querySelector(`#extrasPicker [data-val="${v}"]`);
-    if (btn) html += `<span class="price-tag extra">${v} +$${btn.dataset.price}</span>`;
-  });
 
   bd.innerHTML = html;
   $('callPriceTotal').textContent = total > 0 ? `$${total}` : '—';
@@ -3350,7 +3788,7 @@ function updatePriceFooter() {
 
 function buildContactRow(idx, isPrimary) {
   const label = isPrimary ? 'Primary Contact' : `Additional Contact ${idx}`;
-  const removeBtn = isPrimary ? '' : `<button class="contact-remove" onclick="removeContact(${idx})" title="Remove">✕</button>`;
+  const removeBtn = isPrimary ? '' : `<button class="contact-remove" onclick="removeContact(${idx})" data-tip="Remove contact">✕</button>`;
   return `<div class="contact-row ${isPrimary ? 'primary-contact' : 'additional'}" id="contact-row-${idx}">
     ${removeBtn}
     <div class="contact-row-label">${label}</div>
@@ -3394,6 +3832,7 @@ function openCallModal() {
   _selectedBase = null;
   _selectedExtras = [];
   _selectedPropertyType = 'Residential';
+  _selectedCallType = 'Leak Detection';
   _callContacts = [0];
 
   // Reset contacts
@@ -3405,15 +3844,21 @@ function openCallModal() {
   // Reset property type → Residential
   document.querySelectorAll('#propertyTypePicker .toggle-pill').forEach(b =>
     b.classList.toggle('selected', b.dataset.val === 'Residential'));
-  $('jcResidential').style.display = '';
-  $('jcCommercial').style.display  = 'none';
+
+  // Reset call type → Leak Detection
+  document.querySelectorAll('#callTypePicker .toggle-pill').forEach(b =>
+    b.classList.toggle('selected', b.dataset.val === 'Leak Detection'));
+
+  // Apply UI state (shows/hides pool section, sets correct jc groups)
+  applyCallTypeUI();
 
   // Reset classification cards
-  document.querySelectorAll('.jc-card').forEach(b => b.classList.remove('selected'));
+  document.querySelectorAll('.jc-card').forEach(b => b.classList.remove('selected', 'suggested'));
+  document.querySelectorAll('.jc-sugg-badge').forEach(el => el.remove());
   document.querySelectorAll('#callSkillPicker .skill-opt').forEach(b => b.classList.remove('selected'));
+  const lbl = $('jcAutoLabel'); if (lbl) lbl.style.display = 'none';
 
-  // Reset pool config reveal
-  $('poolConfigReveal').style.display = 'none';
+  // Reset pool cards
   document.querySelectorAll('#baseStructurePicker .pool-card').forEach(b => b.classList.remove('selected'));
   document.querySelectorAll('#extrasPicker .extra-card').forEach(b => b.classList.remove('selected'));
 
@@ -3424,11 +3869,30 @@ function openCallModal() {
 
   resetPriceFooter();
 
-  // Pre-fill address & water loss
+  // Pre-fill address, water loss, and demo contact info
   const d = randomCallDefaults();
-  $('callLocInput').value = d.loc.addr;
-  $('callWaterLoss').value = (Math.random() * 2 + 0.3).toFixed(1);
-  $('callNotes').value = '';
+  const demoFirst = CALL_FIRST[Math.floor(Math.random()*CALL_FIRST.length)];
+  const demoLast  = CALL_LAST[Math.floor(Math.random()*CALL_LAST.length)];
+  const demoPhone = DEMO_PHONES[Math.floor(Math.random()*DEMO_PHONES.length)];
+  const demoEmail = `${demoFirst.toLowerCase()}.${demoLast.toLowerCase()}@gmail.com`;
+
+  $('callLocInput').value   = d.loc.addr;
+  $('callWaterLoss').value  = (Math.random() * 2 + 0.3).toFixed(1);
+  $('callNotes').value      = '';
+
+  // Prefill primary contact
+  const f0 = document.getElementById('contact-first-0');
+  const l0 = document.getElementById('contact-last-0');
+  const p0 = document.getElementById('contact-phone-0');
+  const e0 = document.getElementById('contact-email-0');
+  if (f0) f0.value = demoFirst;
+  if (l0) l0.value = demoLast;
+  if (p0) p0.value = demoPhone;
+  if (e0) e0.value = demoEmail;
+
+  // Render pool partner picker for the pre-filled address
+  _selectedPartner = null;
+  renderPartnerPicker(d.loc.addr);
 
   openModal('callModalOverlay');
   setTimeout(() => document.getElementById('contact-first-0')?.focus(), 80);
@@ -3493,6 +3957,8 @@ function reviewCall() {
     jobGroup: GROUP_LABELS[_selectedJobClass.group] || _selectedJobClass.group,
     contacts,
     propertyType: _selectedPropertyType,
+    callType: _selectedCallType,
+    poolPartner: _selectedPartner,
     baseStructure: _selectedBase,
     extras: [..._selectedExtras],
     waterLoss,
@@ -3509,33 +3975,107 @@ function reviewCall() {
     ? `<div class="confirm-extras-list">${_selectedExtras.map(e=>`<span class="confirm-extra-chip">${e}</span>`).join('')}</div>`
     : '<span style="color:var(--text-muted)">None</span>';
 
+  // ── Build scheduling suggestions ──────────────────────────────
+  const ranked    = rankPlacements(_pendingCallJob);
+  const fitsSlots = ranked.filter(r => r.fits);
+  const top       = fitsSlots.slice(0, 5);
+  const calIsEmpty = allJobs.length === 0 && !isFilling;
+
+  // When calendar is empty, rankPlacements still works — every slot scores by
+  // tech skill only (no drive time yet). Build provisional suggestions showing
+  // each eligible tech across Mon–Fri, picking earliest day per tech.
+  let provisionalSlots = [];
+  if (calIsEmpty) {
+    const seenTech = new Set();
+    for (const r of ranked) {
+      if (!seenTech.has(r.j)) {
+        seenTech.add(r.j);
+        provisionalSlots.push(r);
+      }
+      if (provisionalSlots.length >= 5) break;
+    }
+  }
+
+  const displaySlots = calIsEmpty ? provisionalSlots : top;
+  const calIconSvg = `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--teal)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>`;
+
+  let suggestHtml = '';
+  if (displaySlots.length === 0) {
+    suggestHtml = `<div class="confirm-sugg-section">
+      <div class="confirm-sugg-title">${calIconSvg} Suggested Schedule Slots</div>
+      <div class="confirm-sugg-note" style="color:var(--amber)">No open slots found for this job — it will be added to the queue or overflow.</div>
+    </div>`;
+  } else {
+    const isProvisional = calIsEmpty;
+    const slotCards = displaySlots.map((r, i) => {
+      const isBest   = i === 0;
+      const usedPct  = Math.round((r.used / TIME_IN_DAY) * 100);
+      const distLbl  = isProvisional ? 'First job of day' : (r.dist > 0 ? `${Math.round(r.dist)} min drive` : 'First job of day');
+      const capLeft  = Math.round((TIME_IN_DAY - r.used - _pendingCallJob.time) * 10) / 10;
+      const jobsOnDay = cal[r.k][r.j].length;
+      const skillNames2 = ['','New','Specialist','Pro','Expert'];
+      const techSkillLabel = skillNames2[techs[r.j].skill_level] || '';
+      return `<button class="confirm-sugg-card ${isBest ? 'best' : ''}" onclick="confirmPlaceNow(${r.k},${r.j})">
+        <div class="confirm-sugg-card-top">
+          <span class="confirm-sugg-day">${DAYS[r.k]}</span>
+          ${isBest ? '<span class="best-badge">BEST</span>' : `<span class="confirm-sugg-rank">#${i+1}</span>`}
+        </div>
+        <div class="confirm-sugg-tech">${techs[r.j].key}</div>
+        <div class="confirm-sugg-meta">${isProvisional ? techSkillLabel + ' tech' : distLbl + ' &middot; ' + usedPct + '% full &middot; ' + jobsOnDay + ' job' + (jobsOnDay!==1?'s':'')}</div>
+        <div class="confirm-sugg-cap">${capLeft}h open</div>
+      </button>`;
+    }).join('');
+
+    const hintText = isProvisional
+      ? '<span class="confirm-sugg-hint">— schedule not yet run, slots are provisional</span>'
+      : '<span class="confirm-sugg-hint">— click to place directly</span>';
+
+    suggestHtml = `<div class="confirm-sugg-section">
+      <div class="confirm-sugg-title">${calIconSvg} Suggested Schedule Slots ${hintText}</div>
+      ${isProvisional ? `<div class="confirm-sugg-note" style="margin-bottom:8px;color:var(--text-muted)">Calendar is empty — slots show best tech match per day. Place now or add to queue.</div>` : ''}
+      <div class="confirm-sugg-grid">${slotCards}</div>
+    </div>`;
+  }
+
   $('callConfirmBody').innerHTML = `
     <div class="confirm-section">
-      <div class="confirm-section-title">👤 Contacts</div>
+      <div class="confirm-section-title"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg> Contacts</div>
       ${contactHtml}
+      <div class="confirm-row">
+        <span class="confirm-label">Pool Partner</span>
+        <span class="confirm-val">${_selectedPartner
+          ? `${_selectedPartner.name} <span style="color:var(--text-muted)">· ${_selectedPartner.phone}</span>`
+          : `<span style="color:var(--amber);font-weight:700">⚠ Please Obtain</span>`
+        }</span>
+      </div>
     </div>
     <div class="confirm-section">
-      <div class="confirm-section-title">📍 Service Details</div>
+      <div class="confirm-section-title"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg> Service Details</div>
       <div class="confirm-row"><span class="confirm-label">Address</span><span class="confirm-val">${matchedAddr.addr}</span></div>
       <div class="confirm-row"><span class="confirm-label">Property</span><span class="confirm-val">${_selectedPropertyType}</span></div>
+      <div class="confirm-row"><span class="confirm-label">Call Type</span><span class="confirm-val">${_selectedCallType}</span></div>
       ${waterLoss?`<div class="confirm-row"><span class="confirm-label">Water Loss</span><span class="confirm-val">${waterLoss} in/day</span></div>`:''}
     </div>
     <div class="confirm-section">
-      <div class="confirm-section-title">💧 Job Classification</div>
+      <div class="confirm-section-title">${_selectedCallType === 'Service Call' ? '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3-3a1 1 0 000-1.4l-1.6-1.6a1 1 0 00-1.4 0l-3 3z"/><path d="M5 20l8.7-8.7M15 5l4 4"/></svg>' : '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--teal)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.69l5.66 5.66a8 8 0 11-11.31 0z"/></svg>'} Job Classification</div>
       <div class="confirm-row"><span class="confirm-label">Class</span><span class="confirm-val">${_selectedJobClass.code} — ${_selectedJobClass.name}</span></div>
       <div class="confirm-row"><span class="confirm-label">Duration</span><span class="confirm-val">${dur}h scheduled</span></div>
       <div class="confirm-row"><span class="confirm-label">Required Tech</span><span class="confirm-val">${skillNames[selectedCallSkill]}</span></div>
     </div>
+    ${_selectedCallType !== 'Service Call' ? `
     <div class="confirm-section">
-      <div class="confirm-section-title">🏊 Pool Configuration</div>
+      <div class="confirm-section-title"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12h20M2 17c2.5-2.5 5-3 7-3s4.5.5 7 3"/><path d="M8 7a4 4 0 118 0c0 2.5-4 6-4 6S8 9.5 8 7z"/></svg> Pool Configuration</div>
       <div class="confirm-row"><span class="confirm-label">Structure</span><span class="confirm-val">${_selectedBase || '<span style="color:var(--text-muted)">Not specified</span>'}</span></div>
       <div class="confirm-row"><span class="confirm-label">Extras</span><span class="confirm-val">${extrasHtml}</span></div>
-      ${notes?`<div class="confirm-row"><span class="confirm-label">Notes</span><span class="confirm-val">${notes}</span></div>`:''}
-    </div>
+    </div>` : ''}
+    ${notes?`<div class="confirm-section"><div class="confirm-row"><span class="confirm-label">Notes</span><span class="confirm-val">${notes}</span></div></div>`:''}
     <div class="confirm-price-row">
-      <span class="confirm-price-label">💧 ${_selectedJobClass.code} · ${dur}h visit</span>
+      <span class="confirm-price-label">${_selectedCallType === 'Service Call' ? '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3-3a1 1 0 000-1.4l-1.6-1.6a1 1 0 00-1.4 0l-3 3z"/><path d="M5 20l8.7-8.7M15 5l4 4"/></svg>' : '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--teal)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.69l5.66 5.66a8 8 0 11-11.31 0z"/></svg>'} ${_selectedJobClass.code} · ${dur}h visit</span>
       <span class="confirm-price-val">${total > 0 ? '$'+total : 'TBD'}</span>
     </div>`;
+
+  // Slots go in their own always-visible panel above the footer
+  $('callConfirmSlots').innerHTML = suggestHtml;
 
   closeCallModal();
   openModal('callConfirmOverlay');
@@ -3556,6 +4096,28 @@ function confirmAndAddCall() {
   setTicker(`&#128222; <span class="highlight">${job.jobCode}</span> — ${job.key} added · ${job.time}h${job.price?' · $'+job.price:''}`);
   closeModal('callConfirmOverlay');
   _pendingCallJob = null;
+}
+
+function confirmPlaceNow(k, j) {
+  if (!_pendingCallJob) return;
+  customJobCounter++;
+  const job = _pendingCallJob;
+  _pendingCallJob = null;
+
+  const used = usedTime(k, j);
+  if (used + job.time > TIME_IN_DAY) {
+    overbookCallback = () => {
+      forcePlace(job, k, j);
+      closeModal('callConfirmOverlay');
+      setTicker(`&#10003; <span class="highlight">${job.jobCode}</span> ${job.key} placed &rarr; ${techs[j].key} / ${DAYS[k]}`);
+    };
+    showOverbookModal(job, k, j, used);
+    return;
+  }
+
+  forcePlace(job, k, j);
+  closeModal('callConfirmOverlay');
+  setTicker(`&#10003; <span class="highlight">${job.jobCode}</span> ${job.key} placed &rarr; ${techs[j].key} / ${DAYS[k]}${job.price?' · $'+job.price:''}`);
 }
 
 function validateCallForm() { return null; }
@@ -3633,6 +4195,7 @@ function forcePlace(job, k, j) {
     const used=usedTime(k,j);
     job._overbooked = (used+job.time > TIME_IN_DAY) ? true : false;
   }
+  job._confirmed = true;   // mark as manually pinned — survives Run Schedule
   cal[k][j].push(job);
   // also add to allJobs if not there
   if (!allJobs.find(jj=>jj.key===job.key)) allJobs.push(job);
@@ -3682,14 +4245,71 @@ function openJobDetail(job, k, j) {
     titleEl.innerHTML = `Job <span>${job.key}</span>`;
   }
 
+  const skillNames = ['','New','Specialist','Pro','Expert'];
+  const isService  = job.callType === 'Service Call';
+  const jc = job.jobCode ? (JOB_CLASSES[job.jobCode] || null) : null;
+
+  // Contacts block
+  const contacts = job.contacts || [];
+  const contactHtml = contacts.length
+    ? contacts.map((c,i) => `
+        <div class="confirm-row">
+          <span class="confirm-label">${i===0?'Primary':'Additional'}</span>
+          <span class="confirm-val">${c.first} ${c.last}${c.phone?` · ${c.phone}`:''}${c.email?` · <span style="color:var(--text-muted)">${c.email}</span>`:''}</span>
+        </div>`).join('')
+    : `<div class="confirm-row"><span class="confirm-label">Primary</span><span class="confirm-val" style="color:var(--text-muted)">${job.key}</span></div>`;
+
+  // Partner block
+  const partnerHtml = job.poolPartner
+    ? `${job.poolPartner.name} <span style="color:var(--text-muted)">· ${job.poolPartner.phone}</span>`
+    : `<span style="color:var(--amber);font-weight:700">⚠ Please Obtain</span>`;
+
+  // Extras chips
+  const extrasHtml = job.extras && job.extras.length
+    ? `<div class="confirm-extras-list">${job.extras.map(e=>`<span class="confirm-extra-chip">${e}</span>`).join('')}</div>`
+    : '<span style="color:var(--text-muted)">None</span>';
+
+  // Price row
+  const priceLabel = isService
+    ? `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3-3a1 1 0 000-1.4l-1.6-1.6a1 1 0 00-1.4 0l-3 3z"/><path d="M5 20l8.7-8.7M15 5l4 4"/></svg> ${job.jobCode || 'SC'} · ${job.time}h visit`
+    : `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--teal)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.69l5.66 5.66a8 8 0 11-11.31 0z"/></svg> ${job.jobCode || '—'} · ${job.time}h visit`;
+  const priceVal = job.price ? `$${job.price}` : 'TBD';
+
   $('jobDetailBody').innerHTML = `
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:12px;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:12px;margin-bottom:1rem">
-      <div><span style="color:var(--text-muted);font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.05em">Duration</span><br><strong>${fmtHours(job.time)}</strong></div>
-      <div><span style="color:var(--text-muted);font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.05em">Skill</span><br><strong>${skillName(job.skill_level)}</strong></div>
-      <div><span style="color:var(--text-muted);font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.05em">Location</span><br><strong>${job.location.addr}</strong></div>
-      <div><span style="color:var(--text-muted);font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.05em">Day</span><br><strong>${DAYS[k]}</strong></div>
+    <div class="confirm-section">
+      <div class="confirm-section-title"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg> Contacts</div>
+      ${contactHtml}
+      <div class="confirm-row">
+        <span class="confirm-label">Pool Partner</span>
+        <span class="confirm-val">${partnerHtml}</span>
+      </div>
     </div>
-    <p style="font-size:11px;color:var(--text-muted);margin-bottom:0.5rem">Removing this job will send it to overflow. ASAP jobs currently scheduled <em>later</em> in the week that could move earlier are shown below.</p>`;
+    <div class="confirm-section">
+      <div class="confirm-section-title"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg> Service Details</div>
+      <div class="confirm-row"><span class="confirm-label">Address</span><span class="confirm-val">${job.location.addr}</span></div>
+      <div class="confirm-row"><span class="confirm-label">Scheduled</span><span class="confirm-val">${DAYS[k]} · ${techs[j]?.key || ''}</span></div>
+      <div class="confirm-row"><span class="confirm-label">Property</span><span class="confirm-val">${job.propertyType || 'Residential'}</span></div>
+      <div class="confirm-row"><span class="confirm-label">Call Type</span><span class="confirm-val">${job.callType || 'Leak Detection'}</span></div>
+      ${job.waterLoss ? `<div class="confirm-row"><span class="confirm-label">Water Loss</span><span class="confirm-val">${job.waterLoss} in/day</span></div>` : ''}
+    </div>
+    <div class="confirm-section">
+      <div class="confirm-section-title">${isService ? '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3-3a1 1 0 000-1.4l-1.6-1.6a1 1 0 00-1.4 0l-3 3z"/><path d="M5 20l8.7-8.7M15 5l4 4"/></svg>' : '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--teal)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.69l5.66 5.66a8 8 0 11-11.31 0z"/></svg>'} Job Classification</div>
+      <div class="confirm-row"><span class="confirm-label">Class</span><span class="confirm-val">${job.jobCode ? `${job.jobCode} — ${job.jobClassName || ''}` : `${fmtHours(job.time)} · ${skillNames[job.skill_level]}`}</span></div>
+      <div class="confirm-row"><span class="confirm-label">Duration</span><span class="confirm-val">${job.time}h scheduled</span></div>
+      <div class="confirm-row"><span class="confirm-label">Required Tech</span><span class="confirm-val">${skillNames[job.skill_level]}</span></div>
+    </div>
+    ${!isService ? `
+    <div class="confirm-section">
+      <div class="confirm-section-title"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12h20M2 17c2.5-2.5 5-3 7-3s4.5.5 7 3"/><path d="M8 7a4 4 0 118 0c0 2.5-4 6-4 6S8 9.5 8 7z"/></svg> Pool Configuration</div>
+      <div class="confirm-row"><span class="confirm-label">Structure</span><span class="confirm-val">${job.baseStructure || '<span style="color:var(--text-muted)">Not specified</span>'}</span></div>
+      <div class="confirm-row"><span class="confirm-label">Extras</span><span class="confirm-val">${extrasHtml}</span></div>
+    </div>` : ''}
+    ${job.notes ? `<div class="confirm-section"><div class="confirm-row"><span class="confirm-label">Notes</span><span class="confirm-val">${job.notes}</span></div></div>` : ''}
+    <div class="confirm-price-row">
+      <span class="confirm-price-label">${priceLabel}</span>
+      <span class="confirm-price-val">${priceVal}</span>
+    </div>
+    <p style="font-size:10px;color:var(--text-muted);margin:12px 0 4px">Removing this job will send it to overflow. ASAP jobs that could move earlier are shown below.</p>`;
 
   // Find ASAP jobs currently on a LATER day than the freed slot
   const asapCandidates = [];
@@ -4249,7 +4869,7 @@ function renderSTechList() {
     <div class="s-tech-row">
       <span class="s-tech-name">${t.key}</span>
       <span class="s-tech-skill">${skillName(t.skill_level)}</span>
-      <button class="s-tech-del" onclick="sDeleteTech(${i})" title="Remove">×</button>
+      <button class="s-tech-del" onclick="sDeleteTech(${i})" data-tip="Remove">×</button>
     </div>`).join('');
 }
 
@@ -4356,75 +4976,6 @@ if (window.innerWidth <= 768) {
 // ═══════════════════════════════════════════════════════════════════
 let _idleTimer   = null;
 let _idleRunning = false;
-let _idlePool    = [];
-let _idleIdx     = 0;
-
-function startIdlePreview() {
-  if (_idleRunning || isFilling) return;
-  _idleRunning = true;
-
-  // Build a shuffled pool of preview jobs (won't be scheduled — display only)
-  _idlePool = generateJobs(40).sort(() => Math.random() - 0.5);
-  _idleIdx  = 0;
-
-  const tickerMessages = [
-    'Calls are coming in &mdash; press <strong>▶ Run Schedule</strong> to begin dispatching',
-    'Queue building &mdash; the algorithm will assign each call to the optimal tech &amp; day',
-    'Ready to dispatch &mdash; <strong>▶ Run Schedule</strong> places every call automatically',
-    'Incoming calls waiting &mdash; press <strong>▶ Run Schedule</strong> to schedule the week',
-  ];
-  let tickerIdx = 0;
-
-  function showNextIdleCall() {
-    if (!_idleRunning) return;
-
-    const job     = _idlePool[_idleIdx % _idlePool.length];
-    const nextJob = _idlePool[(_idleIdx + 1) % _idlePool.length];
-    _idleIdx++;
-
-    // Animate NOW HANDLING
-    const sl = job.skill_level;
-    $('incomingSlot').innerHTML = `
-      <div class="incoming-chip">
-        <span class="chip-name">${job.key}</span>
-        <span class="chip-meta">${fmtHours(job.time)} &middot; ${skillName(sl)}</span>
-      </div>`;
-
-    // Show UP NEXT
-    const nsl = nextJob.skill_level;
-    $('nextSlot').innerHTML = `
-      <div class="incoming-chip next-chip">
-        <span class="chip-name">${nextJob.key}</span>
-        <span class="chip-meta">${fmtHours(nextJob.time)} &middot; ${skillName(nsl)}</span>
-      </div>`;
-
-    $('phoneIcon').classList.add('ringing');
-
-    // Add to visual queue — prepend so newest is at front
-    const queueEl = $('jobs');
-    const existing = queueEl.querySelectorAll('.job-chip');
-    if (existing.length >= 14) existing[existing.length - 1].remove();
-    const chip = document.createElement('div');
-    chip.className = 'job-chip';
-    chip.draggable = true;
-    chip.innerHTML = `<span class="chip-name">${job.key}</span>
-      <span class="chip-meta">${fmtHours(job.time)} &middot; ${skillName(sl)}</span>`;
-    queueEl.prepend(chip);
-
-    // Rotate ticker message every 4 calls
-    if (_idleIdx % 4 === 1) {
-      setTicker(tickerMessages[tickerIdx % tickerMessages.length]);
-      tickerIdx++;
-    }
-
-    $('queueCount').textContent = `${queueEl.querySelectorAll('.job-chip').length} waiting`;
-    _idleTimer = setTimeout(showNextIdleCall, 1800 + Math.random() * 1200);
-  }
-
-  // First call after a short intro pause
-  setTicker('Calls are coming in &mdash; press <strong>▶ Run Schedule</strong> to begin dispatching');
-  _idleTimer = setTimeout(showNextIdleCall, 800);
-}
 
 function stopIdlePreview() {
   _idleRunning = false;
@@ -4432,8 +4983,84 @@ function stopIdlePreview() {
   $('phoneIcon').classList.remove('ringing');
 }
 
-// Start idle preview on load
-startIdlePreview();
+// ── QUEUE-FILL PREVIEW ON LOAD ───────────────────────────────────────
+// Calls trickle in and pile up in the queue.
+// Calendar stays empty until Run Schedule is clicked.
+
+let _previewJobs = [];
+
+async function startAutoPreview() {
+  if (_idleRunning || isFilling) return;
+  _idleRunning = true;
+
+  _previewJobs = generateJobs(callCount);
+  queueJobs    = [];
+  allJobs      = [];
+
+  cal = buildCal(); overflow = [];
+  buildTable(); renderAllCells(); renderTechs(); renderOverflow();
+  $('jobs').innerHTML = '';
+  $('queueCount').textContent = '';
+  $('progressWrap').classList.remove('visible');
+
+  setTicker('Calls are coming in — press <strong>▶ Run Schedule</strong> to begin dispatching');
+
+  const tickerMessages = [
+    'Queue building — the algorithm will assign each call to the optimal tech &amp; day',
+    'Ready to dispatch — <strong>▶ Run Schedule</strong> places every call automatically',
+    'Incoming calls waiting — press <strong>▶ Run Schedule</strong> to schedule the week',
+    'Calls are coming in — press <strong>▶ Run Schedule</strong> to begin dispatching',
+  ];
+  let tickerIdx = 0;
+
+  for (let i = 0; i < _previewJobs.length; i++) {
+    if (!_idleRunning) break;
+
+    const job     = _previewJobs[i];
+    const nextJob = _previewJobs[i + 1] || null;
+    const sl      = job.skill_level;
+
+    // Animate NOW HANDLING / UP NEXT panel
+    showIncoming(job, nextJob);
+    $('phoneIcon').classList.add('ringing');
+
+    // Rotate ticker every 5 calls
+    if (i % 5 === 0) {
+      setTicker(tickerMessages[tickerIdx % tickerMessages.length]);
+      tickerIdx++;
+    }
+
+    // Add chip to queue — newest at front, cap at 30 visible
+    const queueEl = $('jobs');
+    const existing = queueEl.querySelectorAll('.job-chip');
+    const chip = document.createElement('div');
+    chip.className = 'job-chip';
+    chip.draggable = true;
+    chip.dataset.key = job.key;
+    chip.innerHTML = `<span class="chip-name">${job.key}</span>
+      <span class="chip-meta">${job.location.addr} &middot; ${fmtHours(job.time)} &middot; ${skillName(sl)}</span>`;
+    queueEl.prepend(chip);
+    if (existing.length >= 30) existing[existing.length - 1].remove();
+
+    // Keep allJobs / queueJobs in sync so fillCalendar has the full list
+    queueJobs.push(job);
+    allJobs = [..._previewJobs.slice(0, i + 1)];
+    $('queueCount').textContent = `${i + 1} waiting`;
+    bindQueueDrag();
+
+    // Slow trickle: one call every ~1.8–3 s
+    await new Promise(r => { _idleTimer = setTimeout(r, 1800 + Math.random() * 1200); });
+  }
+
+  if (_idleRunning) {
+    clearIncoming();
+    $('phoneIcon').classList.remove('ringing');
+    setTicker(`${queueJobs.length} calls waiting — press <strong>▶ Run Schedule</strong> to dispatch`);
+  }
+}
+
+// Start queue-fill preview on load
+startAutoPreview();
 
 function toggleSidebar() {
   const sidebar = $('sidebar');
@@ -4847,6 +5474,7 @@ function showScheduleSummary() {
     <div class="sum-body" id="summaryBody"></div>
   </div>
 </div>
+
 
 </body>
 </html>
